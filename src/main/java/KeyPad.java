@@ -25,15 +25,14 @@ public class KeyPad {
     private int getPIN() {
         int attempts = 0;
 
-        int PUK = 000000;
         int PIN = 000000;
 
         int CORRECT_PIN = 0123;
-        int CORRECT_PUK = 01234;
 
         Scanner keyboard = new Scanner(System.in);
-        System.out.print("Enter Pin Code: ");
-        while(attempts < 3) {
+
+        do{
+            System.out.print("Enter Pin Code: ");
             PIN = keyboard.nextInt();
             attempts++;
             if (PIN != CORRECT_PIN) { 
@@ -44,32 +43,7 @@ public class KeyPad {
                 return 0;
             }
         }
-
-
-
-        
-        if (PIN == CORRECT_PIN && attempts <= 3) {  
-            System.out.println("Welcome!");
-        }
-        else {
-            System.out.println("PIN is incorrect! Try again with PUK");
-            attempts = 0;
-            while(PUK != CORRECT_PUK && attempts < 3)
-            {
-                PUK  = keyboard.nextInt();
-                attempts++;
-                if (PUK != CORRECT_PUK && attempts < 3) { 
-                System.out.println("PUK is incorrect! Try again!"); // This is the 1st time the wrong password has been entered.
-                }
-            }
-            if (PUK == CORRECT_PUK && attempts <= 3) {  
-                System.out.println("Welcome!");  
-            }
-            else
-            {
-            System.out.println("PUK is incorrect! SIM Blocked! See you!");
-            }
-        }
+        while(attempts < 3 && PIN != CORRECT_PIN);
 
         keyboard.close();
         return PIN;
