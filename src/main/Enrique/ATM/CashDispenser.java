@@ -13,14 +13,14 @@ public class CashDispenser {
     // types = 5, 10, 20, 50, 100, 200, 500
     // etc.
     
-   // the default initial number of bills in the cash dispenser, arbitary value, temporary.
-   private final int INITIAL_COUNT = 500;
+    // the default initial number of bills in the cash dispenser, arbitary value, temporary.
+    private static final int INITIAL_COUNT = 500;
 
     // Key - banknote face value
     // Value - Total number of that banknote type remaining in the ATM.
     // int[0] - banknote face value
     // int[1] - number of banknotes
-    int[][] dispenserAmounts;
+    private int[][] dispenserAmounts;
 
     // Instead of location, give it the currency code imo. Can pass that on ATM init.
     public CashDispenser(String loc) {

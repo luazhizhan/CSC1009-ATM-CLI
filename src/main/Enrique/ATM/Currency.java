@@ -24,7 +24,7 @@ public class Currency {
     public Currency(String currencyAcronym, int[] banknotes, String[] countries) {
         this.setCurrencyAcronym(currencyAcronym);
         this.setBanknotes(banknotes);
-        this.setcountries(countries);
+        this.setCountries(countries);
     }
 
 
@@ -66,11 +66,12 @@ public class Currency {
         this.banknotes = banknotes;
     }
 
+    // Should use country acronyms
     private String[] countries;
-    public String[] getcountries() {
+    public String[] getCountries() {
         return countries;
     }
-    public void setcountries(String[] countries) {
+    public void setCountries(String[] countries) {
         this.countries = countries;
     }
 
