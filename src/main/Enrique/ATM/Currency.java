@@ -1,9 +1,11 @@
-package src.main.java;
+package src.main.Enrique.ATM;
 
 import java.util.HashSet;
 import java.util.Set;
 
 
+
+// Checked with Prof after class 07/03/22, can use .csv files to import exchange rates or currency data.
 
 // Class for currencies. They can be used by a country, multiple countries (EU). 
 
@@ -14,6 +16,7 @@ import java.util.Set;
 // Leaving the property setters means they are mutable, so only permit valid users, if we get that far.
 public class Currency {
 
+    // CONSTRUCTORS
     public Currency(String currencyAcronym) {
         this.setCurrencyAcronym(currencyAcronym);
     }
@@ -23,6 +26,7 @@ public class Currency {
         this.setBanknotes(banknotes);
         this.setcountries(countries);
     }
+
 
     // We will use this as an identifier for the banknote series.
     private String currencyAcronym;
@@ -35,7 +39,7 @@ public class Currency {
     
     // Can I cache exchange rates in here? Turns out yes
     // Ripped this exchange rate bit from SO, but its p handy and sensible.
-    private final Set<ExchangeRate> rates = new HashSet<>();
+    private Set<ExchangeRate> rates = new HashSet<>();
     
     public ExchangeRate findExchangeRate(Currency currency) {
         for(ExchangeRate rate: rates) {

@@ -1,7 +1,7 @@
-package src.main.java;
+package src.main.Enrique.ATM;
 
 
-// Mostly unnecessary unless we expand with a higher level management system i.e. bank, ATM operators, etc.
+// Mostly/very unnecessary (for given scope) unless we expand with a higher level management system i.e. bank, ATM operators, etc.
 // Leaving it here for now since I've written it.
 public enum ATMStatus {
     WORKING(0),

@@ -1,7 +1,10 @@
-package src.main.test;
+package src.main.Enrique.test;
 
 
-import src.main.java.*;
+import src.main.Enrique.ATM.ATM;
+import src.main.Enrique.ATM.Account;
+import src.main.Enrique.ATM.BankDatabase;
+// import src.main.Enrique.*;
 
 
 public class test {

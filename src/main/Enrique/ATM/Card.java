@@ -1,4 +1,4 @@
-package src.main.java;
+package src.main.Enrique.ATM;
 
 import java.util.UUID;
 
@@ -9,6 +9,7 @@ public class Card {
     
     // Lazy implementation, edit data type later after review with team
     private final String cardNumber;
+    
     public String getCardNumber() {
         return cardNumber;
     }

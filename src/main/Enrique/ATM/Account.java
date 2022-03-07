@@ -1,15 +1,19 @@
-package src.main.java;
+package src.main.Enrique.ATM;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import src.main.test.RandomInt;
+import src.main.Enrique.Helpers.RandHelpers;
 
 
 // Dummy account for testing only, use teammates version later
 public class Account {
     
-    String accountHolder;
+    private String accountHolder;
+    public String getAccountHolder() {
+        return accountHolder;
+    }
+
     private final String accountNumber;
     public String getAccountNumber() {
         return accountNumber;
@@ -35,7 +39,10 @@ public class Account {
     
     BigDecimal overdraftLimit;
 
-    // For testing, temporary, haven't considered if we should have minimum account amounts (Probably a real IRL practice, but I haven't checked), if overdraft values should be stored here or in a Bank class somewhere.
+    // INITIAL_TOTAL is for testing, temporary, haven't considered if we should have minimum account amounts 
+    // (Probably a real IRL practice, but I haven't checked).  
+    // if overdraft values should be stored here or in a Bank class somewhere.
+
     // the default totalBalance in an account, arbitary value.
     private final static int INITIAL_TOTAL = 10000;
     private final static int OVERDRAFT_VALUE = 1000;
@@ -50,12 +57,29 @@ public class Account {
         return totalBalance.doubleValue();
     }
     
+    // For testing- we need to get user input and pass it as an argument.
     public Account(String accountHolder) {
         this.accountHolder = accountHolder;
         this.setCardNumber(null);
 
         accountNumber = UUID.randomUUID().toString();
-        accountPIN = RandomInt.RandomIntInRange(10000, 999999);
+        // For testing, for setting up an actual account, get user input
+        accountPIN = RandHelpers.RandomIntInRange(10000, 999999);
+        // accountPIN = 
+
+        totalBalance = new BigDecimal(INITIAL_TOTAL);
+        availableBalance = new BigDecimal(INITIAL_TOTAL);
+        HoldBalance = new BigDecimal(0);
+        
+        overdraftLimit = new BigDecimal(OVERDRAFT_VALUE);
+    }
+    
+    public Account(String accountHolder, int PIN) {
+        this.accountHolder = accountHolder;
+        this.setCardNumber(null);
+
+        accountNumber = UUID.randomUUID().toString();
+        accountPIN = PIN;
 
         totalBalance = new BigDecimal(INITIAL_TOTAL);
         availableBalance = new BigDecimal(INITIAL_TOTAL);
@@ -72,6 +96,6 @@ public class Account {
          return true;
       else
          return false;
-   } // end method validatePIN
+   }
 
 }

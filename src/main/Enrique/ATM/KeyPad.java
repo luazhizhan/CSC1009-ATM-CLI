@@ -1,6 +1,8 @@
-package src.main.java;
+package src.main.Enrique.ATM;
 
 import java.util.Scanner;
+
+import src.main.Enrique.Helpers.RandHelpers;
 
 // Get input. Primarily PIN. Sometimes used for navigation in older models without touchscreen.
 public class KeyPad {
@@ -26,8 +28,9 @@ public class KeyPad {
         int attempts = 0;
 
         int PIN = 000000;
-
-        int CORRECT_PIN = 0123;
+        int CORRECT_PIN = RandHelpers.RandomIntInRange(100000, 999999);
+        
+        System.out.println("correct pin " +  CORRECT_PIN);
 
         Scanner keyboard = new Scanner(System.in);
 
@@ -36,17 +39,25 @@ public class KeyPad {
             PIN = keyboard.nextInt();
             attempts++;
             if (PIN != CORRECT_PIN) { 
-               System.out.println("PIN is incorrect! Try again!" ); // This is the 1st time the wrong password has been entered.
+               System.out.println("PIN is incorrect! Try again!");
             }
             else {
                 System.out.println("Welcome!");
+                keyboard.close();
                 return 0;
             }
         }
         while(attempts < 3 && PIN != CORRECT_PIN);
 
+        System.out.println("Too many incorrect attempts!");
+        
         keyboard.close();
         return PIN;
+    }
+
+    public static void main(String[] args) {
+        KeyPad test = new KeyPad();
+        test.getPIN();
     }
 
 }

@@ -1,6 +1,8 @@
-package src.main.java;
+package src.main.Enrique.ATM;
 
 import java.math.BigDecimal;
+
+
 
 public class ExchangeRate {
     private final Currency currency;
@@ -15,9 +17,9 @@ public class ExchangeRate {
         return currency;
     }
 
-    // public BigDecimal getRate() {
-    //     return rate;
-    // }
+    public BigDecimal getRate() {
+        return rate;
+    }
 
     // Black magic stuff to make Set logic work properly. Look up the hash code stuff in a bit thnx.
     @Override
