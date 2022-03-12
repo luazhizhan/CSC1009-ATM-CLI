@@ -1,31 +1,25 @@
 package Customer;
 
 import java.util.LinkedList;
+import java.util.UUID;
 
 public class Customer {
-    enum Status
-    {
-        Normal,
-        Privilleged
-    }
-    private int CustomerID;
-    static private int IDTracker=0;
+
+    private UUID CustomerID;
     private String Name,Email,Phone;
-    private Enum<Status> CustomerStatus;
-    //private List<Account> AccountList;
+    private Address address;
+
 
     public Customer(String Name, String Email, String Phone)
     {
-        this.CustomerID= IDTracker;
-        IDTracker+=1;
+        this.CustomerID= UUID.randomUUID();
         this.Name = Name;
         this.Email = Email;
         this.Phone = Phone;
-        this.CustomerStatus = Status.Normal;
-        //this.AccountList = new LinkedList<Account>();
+        this.address = new Address();
     }
 
-    public int getCustomerID() {
+    public UUID getCustomerID() {
         return CustomerID;
     }
 
@@ -53,11 +47,4 @@ public class Customer {
         Phone = phone;
     }
 
-    public Enum<Status> getCustomerStatus() {
-        return CustomerStatus;
-    }
-
-    public void setCustomerStatus(Enum<Status> customerStatus) {
-        CustomerStatus = customerStatus;
-    }
 }
