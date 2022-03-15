@@ -5,14 +5,12 @@ import java.util.ArrayList;
 // BankDatabase.java
 // Represents the bank account information database 
 
-public class BankDatabase
-{
+public class AccountDatabase {
     // idk what to use, but for right now, ArrayList
-    public ArrayList<Account> accounts = new ArrayList<Account>() ; // array of Accounts
+    public ArrayList<Account> accounts = new ArrayList<Account>(); // array of Accounts
 
-    
-    public BankDatabase() {}
-    
+    public AccountDatabase() {
+    }
 
     // retrieve Account object containing specified account number
     public Account getAccountFromNumber(String accountNumber) {
@@ -21,7 +19,9 @@ public class BankDatabase
                 return currentAccount;
         }
         // No matching account found
-        return null;
+
+        throw new NullPointerException("No account found!");
+        // return null;
     }
 
     private Account getAccountFromPIN(int PIN) {
@@ -52,33 +52,35 @@ public class BankDatabase
 
     // return available balance of Account with specified account number
     public double getAvailableBalance(String userAccountNumber) {
-        // Don't know if I should/need to throw an exception, by this point the user 
+        // Don't know if I should/need to throw an exception, by this point the user
         // should be verified and the account obtained.
-        // Leaving this here as a marker so If I need to apply this to 
+        // Leaving this here as a marker so If I need to apply this to
         // getTotalBalance/other methods that require accessing an account first,
         // But if we're dealing with money, redundancy is good to have?
 
         // try {
-        //     Account userAccount = getAccountFromNumber(userAccountNumber);
-        // } 
+        // Account userAccount = getAccountFromNumber(userAccountNumber);
+        // }
         // catch (Exception e) {
-        //      //TODO: handle exception
-                // System.out.println("Account not found, please contact your bank."); // some error message
+        // //TODO: handle exception
+        // System.out.println("Account not found, please contact your bank."); // some
+        // error message
         // }
 
-
         Account userAccount = getAccountFromNumber(userAccountNumber);
-        
-        if(userAccount == null) throw new NullPointerException("No account found!");
-        
+
+        if (userAccount == null)
+            throw new NullPointerException("No account found!");
+
         return userAccount.getAvailableBalance();
     }
 
     // return total balance of Account with specified account number
     public double getTotalBalance(String userAccountNumber) {
         Account userAccount = getAccountFromNumber(userAccountNumber);
-        
-        if(userAccount == null) throw new NullPointerException("No account found!");
+
+        if (userAccount == null)
+            throw new NullPointerException("No account found!");
 
         return userAccount.getTotalBalance();
     }
@@ -86,8 +88,9 @@ public class BankDatabase
     // return available balance of Account with specified account number
     public boolean validatePIN(String userAccountNumber, int PIN) {
         Account userAccount = getAccountFromNumber(userAccountNumber);
-        
-        if(userAccount == null) throw new NullPointerException("No account found!");
+
+        if (userAccount == null)
+            throw new NullPointerException("No account found!");
 
         return userAccount.validatePIN(PIN);
     }
@@ -97,4 +100,3 @@ public class BankDatabase
     }
 
 }
-

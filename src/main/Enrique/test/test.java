@@ -2,14 +2,14 @@ package src.main.Enrique.test;
 
 import src.main.Enrique.ATM.ATM;
 import src.main.Enrique.ATM.Account;
-import src.main.Enrique.ATM.BankDatabase;
+import src.main.Enrique.ATM.AccountDatabase;
 // import src.main.Enrique.*;
 
 public class test {
 
     public static void main(String[] args) {
 
-        BankDatabase bankDB = new BankDatabase();
+        AccountDatabase bankDB = new AccountDatabase();
 
         // The original array has been changed into an arraylist, this makes it easier
         // to add/delete from the database

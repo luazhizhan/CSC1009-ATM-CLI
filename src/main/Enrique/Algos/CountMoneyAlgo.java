@@ -13,49 +13,49 @@ public class CountMoneyAlgo {
     private static int[] table;
 
     public static void setUpTable(int[] notes) {
-        table = new int[DEFAULT_VALUE+1];
+        table = new int[DEFAULT_VALUE + 1];
         table[0] = 0;
-        for(int i = 1; i <= DEFAULT_VALUE; i++) {
-            table[i] = DEFAULT_VALUE+1;
+        for (int i = 1; i <= DEFAULT_VALUE; i++) {
+            table[i] = DEFAULT_VALUE + 1;
         }
     }
-    
+
     // function to count and print currency notes
     // notes = values to use for counting
     // value = value to match.
-    public static Tuple<Boolean, int[]> countCurrency(int[] notes, int value)
-    {
+    public static Tuple<Boolean, int[]> countCurrency(int[][] notes, int value) {
         // int[] notes = new int[]{ 2000, 500, 200, 100, 50, 20, 10, 5, 1 };
-        int[] noteCounter = new int[notes.length];
+        int[] noteCounter = new int[notes[0].length];
 
-        for (int i = 0; i < notes.length; i++) {
+        for (int i = 0; i < notes[0].length; i++) {
             // Skip values that are too large
-            if(noteCounter[i] > value) continue;
-            
-            if (value >= notes[i]) {
-                noteCounter[i] = value % notes[i];
-                value = value - noteCounter[i] * notes[i];
+            System.out.println(notes[0][i]);
+            if (notes[0][i] <= value) {
+                noteCounter[i] = value / notes[0][i];
+                // noteCounter[i] = (value - value % notes[0][i]) / notes[0][i];
+                System.out.println("post divide" + noteCounter[i]);
+                if (noteCounter[i] > notes[1][i])
+                    noteCounter[i] = notes[1][i];
+                value -= noteCounter[i] * notes[0][i];
             }
+            System.out.println(notes[0][i] + " " + noteCounter[i] + " remaining value: " + value);
         }
 
-        for (int i = 0; i < notes.length; i++) {
-            for (int j = 1; j < value + 1; j++) {
-                if(notes[i] > value) continue;
+        if (value != 0) {
+            for (int i = 0; i < notes[0].length; i++) {
+                if (noteCounter[i] == notes[1][i]) {
+                    System.out.println("Out of notes!");
+                }
             }
+            System.out.println("Algo is bad.");
         }
 
-        // for(int note : notes) {
-        //     for(int amt = 1; amt <= value ; amt++) {
-        //         if(amt >= note) {
-        //             table[amt] = Math.min(table[amt], 1 + table[amt - note]);
-        //         }
-        //     }
-        // }
-        // int minCoinsReq = table[value] != value+1 ? table[value] : -1 ; 
-        // System.out.println("Minimum Coins required : " + minCoinsReq);
+        System.out.println("noteCounter");
+        for (int i = 0; i < noteCounter.length; i++) {
+            System.out.println(noteCounter[i]);
+        }
+        System.out.println("end noteCounter");
 
-
-        
-        return new Tuple<Boolean,int[]>(true, noteCounter);
+        return new Tuple<Boolean, int[]>(true, noteCounter);
     }
 }
