@@ -11,23 +11,15 @@ public class Address {
     private String state;
     private String country;
 
-    public Address()
+    protected Address(String blkNum, String streetAddress, String unitNumber, String postalCode, String city, String state, String country)
     {
-        Scanner input = new Scanner(System.in);
-        System.out.println("Please Enter Your Blk Number: ");
-        this.blkNum = input.next();
-        System.out.println("Please enter your street address: ");
-        this.streetAddress = input.next();
-        System.out.println("Please enter your unit number (Leave Blank if not required): ");
-        this.unitNumber = input.next();
-        System.out.println("Please enter your postalcode: ");
-        this.postalCode = input.next();
-        System.out.println("Please enter your city: ");
-        this.city = input.next();
-        System.out.println("Please enter your state: ");
-        this.state = input.next();
-        System.out.println("Please enter your country: ");
-        this.country = input.next();
+        this.blkNum = blkNum;
+        this.streetAddress = streetAddress;
+        this.unitNumber = unitNumber;
+        setPostalCode(postalCode);
+        this.city = city;
+        this.state =state;
+        this.country = country;
     }
 
     String getBlkNum() {
@@ -43,6 +35,7 @@ public class Address {
     }
 
     void setStreetAddress(String streetAddress) {
+
         this.streetAddress = streetAddress;
     }
 
@@ -59,7 +52,16 @@ public class Address {
     }
 
     void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+        String phoneValid = "^(1\\-)?[0-9]{3}\\-?[0-9]{3}\\-?[0-9]{4}$";
+        if(postalCode.matches(phoneValid))
+        {
+            this.postalCode = postalCode;
+        }
+        else
+        {
+            throw new IllegalArgumentException("Invalid Postal Code");
+        }
+
     }
 
     String getCity() {
