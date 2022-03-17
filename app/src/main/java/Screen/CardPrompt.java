@@ -1,6 +1,6 @@
 package Screen;
 
-public class CardPrompt implements ScreenState{
+public class CardPrompt implements ScreenState {
     private String prompt;
     CardPrompt()
     {
@@ -21,4 +21,5 @@ public class CardPrompt implements ScreenState{
     {
         System.out.println(prompt);
     }
+
 }

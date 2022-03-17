@@ -1,7 +1,7 @@
 package Screen;
 
 public class ScreenStateContext {
-    private ScreenState currentState;
+    ScreenState currentState;
     public ScreenStateContext()
     {
         currentState = new Greeting();
