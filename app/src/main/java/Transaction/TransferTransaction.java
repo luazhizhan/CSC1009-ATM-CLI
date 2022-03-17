@@ -37,7 +37,7 @@ public class TransferTransaction extends Transaction {
         return dateCompleted;
     }
 
-    private void setDateCompleted(Date dateCompleted) {
+    public void setDateCompleted(Date dateCompleted) {
         this.dateCompleted = dateCompleted;
     }
 
