@@ -10,6 +10,10 @@ public abstract class Transaction {
     private BigDecimal amount;
     private Date dateCreated;
 
+    public Transaction() {
+        setId(UUID.randomUUID().toString());
+    }
+
     public Transaction(String accountId, BigDecimal amount) {
         setAccountId(accountId);
         setAmount(amount);
@@ -48,7 +52,7 @@ public abstract class Transaction {
         return dateCreated;
     }
 
-    private void setDateCreated(Date dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 

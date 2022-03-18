@@ -7,7 +7,7 @@ public class CashTransaction extends Transaction {
     private String atmId;
     private TransactionType type;
 
-    public enum TransactionType {
+    public static enum TransactionType {
         DEPOSIT,
         WITHDRAW
     }
