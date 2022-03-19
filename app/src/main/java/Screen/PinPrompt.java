@@ -2,11 +2,11 @@ package Screen;
 
 public class PinPrompt implements ScreenState{
     String prompt;
-    PinPrompt()
+    public PinPrompt()
     {
         prompt = "Please enter your PIN";
     }
-    PinPrompt(int tries)
+    public PinPrompt(int tries)
     {
         switch (tries)
         {

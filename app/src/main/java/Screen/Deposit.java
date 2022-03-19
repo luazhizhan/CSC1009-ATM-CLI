@@ -4,12 +4,12 @@ public class Deposit implements ScreenState{
 
     private String prompt;
 
-    Deposit()
+    public Deposit()
     {
         prompt = line+"\nPlease Enter the number of notes deposited in the following format ($10,$50):\n";
     }
 
-    Deposit(Boolean valid)
+    public Deposit(Boolean valid)
     {
         if(!valid)
         {

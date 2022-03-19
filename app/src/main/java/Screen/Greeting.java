@@ -1,9 +1,8 @@
 package Screen;
 
-
-class Greeting implements ScreenState{
-    String Greeting;
-    Greeting()
+public class Greeting implements ScreenState{
+    private String Greeting;
+    public Greeting()
     {
         Greeting = line + '\n' + "Welcome to OOP ATM" + '\n' + line;
     }

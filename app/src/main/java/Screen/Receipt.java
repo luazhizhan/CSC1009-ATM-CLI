@@ -6,12 +6,12 @@ import java.math.BigDecimal;
 public class Receipt implements ScreenState
 {
     private String prompt;
-    Receipt()
+    public Receipt()
     {
         prompt = line+"\nDo you want a printed receipt\n1.  Print Receipt\n2.  No";
     }
 
-    Receipt(boolean choice, Transaction transaction, BigDecimal balance)
+    public Receipt(boolean choice, Transaction transaction, BigDecimal balance)
     {
         if(choice)
         {
@@ -25,7 +25,7 @@ public class Receipt implements ScreenState
         }
     }
 
-    Receipt(BigDecimal balance)
+    public Receipt(BigDecimal balance)
     {
         prompt = line+"\nAccount Balance"+ balance+"\nThank You For Banking With Us\n"+line;
     }

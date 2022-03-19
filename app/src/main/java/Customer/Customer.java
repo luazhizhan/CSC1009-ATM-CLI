@@ -10,7 +10,7 @@ public class Customer {
     private Address address;
 
 
-    protected Customer(String name, String email, String phone)
+    public Customer(String name, String email, String phone)
     {
         this.name = name;
         setEmail(email);

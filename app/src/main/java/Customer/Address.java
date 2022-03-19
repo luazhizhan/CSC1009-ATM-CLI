@@ -11,7 +11,7 @@ public class Address {
     private String state;
     private String country;
 
-    protected Address(String blkNum, String streetAddress, String unitNumber, String postalCode, String city, String state, String country)
+    public Address(String blkNum, String streetAddress, String unitNumber, String postalCode, String city, String state, String country)
     {
         this.blkNum = blkNum;
         this.streetAddress = streetAddress;
