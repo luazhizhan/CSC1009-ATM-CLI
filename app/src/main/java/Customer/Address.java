@@ -1,7 +1,5 @@
 package Customer;
 
-import java.util.Scanner;
-
 public class Address {
     private String blkNum;
     private String streetAddress;
@@ -10,87 +8,96 @@ public class Address {
     private String city;
     private String state;
     private String country;
+    private static final String SINGAPORE = "Singapore";
 
-    public Address(String blkNum, String streetAddress, String unitNumber, String postalCode, String city, String state, String country)
-    {
-        this.blkNum = blkNum;
-        this.streetAddress = streetAddress;
-        this.unitNumber = unitNumber;
+    public Address(String blkNum, String streetAddress, String unitNumber,
+            String postalCode) {
+        setBlkNum(blkNum);
+        setStreetAddress(streetAddress);
+        setUnitNumber(unitNumber);
         setPostalCode(postalCode);
-        this.city = city;
-        this.state =state;
-        this.country = country;
+        setPostalCode(postalCode);
+        setCity(SINGAPORE);
+        setState(SINGAPORE);
+        setCountry(SINGAPORE);
     }
 
-    String getBlkNum() {
+    public Address(String blkNum, String streetAddress, String unitNumber,
+            String postalCode, String city, String state, String country) {
+        setBlkNum(blkNum);
+        setStreetAddress(streetAddress);
+        setUnitNumber(unitNumber);
+        setPostalCode(postalCode);
+        setCity(city);
+        setState(state);
+        setCountry(country);
+    }
+
+    public String getBlkNum() {
         return blkNum;
     }
 
-    void setBlkNum(String blkNum) {
+    public void setBlkNum(String blkNum) {
         this.blkNum = blkNum;
     }
 
-    String getStreetAddress() {
+    public String getStreetAddress() {
         return streetAddress;
     }
 
-    void setStreetAddress(String streetAddress) {
+    public void setStreetAddress(String streetAddress) {
 
         this.streetAddress = streetAddress;
     }
 
-    String getUnitNumber() {
+    public String getUnitNumber() {
         return unitNumber;
     }
 
-    void setUnitNumber(String unitNumber) {
+    public void setUnitNumber(String unitNumber) {
         this.unitNumber = unitNumber;
     }
 
-    String getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    void setPostalCode(String postalCode) {
-        String phoneValid = "^(1\\-)?[0-9]{3}\\-?[0-9]{3}\\-?[0-9]{4}$";
-        if(postalCode.matches(phoneValid))
-        {
+    public void setPostalCode(String postalCode) {
+        String phoneValid = "\\d{6}";
+        if (postalCode.matches(phoneValid)) {
             this.postalCode = postalCode;
+        } else {
+            throw new IllegalArgumentException("Invalid Postal Code.");
         }
-        else
-        {
-            throw new IllegalArgumentException("Invalid Postal Code");
-        }
-
     }
 
-    String getCity() {
+    public String getCity() {
         return city;
     }
 
-    void setCity(String city) {
+    public void setCity(String city) {
         this.city = city;
     }
 
-    String getState() {
+    public String getState() {
         return state;
     }
 
-    void setState(String state) {
+    public void setState(String state) {
         this.state = state;
     }
 
-    String getCountry() {
+    public String getCountry() {
         return country;
     }
 
-    void setCountry(String country) {
+    public void setCountry(String country) {
         this.country = country;
     }
 
-    String getAddress()
-    {
-        return(blkNum+" " +streetAddress+" "+unitNumber+" "+city+" "+state+" "+country);
+    public String getAddress() {
+        return (blkNum + ", " + streetAddress + ", " + unitNumber + ", "
+                + city + ", " + state + ", " + country);
     }
 
 }
