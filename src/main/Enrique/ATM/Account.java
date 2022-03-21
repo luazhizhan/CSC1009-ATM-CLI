@@ -68,7 +68,7 @@ public class Account {
 
         accountNumber = UUID.randomUUID().toString();
         // For testing, for setting up an actual account, get user input
-        accountPIN = RandHelpers.RandomIntInRange(10000, 999999);
+        accountPIN = RandHelpers.randomInt(10000, 999999);
         // accountPIN =
 
         totalBalance = new BigDecimal(INITIAL_TOTAL);

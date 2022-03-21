@@ -1,34 +1,42 @@
-def _get_change_making_matrix(set_of_coins, r: int):
-    m = [[0 for _ in range(r + 1)] for _ in range(len(set_of_coins) + 1)]
-    for i in range(1, r + 1):
+def _get_change_making_matrix(set_of_coins, value: int):
+    m = [[0 for _ in range(value + 1)] for _ in range(len(set_of_coins) + 1)]
+    for i in range(1, value + 1):
         m[0][i] = float('inf')  # By default there is no way of making change
     return m
 
-def change_making(coins, n: int):
+# Change-making problem, get minimum number of coins, assuming infinite amount.
+
+
+def change_making(coins, value: int):
     """This function assumes that all coins are available infinitely.
     n is the number to obtain with the fewest coins.
     coins is a list or tuple with the available denominations.
     """
-    m = _get_change_making_matrix(coins, n)
+    dp = _get_change_making_matrix(coins, value)
     for c, coin in enumerate(coins, 1):
-        for r in range(1, n + 1):
+        print(c)
+        print(coin)
+        for i in range(1, value + 1):
             # Just use the coin
-            if coin == r:
-                m[c][r] = 1
+            if coin == i:
+                dp[c][i] = 1
             # coin cannot be included.
             # Use the previous solution for making r,
             # excluding coin
-            elif coin > r:
-                m[c][r] = m[c - 1][r]
+            elif coin > i:
+                dp[c][i] = dp[c - 1][i]
             # coin can be used.
             # Decide which one of the following solutions is the best:
             # 1. Using the previous solution for making r (without using coin).
             # 2. Using the previous solution for making r - coin (without
             #      using coin) plus this 1 extra coin.
             else:
-                m[c][r] = min(m[c - 1][r], 1 + m[c][r - coin])
-    return m[-1][-1]
+                dp[c][i] = min(dp[c - 1][i], 1 + dp[c][i - coin])
 
-num = change_making([100, 50, 10, 5, 2], 235)
+    return dp[-1][-1]
 
-print(num)
+
+coinList = [1, 2, 3]
+value = 6
+
+print(change_making(coinList, value))

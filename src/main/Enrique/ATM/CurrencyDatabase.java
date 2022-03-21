@@ -14,8 +14,8 @@ public class CurrencyDatabase {
             put("SINGAPORE",
                     new Currency(
                             "SGD",
-                            new int[] { 50, 10 },
-                            // new int[] { 10000, 1000, 100, 50, 10, 5, 2 },
+                            // new int[] { 50, 10 },
+                            new int[] { 10000, 1000, 100, 50, 10, 5, 2 },
                             new String[] { "SINGAPORE" }));
             // Figure out how to map this better
             put("EU",
