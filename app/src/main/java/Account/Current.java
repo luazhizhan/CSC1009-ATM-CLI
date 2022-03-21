@@ -21,4 +21,10 @@ public class Current extends Account{
         System.out.println("Available Balance: "+super.getAvailableBalance());
         System.out.println("Hold Balance: "+super.getHoldBalance());
     }
+
+    @java.lang.Override
+    public BigDecimal getAvailableBalance() {
+        BigDecimal availableBalance = super.getAvailableBalance().add(this.overDraftLimit);
+        return availableBalance;
+    }
 }
