@@ -64,10 +64,11 @@ public class CountMoneyAlgo {
                 // If the value of the note <= the value,
                 if (notes[j] <= i) {
                     // We take the lesser of [(previous value index - value of note) + 1] and
-                    // [current value in index, default is value + 1].
+                    // [current value in index- where the default value is value + 1].
                     // This will be the minimum number of bills to solve for the value.
                     minForValue[i] = Math.min(minForValue[i - notes[j]] + 1, minForValue[i]);
 
+                    // Wrong if e.g. 3, and notes are [2,5,10]
                     minSolution[i].billCount = Math.min(minSolution[i - notes[j]].billCount + 1,
                             minSolution[i].billCount);
 
@@ -81,12 +82,6 @@ public class CountMoneyAlgo {
                             }
                             minSolution[i].bills[k] = 0;
                         }
-
-                        // System.out.print(i + " Bill matches value: ");
-                        // for (int k = 0; k < notes.length; k++) {
-                        // System.out.print(minSolution[i].bills[k] + ", ");
-                        // }
-                        // System.out.print("\n");
                     }
 
                     // If it isn't impossible, flag it
@@ -95,11 +90,15 @@ public class CountMoneyAlgo {
                 }
             }
 
-            // If value doesn't match any bill, recurse.
+            // If value doesn't match any bill, compute result from previous iterations.
             if (flag == false) {
                 for (int j = notes.length - 1; j >= 0; j--) {
                     // If the value of the note > the value, skip it.
-                    if (notes[j] > minSolution[i].value)
+                    if (notes[j] > i)
+                        continue;
+
+                    // If the [index - largest bill].possible is false, skip it.
+                    if (minSolution[i - notes[j]].possible == false)
                         continue;
 
                     for (int k = 0; k < notes.length; k++) {
@@ -108,13 +107,15 @@ public class CountMoneyAlgo {
                     }
                     break;
                 }
+
             }
 
         }
 
         System.out.println("minSolution w array");
         for (int i = 0; i < value + 1; i++) {
-            System.out.print("value: " + i + " " + minSolution[i].possible + " " + minSolution[i].billCount + ": [");
+            System.out.print("value: " + i + " possible: " + minSolution[i].possible
+                    + " billCount: " + minSolution[i].billCount + ": [");
             for (int j = 0; j < notes.length; j++) {
                 System.out.print(minSolution[i].bills[j] + ", ");
             }
@@ -125,7 +126,7 @@ public class CountMoneyAlgo {
         for (int i = 0; i < value + 1; i++) {
             System.out.print(minForValue[i] + ", ");
         }
-        return minForValue[value];
+        return minSolution[value].billCount;
         // return dp[value][notes.length - 1];
     }
 
@@ -202,16 +203,15 @@ public class CountMoneyAlgo {
 
     public static void main(String[] args) throws java.lang.Exception {
         // arranged in increasing order
-        int[] coins = { 1, 2, 5 };
-        int[] count = { 6, 6, 6 };
-        int sum = 11;
+        int[] coins = { 2, 5, 10 };
+        int[] count = { 3, 3, 3 };
+        int sum = 7;
         int n;
         // n = countWays(coins, count, sum);
         // System.out.println(n);
 
-        System.out.println("makin change");
-        coins[2] = 5;
-        sum = 11;
+        coins[2] = 10;
+        sum = 7;
         n = MakeChange(coins, sum);
         System.out.println(n);
     }
