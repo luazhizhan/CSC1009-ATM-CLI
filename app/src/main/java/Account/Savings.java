@@ -16,11 +16,12 @@ public class Savings extends Account{
         this.interestRate = interestRate;
     }
     public void printAccountInfo(){
-
-    }
-    public void rewardInterest(){
         System.out.println("Account: "+super.getId());
         System.out.println("Available Balance: "+super.getAvailableBalance());
         System.out.println("Hold Balance: "+super.getHoldBalance());
+    }
+    public void rewardInterest(){
+        BigDecimal balanceAfterInterest = super.getAvailableBalance().add(super.getAvailableBalance().multiply(interestRate));
+        
     }
 }
