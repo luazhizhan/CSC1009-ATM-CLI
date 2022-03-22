@@ -19,11 +19,11 @@ public class App {
 
             // Greetings
             ScreenState greetings = new Greeting();
-            greetings.printScreen(stateContext);
+            stateContext.setAndPrintScreen(greetings);
 
             // Select ATM
             ScreenState atmList = new AtmList();
-            atmList.printScreen(stateContext);
+            stateContext.setAndPrintScreen(atmList);
 
             String ATM = null; // TODO change to ATM object
             while (ATM == null)
@@ -32,7 +32,7 @@ public class App {
 
             // Enter credit/debit card
             ScreenState cardPrompt = new CardPrompt();
-            cardPrompt.printScreen(stateContext);
+            stateContext.setAndPrintScreen(cardPrompt);
             String cardNum = null;
             while (cardNum == null)
                 cardNum = ((CardPrompt) cardPrompt).getCardNumber(in);
