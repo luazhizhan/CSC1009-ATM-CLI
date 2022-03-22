@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 public class CurrentAccount extends Account {
     private BigDecimal overDraftLimit;
 
-    public CurrentAccount(String id, String customerId, String name, AccountStatus status, BigDecimal overDraftLimit) {
+    public CurrentAccount(String id, String customerId, String name, AccountStatus status, BigDecimal availableBalance, BigDecimal holdBalance, BigDecimal withdrawLimit, BigDecimal transferLimit, BigDecimal overseasWithdrawLimit, BigDecimal overseasTransferLimit, BigDecimal overDraftLimit) {
         super(id, customerId, name, status);
         this.overDraftLimit = overDraftLimit;
     }
