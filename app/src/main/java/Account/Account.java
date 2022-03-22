@@ -1,19 +1,22 @@
+package Account;
+
 import java.math.BigDecimal;
 
 public abstract class Account {
-    private String id;
-    private String customerId;
-    private String name;
-    private AccountStatus status;
+    private String id; //Account ID
+    private String customerId; //Customer ID
+    private String name; //name of Account, not customer's name
+    private AccountStatus status; //status of Account: Enum
 
-    protected BigDecimal availableBalance;
-    private BigDecimal holdBalance;
-    private BigDecimal withdrawLimit;
-    private BigDecimal transferLimit;
-    private BigDecimal overseasWithdrawLimit;
-    private BigDecimal overseasTransferLimit;
+    protected BigDecimal availableBalance; //available balance
+    private BigDecimal holdBalance; //balance on hold
+    private BigDecimal withdrawLimit; //withdrawal limit local
+    private BigDecimal transferLimit; //transfer limit local
+    private BigDecimal overseasWithdrawLimit; //withdrawal limit overseas
+    private BigDecimal overseasTransferLimit; //transfer limit overseas
 
     public Account(String id, String customerId, String name, AccountStatus status){
+        /*create account according to most important attributes*/
         this.id = id;
         this.customerId = customerId;
         this.name = name;
@@ -49,7 +52,7 @@ public abstract class Account {
     }
 
     public void setAvailableBalance(BigDecimal availableBalance) {
-        if(availableBalance.compareTo(BigDecimal.ZERO)<=0){
+        if(availableBalance.compareTo(BigDecimal.ZERO)>0){
             this.availableBalance = availableBalance;
         }
         else{
@@ -107,9 +110,9 @@ public abstract class Account {
     }
 
     public void printAccountInfo(){
-        System.out.println("Account ID:                 "+getId());
-        System.out.println("Account Name:               "+ getName());
-        System.out.println("Account Status:             "+getStatus());
+        System.out.println("Account.Account ID:                 "+getId());
+        System.out.println("Account.Account Name:               "+ getName());
+        System.out.println("Account.Account Status:             "+getStatus());
         System.out.println("Available Balance:          "+getAvailableBalance());
         System.out.println("Hold Balance:               "+getHoldBalance());
         System.out.println("Withdrawal Limit:           "+getWithdrawLimit());

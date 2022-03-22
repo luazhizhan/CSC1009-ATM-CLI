@@ -11,14 +11,15 @@ public class Card {
     private int cvv;
     private String accountId;
     private CardStatus status;
-    private enum CardStatus{
+    public enum CardStatus{
         VALID,
         CANCELLED,
         EXPIRED
     }
     private int pinNumber;
 
-    public Card(String name, YearMonth expiryDate, String accountId, CardStatus status) {
+    public Card(String cardNumber, String name, YearMonth expiryDate, String accountId, CardStatus status) {
+        this.cardNumber= cardNumber;
         this.name = name;
         setExpiryDate(expiryDate);
         this.accountId = accountId;
@@ -66,7 +67,7 @@ public class Card {
         return cvv;
     }
 
-    public void setCcv(int cvv) {
+    public void setCvv(int cvv) {
         if(validateCVV(String.valueOf(cvv))){
         this.cvv = cvv;
         }
