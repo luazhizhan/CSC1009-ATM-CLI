@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import Account.Account;
@@ -17,7 +16,6 @@ import Account.AccountStatus;
 
 public class AccountDataSource extends DataSource<Account> {
     private static final String Account_CSV_PATH = "Account/accounts.csv";
-
 
     public AccountDataSource() throws FileNotFoundException, IOException {
         super();
@@ -29,7 +27,7 @@ public class AccountDataSource extends DataSource<Account> {
 
         InputStream is = this.getClass().getClassLoader().getResourceAsStream(Account_CSV_PATH);
         try (InputStreamReader isr = new InputStreamReader(is);
-             BufferedReader br = new BufferedReader(isr)) {
+                BufferedReader br = new BufferedReader(isr)) {
             br.readLine(); // Ignore first row
             String line;
 
@@ -49,42 +47,40 @@ public class AccountDataSource extends DataSource<Account> {
                  * Overseas_Transfer_Limit -9
                  * Account_Type - 10
                  * Overdraft_Limit - 11
-                 * Interest_Rate
+                 * Interest_Rate - 12
                  */
                 AccountStatus status;
-                if(data[3] == "NORMAL") {
+                if (data[3] == "NORMAL") {
                     status = AccountStatus.NORMAL;
-                }
-                else if(data[3] == "FROZEN")
-                {
+                } else if (data[3] == "FROZEN") {
                     status = AccountStatus.FROZEN;
-                }
-                else
-                {
+                } else {
                     status = AccountStatus.CLOSED;
                 }
+                Account acc;
                 if (data[10] == "Current") {
-
-                        CurrentAccount Current = new CurrentAccount(data[0], data[1], data[2], status, new BigDecimal(data[4]), new BigDecimal(data[5]), new BigDecimal(data[6]), new BigDecimal(data[7]), new BigDecimal(data[8]), new BigDecimal(data[9]), new BigDecimal(data[11]));
-
-                        accountDataSource.add(Current);
-
-
+                    acc = new CurrentAccount(data[0], data[1], data[2], status);
+                    ((CurrentAccount) acc).setOverDraftLimit(new BigDecimal(data[11]));
                 } else {
-                    SavingsAccount Savings = new SavingsAccount(data[0], data[1], data[2], status, new BigDecimal(data[4]), new BigDecimal(data[5]), new BigDecimal(data[6]), new BigDecimal(data[7]), new BigDecimal(data[8]), new BigDecimal(data[9]), new BigDecimal(data[12]));
-
-                    accountDataSource.add(Savings);
+                    acc = new SavingsAccount(data[0], data[1], data[2], status);
+                    ((SavingsAccount) acc).setInterestRate(new BigDecimal(data[12]));
                 }
-
+                acc.setAvailableBalance(new BigDecimal(data[4]));
+                acc.setHoldBalance(new BigDecimal(data[5]));
+                acc.setWithdrawLimit(new BigDecimal(data[6]));
+                acc.setTransferLimit(new BigDecimal(data[7]));
+                acc.setOverseasWithdrawLimit(new BigDecimal(data[8]));
+                acc.setOverseasTransferLimit(new BigDecimal(data[9]));
+                accountDataSource.add(acc);
             }
         }
 
-    return accountDataSource;
+        return accountDataSource;
 
     }
+
     public Account getDataById(String id) {
         return this.getData().stream().filter(data -> data.getId().equals(id)).findFirst().orElse(null);
     }
-
 
 }

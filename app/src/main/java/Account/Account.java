@@ -3,24 +3,43 @@ package Account;
 import java.math.BigDecimal;
 
 public abstract class Account {
-    private String id; //Account ID
-    private String customerId; //Customer ID
-    private String name; //name of Account, not customer's name
-    private AccountStatus status; //status of Account: Enum
+    private String id; // Account ID
+    private String customerId; // Customer ID
+    private String name; // name of Account, not customer's name
+    private AccountStatus status; // status of Account: Enum
 
-    protected BigDecimal availableBalance; //available balance
-    private BigDecimal holdBalance; //balance on hold
-    private BigDecimal withdrawLimit; //withdrawal limit local
-    private BigDecimal transferLimit; //transfer limit local
-    private BigDecimal overseasWithdrawLimit; //withdrawal limit overseas
-    private BigDecimal overseasTransferLimit; //transfer limit overseas
+    protected BigDecimal availableBalance; // available balance
+    private BigDecimal holdBalance; // balance on hold
+    private BigDecimal withdrawLimit; // withdrawal limit local
+    private BigDecimal transferLimit; // transfer limit local
+    private BigDecimal overseasWithdrawLimit; // withdrawal limit overseas
+    private BigDecimal overseasTransferLimit; // transfer limit overseas
+    protected final int DEFAULT_LIMIT = 5000;
 
-    public Account(String id, String customerId, String name, AccountStatus status){
-        /*create account according to most important attributes*/
-        this.id = id;
-        this.customerId = customerId;
-        this.name = name;
-        this.status = status;
+    public Account(String id, String customerId, String name) {
+        /* create account according to most important attributes */
+        setId(id);
+        setCustomerId(customerId);
+        setName(name);
+        setStatus(AccountStatus.NORMAL);
+        setDefaultLimits();
+    }
+
+    public Account(String id, String customerId, String name, AccountStatus status) {
+        /* create account according to most important attributes */
+        setId(id);
+        setCustomerId(customerId);
+        setName(name);
+        setStatus(status);
+        setDefaultLimits();
+    }
+
+    protected void setDefaultLimits() {
+        BigDecimal limit = new BigDecimal(DEFAULT_LIMIT);
+        setWithdrawLimit(limit);
+        setTransferLimit(limit);
+        setOverseasWithdrawLimit(limit);
+        setOverseasTransferLimit(limit);
     }
 
     public String getId() {
@@ -52,12 +71,10 @@ public abstract class Account {
     }
 
     public void setAvailableBalance(BigDecimal availableBalance) {
-        if(availableBalance.compareTo(BigDecimal.ZERO)>0){
-            this.availableBalance = availableBalance;
+        if (availableBalance.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Available Balance must be above zero.");
         }
-        else{
-            System.out.println("Available Balance below Zero!");
-        }
+        this.availableBalance = availableBalance;
     }
 
     public BigDecimal getHoldBalance() {
@@ -74,6 +91,9 @@ public abstract class Account {
     }
 
     public void setWithdrawLimit(BigDecimal withdrawLimit) {
+        if (withdrawLimit.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Withdraw limit must be above zero.");
+        }
         this.withdrawLimit = withdrawLimit;
     }
 
@@ -82,6 +102,9 @@ public abstract class Account {
     }
 
     public void setTransferLimit(BigDecimal transferLimit) {
+        if (transferLimit.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Transfer limit must be above zero.");
+        }
         this.transferLimit = transferLimit;
     }
 
@@ -90,6 +113,9 @@ public abstract class Account {
     }
 
     public void setOverseasWithdrawLimit(BigDecimal overseasWithdrawLimit) {
+        if (overseasWithdrawLimit.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Oversea withdrawal limit must be above zero.");
+        }
         this.overseasWithdrawLimit = overseasWithdrawLimit;
     }
 
@@ -98,6 +124,9 @@ public abstract class Account {
     }
 
     public void setOverseasTransferLimit(BigDecimal overseasTransferLimit) {
+        if (overseasTransferLimit.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Oversea transfer limit must be above zero.");
+        }
         this.overseasTransferLimit = overseasTransferLimit;
     }
 
@@ -109,16 +138,16 @@ public abstract class Account {
         this.status = status;
     }
 
-    public void printAccountInfo(){
-        System.out.println("Account.Account ID:                 "+getId());
-        System.out.println("Account.Account Name:               "+ getName());
-        System.out.println("Account.Account Status:             "+getStatus());
-        System.out.println("Available Balance:          "+getAvailableBalance());
-        System.out.println("Hold Balance:               "+getHoldBalance());
-        System.out.println("Withdrawal Limit:           "+getWithdrawLimit());
-        System.out.println("Transfer Limit:             "+getTransferLimit());
-        System.out.println("Overseas Withdrawal Limit:  "+getOverseasWithdrawLimit());
-        System.out.println("Overseas Transfer Limit:    "+getOverseasTransferLimit());
+    public void printAccountInfo() {
+        System.out.println("Account.Account ID:                 " + getId());
+        System.out.println("Account.Account Name:               " + getName());
+        System.out.println("Account.Account Status:             " + getStatus());
+        System.out.println("Available Balance:          " + getAvailableBalance());
+        System.out.println("Hold Balance:               " + getHoldBalance());
+        System.out.println("Withdrawal Limit:           " + getWithdrawLimit());
+        System.out.println("Transfer Limit:             " + getTransferLimit());
+        System.out.println("Overseas Withdrawal Limit:  " + getOverseasWithdrawLimit());
+        System.out.println("Overseas Transfer Limit:    " + getOverseasTransferLimit());
     }
 
 }

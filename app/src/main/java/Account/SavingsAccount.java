@@ -1,15 +1,18 @@
 package Account;
 
-import Account.Account;
-
 import java.math.BigDecimal;
 
 public class SavingsAccount extends Account {
     private BigDecimal interestRate = new BigDecimal("0.0005");
 
-    public SavingsAccount(String id, String customerId, String name, AccountStatus status, BigDecimal availableBalance, BigDecimal holdBalance, BigDecimal withdrawLimit, BigDecimal transferLimit, BigDecimal overseasWithdrawLimit, BigDecimal overseasTransferLimit, BigDecimal interestRate) {
+    public SavingsAccount(String id, String customerId, String name, AccountStatus status) {
         super(id, customerId, name, status);
-        this.interestRate = interestRate;
+        setInterestRate(interestRate);
+    }
+
+    public SavingsAccount(String id, String customerId, String name) {
+        super(id, customerId, name);
+        setInterestRate(interestRate);
     }
 
     public BigDecimal getInterestRate() {
@@ -17,28 +20,30 @@ public class SavingsAccount extends Account {
     }
 
     public void setInterestRate(BigDecimal interestRate) {
-        if(interestRate.compareTo(BigDecimal.ZERO)<=0){
+        if (interestRate.compareTo(BigDecimal.ZERO) <= 0) {
             System.out.println("Interest Rate Below or equal to Zero!");
-        }else{
+        } else {
             this.interestRate = interestRate;
         }
     }
 
     @Override
-    public void printAccountInfo(){
-        System.out.println("Account.Account ID:                   "+getId());
-        System.out.println("Account.Account Name:                 "+ getName());
-        System.out.println("Account.Account Status:               "+getStatus());
-        System.out.println("Available Balance:                    "+getAvailableBalance());
-        System.out.println("Hold Balance:                         "+getHoldBalance());
-        System.out.println("Withdrawal Limit:                     "+getWithdrawLimit());
-        System.out.println("Transfer Limit:                       "+getTransferLimit());
-        System.out.println("Overseas Withdrawal Limit:            "+getOverseasWithdrawLimit());
-        System.out.println("Overseas Transfer Limit:              "+getOverseasTransferLimit());
-        System.out.println("Savings Account.Account Interest Rate:" +getInterestRate());
+    public void printAccountInfo() {
+        System.out.println("Account.Account ID:                   " + getId());
+        System.out.println("Account.Account Name:                 " + getName());
+        System.out.println("Account.Account Status:               " + getStatus());
+        System.out.println("Available Balance:                    " + getAvailableBalance());
+        System.out.println("Hold Balance:                         " + getHoldBalance());
+        System.out.println("Withdrawal Limit:                     " + getWithdrawLimit());
+        System.out.println("Transfer Limit:                       " + getTransferLimit());
+        System.out.println("Overseas Withdrawal Limit:            " + getOverseasWithdrawLimit());
+        System.out.println("Overseas Transfer Limit:              " + getOverseasTransferLimit());
+        System.out.println("Savings Account.Account Interest Rate:" + getInterestRate());
     }
-    public void rewardInterest(){
-        BigDecimal balanceAfterInterest = super.getAvailableBalance().add(super.getAvailableBalance().multiply(interestRate));
 
+    public void rewardInterest() {
+        BigDecimal avaliableBalance = super.getAvailableBalance();
+        BigDecimal balanceAfterInterest = avaliableBalance.add(avaliableBalance.multiply(interestRate));
+        super.setAvailableBalance(balanceAfterInterest);
     }
 }

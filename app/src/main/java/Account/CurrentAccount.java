@@ -1,15 +1,22 @@
 package Account;
 
-import Account.Account;
-
 import java.math.BigDecimal;
 
 public class CurrentAccount extends Account {
     private BigDecimal overDraftLimit;
 
-    public CurrentAccount(String id, String customerId, String name, AccountStatus status, BigDecimal availableBalance, BigDecimal holdBalance, BigDecimal withdrawLimit, BigDecimal transferLimit, BigDecimal overseasWithdrawLimit, BigDecimal overseasTransferLimit, BigDecimal overDraftLimit) {
+    public CurrentAccount(String id, String customerId, String name, AccountStatus status) {
         super(id, customerId, name, status);
-        this.overDraftLimit = overDraftLimit;
+    }
+
+    public CurrentAccount(String id, String customerId, String name) {
+        super(id, customerId, name);
+    }
+
+    @Override
+    protected void setDefaultLimits() {
+        super.setDefaultLimits();
+        setOverDraftLimit(new BigDecimal(super.DEFAULT_LIMIT));
     }
 
     public BigDecimal getOverDraftLimit() {
@@ -17,37 +24,24 @@ public class CurrentAccount extends Account {
     }
 
     public void setOverDraftLimit(BigDecimal overDraftLimit) {
-        if(overDraftLimit.compareTo(BigDecimal.ZERO)>0){
-            this.overDraftLimit = overDraftLimit;
+        if (overDraftLimit.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Over draft limit must be above zero.");
         }
-        else{
-            System.out.println("Overdraft Limit below Zero!");
-        }
-
-    }
-
-    @Override
-    public void printAccountInfo(){
-        System.out.println("Account.Account ID:                 "+getId());
-        System.out.println("Account.Account Name:               "+ getName());
-        System.out.println("Account.Account Status:             "+getStatus());
-        System.out.println("Available Balance:          "+getAvailableBalance());
-        System.out.println("Hold Balance:               "+getHoldBalance());
-        System.out.println("Withdrawal Limit:           "+getWithdrawLimit());
-        System.out.println("Transfer Limit:             "+getTransferLimit());
-        System.out.println("Overseas Withdrawal Limit:  "+getOverseasWithdrawLimit());
-        System.out.println("Overseas Transfer Limit:    "+getOverseasTransferLimit());
-        System.out.println("Overdraft Limit:            "+getOverDraftLimit());
+        this.overDraftLimit = overDraftLimit;
     }
 
     @Override
     public void setAvailableBalance(BigDecimal availableBalance) {
-        if(availableBalance.compareTo(overDraftLimit.negate())<0)
-        {
-            System.out.println("Exceeded Overdraft Limit!");
+        // avaliable balance < negative over draft limit
+        if (availableBalance.compareTo(overDraftLimit.negate()) < 0) {
+            throw new IllegalArgumentException("Exceeded Overdraft Limit!");
         }
-        else {
-            super.availableBalance = availableBalance;
-        }
+        this.setAvailableBalance(availableBalance);
+    }
+
+    @Override
+    public void printAccountInfo() {
+        super.printAccountInfo();
+        System.out.println("Overdraft Limit:            " + getOverDraftLimit());
     }
 }
