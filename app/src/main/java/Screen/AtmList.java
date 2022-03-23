@@ -30,15 +30,14 @@ public class AtmList implements ScreenState {
 
             // TODO Add more checks as necessary
             if (atmNo < 1) {
-                System.out.println("Invalid input! Please try again.");
+                System.out.println(ScreenState.invalidInput);
                 return null;
             }
 
             // TODO Return the actual ATM
             return new Atm();
         } catch (NoSuchElementException e) {
-            System.out.println("Invalid input! Please try again.");
-            in.nextLine(); // Clear scanner buffer
+            System.out.println(ScreenState.invalidInput);
             return null;
         }
     }

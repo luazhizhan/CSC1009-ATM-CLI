@@ -55,7 +55,7 @@ public class Card {
 
     public void setExpiryDate(YearMonth expiryDate) {
         if (expiryDate.isBefore(YearMonth.now())) {
-            throw new IllegalArgumentException("Invalid Account Card Number Format!");
+            throw new IllegalArgumentException("Card has expired.");
         }
         this.expiryDate = expiryDate;
     }
@@ -79,8 +79,8 @@ public class Card {
         this.accountId = accountId;
     }
 
-    public int getPinNumber() {
-        return pinNumber;
+    public boolean checkPinNumber(int pinNumber) {
+        return this.pinNumber == pinNumber;
     }
 
     public CardStatus getStatus() {
@@ -109,7 +109,7 @@ public class Card {
 
         // Return if the pin code
         // matched the ReGex
-        return regex.matches(pinNo);
+        return pinNo.matches(regex);
 
     }
 
@@ -155,7 +155,7 @@ public class Card {
 
         // Return if the pin code
         // matched the ReGex
-        return regex.matches(regex);
+        return cvv.matches(regex);
 
     }
 }

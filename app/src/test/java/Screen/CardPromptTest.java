@@ -7,6 +7,8 @@ import Account.Card;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 public class CardPromptTest {
@@ -35,8 +37,26 @@ public class CardPromptTest {
         ((CardPrompt) cardPrompt).getCardNumber(in, card);
         assertEquals(MASTER_CARD, card.getCardNumber());
         in.close();
+    }
 
-        // TODO test system exit?
+    @Test
+    public void failureInvalidCardNumber() {
+        ScreenState cardPrompt = new CardPrompt();
+
+        // Set and read System.out content
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        Card card = new Card();
+        System.setIn(new ByteArrayInputStream("abcdefg".getBytes()));
+        Scanner in = new Scanner(System.in);
+        ((CardPrompt) cardPrompt).getCardNumber(in, card);
+        assertTrue(outContent.toString().contains("Invalid Account Card Number Format!"));
+
+        System.setIn(new ByteArrayInputStream("123456789".getBytes()));
+        ((CardPrompt) cardPrompt).getCardNumber(in, card);
+        assertTrue(outContent.toString().contains("Invalid Account Card Number Format!"));
+        in.close();
     }
 
 }

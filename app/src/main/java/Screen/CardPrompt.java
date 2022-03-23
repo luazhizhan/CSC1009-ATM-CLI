@@ -9,7 +9,7 @@ public class CardPrompt implements ScreenState {
     private String prompt;
 
     public CardPrompt() {
-        prompt = "\n" + line + "\nPlease Enter Your Card Number:\nEnter \"q\" to quit."
+        prompt = "\n" + line + "\nPlease Enter Your Card Number:\nEnter 0 to quit."
                 + "\n" + line;
     }
 
@@ -18,21 +18,22 @@ public class CardPrompt implements ScreenState {
         System.out.println(prompt);
     }
 
-    public void getCardNumber(Scanner in, Card card) {
+    public boolean getCardNumber(Scanner in, Card card) {
         try {
             String cardNum = in.nextLine();
 
-            if (cardNum.compareToIgnoreCase("q") == 0) {
+            if (cardNum.compareToIgnoreCase("0") == 0) {
                 System.out.println("Quit");
                 System.exit(0);
             }
             card.setCardNumber(cardNum);
+            return true;
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            in.nextLine();
+            System.out.println("\n" + line + "\n" + e.getMessage() + "\n" + line);
+            return false;
         } catch (NoSuchElementException e) {
-            System.out.println("Invalid card number! Please try again.");
-            in.nextLine(); // Clear scanner buffer
+            System.out.println(ScreenState.invalidInput);
+            return false;
         }
     }
 }

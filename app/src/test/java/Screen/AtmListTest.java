@@ -42,8 +42,7 @@ public class AtmListTest {
 
         Scanner in = new Scanner(System.in);
         ((AtmList) atmList).selectAtm(in);
-        assertEquals(outContent.toString().trim()
-                .compareTo("Invalid input! Please try again."), 0);
+        assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         in.close();
     }
 
@@ -60,12 +59,11 @@ public class AtmListTest {
 
         Scanner in = new Scanner(System.in);
         ((AtmList) atmList).selectAtm(in);
-        assertEquals(outContent.toString().trim()
-                .compareTo("Invalid input! Please try again."), 0);
+        assertTrue(outContent.toString().contains("Invalid input! Please try again."));
 
         System.setIn(new ByteArrayInputStream("0.4".getBytes()));
-        assertEquals(outContent.toString().trim()
-                .compareTo("Invalid input! Please try again."), 0);
+        ((AtmList) atmList).selectAtm(in);
+        assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         in.close();
     }
 }
