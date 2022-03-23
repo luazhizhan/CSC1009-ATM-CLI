@@ -3,6 +3,8 @@ package Screen;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import Atm.Atm;
+
 public class AtmList implements ScreenState {
     private String text;
 
@@ -18,7 +20,7 @@ public class AtmList implements ScreenState {
         System.out.println(text);
     }
 
-    public String selectAtm(Scanner in) {
+    public Atm selectAtm(Scanner in) {
         try {
             int atmNo = in.nextInt();
             if (atmNo == 0) {
@@ -33,7 +35,7 @@ public class AtmList implements ScreenState {
             }
 
             // TODO Return the actual ATM
-            return "ATM";
+            return new Atm();
         } catch (NoSuchElementException e) {
             System.out.println("Invalid input! Please try again.");
             in.nextLine(); // Clear scanner buffer

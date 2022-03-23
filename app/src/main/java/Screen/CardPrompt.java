@@ -3,6 +3,8 @@ package Screen;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import Account.Card;
+
 public class CardPrompt implements ScreenState {
     private String prompt;
 
@@ -16,7 +18,7 @@ public class CardPrompt implements ScreenState {
         System.out.println(prompt);
     }
 
-    public String getCardNumber(Scanner in) {
+    public void getCardNumber(Scanner in, Card card) {
         try {
             String cardNum = in.nextLine();
 
@@ -24,13 +26,13 @@ public class CardPrompt implements ScreenState {
                 System.out.println("Quit");
                 System.exit(0);
             }
-
-            // TODO Validate card number
-            return cardNum;
+            card.setCardNumber(cardNum);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            in.nextLine();
         } catch (NoSuchElementException e) {
             System.out.println("Invalid card number! Please try again.");
             in.nextLine(); // Clear scanner buffer
-            return null;
         }
     }
 }

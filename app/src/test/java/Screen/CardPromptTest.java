@@ -2,6 +2,8 @@ package Screen;
 
 import org.junit.jupiter.api.Test;
 
+import Account.Card;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
@@ -17,18 +19,21 @@ public class CardPromptTest {
         ScreenStateContext stateContext = new ScreenStateContext();
         cardPrompt.printScreen(stateContext);
 
+        Card card = new Card();
+
         // Set scanner input value VISA
         System.setIn(new ByteArrayInputStream(VISA.getBytes()));
         Scanner in = new Scanner(System.in);
-        String cardNum = ((CardPrompt) cardPrompt).getCardNumber(in);
-        assertEquals(VISA, cardNum); // Clear scanner buffer
-        in.close();
+        ((CardPrompt) cardPrompt).getCardNumber(in, card);
+        assertEquals(VISA, card.getCardNumber());
+        in.close(); // Clear scanner buffer
 
         // Set scanner input value MASTER_CARD
+        card = new Card();
         System.setIn(new ByteArrayInputStream(MASTER_CARD.getBytes()));
         in = new Scanner(System.in);
-        cardNum = ((CardPrompt) cardPrompt).getCardNumber(in);
-        assertEquals(MASTER_CARD, cardNum);
+        ((CardPrompt) cardPrompt).getCardNumber(in, card);
+        assertEquals(MASTER_CARD, card.getCardNumber());
         in.close();
 
         // TODO test system exit?

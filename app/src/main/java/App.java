@@ -2,6 +2,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
+import Account.Card;
+import Atm.Atm;
 import DataSource.DataSource;
 import DataSource.TransactionDataSource;
 import Screen.AtmList;
@@ -18,24 +20,22 @@ public class App {
             ScreenStateContext stateContext = new ScreenStateContext();
 
             // Greetings
-            ScreenState greetings = new Greeting();
-            stateContext.setAndPrintScreen(greetings);
+            stateContext.setAndPrintScreen(new Greeting());
 
             // Select ATM
             ScreenState atmList = new AtmList();
             stateContext.setAndPrintScreen(atmList);
 
-            String ATM = null; // TODO change to ATM object
+            Atm ATM = null; // TODO change to ATM object
             while (ATM == null)
                 ATM = ((AtmList) atmList).selectAtm(in);
             in.nextLine(); // Clear scanner buffer
 
             // Enter credit/debit card
+            Card card = new Card();
             ScreenState cardPrompt = new CardPrompt();
             stateContext.setAndPrintScreen(cardPrompt);
-            String cardNum = null;
-            while (cardNum == null)
-                cardNum = ((CardPrompt) cardPrompt).getCardNumber(in);
+            ((CardPrompt) cardPrompt).getCardNumber(in, card);
 
             // Uncomment when another screen gets added below
             // in.nextLine(); // Clear scanner buffer

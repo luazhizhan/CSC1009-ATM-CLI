@@ -17,6 +17,10 @@ public class Card {
         EXPIRED
     }
 
+    public Card() {
+
+    }
+
     public Card(String cardNumber, String name, YearMonth expiryDate,
             String accountId, CardStatus status) {
         setCardNumber(cardNumber);
@@ -109,18 +113,34 @@ public class Card {
 
     }
 
+    /**
+     * Validate credit/debit card using Luhn algorithm
+     * https://www.geeksforgeeks.org/luhn-algorithm/
+     * 
+     * @param cardNo credit/debit card number without space
+     * @return boolean
+     */
     private boolean validateCardNumber(String cardNo) {
-        // Return false if the Account.Card No is empty
-        if (cardNo == null) {
-            return false;
+        int nDigits = cardNo.length();
+
+        int nSum = 0;
+        boolean isSecond = false;
+        for (int i = nDigits - 1; i >= 0; i--) {
+
+            int d = cardNo.charAt(i) - '0';
+
+            if (isSecond == true)
+                d = d * 2;
+
+            // We add two digits to handle
+            // cases that make two digits
+            // after doubling
+            nSum += d / 10;
+            nSum += d % 10;
+
+            isSecond = !isSecond;
         }
-
-        // Regex to check valid Account.Card No
-        String regex = "^(?:(?<visa>4[0-9]{12}(?:[0-9]{3})?)|" + "(?<mastercard>5[1-5][0-9]{14}))$";
-
-        // Return if the Account.Card No
-        // matched the ReGex
-        return regex.matches(cardNo);
+        return (nSum % 10 == 0);
     }
 
     private boolean validateCVV(String cvv) {

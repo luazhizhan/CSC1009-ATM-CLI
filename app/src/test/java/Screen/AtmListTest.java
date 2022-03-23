@@ -2,6 +2,8 @@ package Screen;
 
 import org.junit.jupiter.api.Test;
 
+import Atm.Atm;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
@@ -19,8 +21,9 @@ public class AtmListTest {
         // Set scanner input value
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         Scanner in = new Scanner(System.in);
-        String atm = ((AtmList) atmList).selectAtm(in); // TODO change to ATM object
-        assertEquals("ATM", atm);
+        Atm atm = ((AtmList) atmList).selectAtm(in); // TODO change to ATM object
+        assertEquals(300, atm.getNumOf10DollarsNotes());
+        assertEquals(300, atm.getNumOf50DollarsNotes());
         in.close();
 
         // TODO test system exit?
