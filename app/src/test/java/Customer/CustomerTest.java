@@ -2,6 +2,8 @@ package Customer;
 
 import org.junit.jupiter.api.Test;
 
+import Address.Address;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package Customer;
+package Address;
 
 public class Address {
     private String blkNum;

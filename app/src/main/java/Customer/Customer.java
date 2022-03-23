@@ -2,6 +2,8 @@ package Customer;
 
 import java.util.UUID;
 
+import Address.Address;
+
 public class Customer {
 
     private UUID customerID;
