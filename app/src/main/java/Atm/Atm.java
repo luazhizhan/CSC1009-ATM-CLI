@@ -1,9 +1,9 @@
 package Atm;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 import Address.Address;
+import Helper.Id;
 import Helper.Pair;
 
 public class Atm {
@@ -15,7 +15,7 @@ public class Atm {
     protected static final int DEFAULT_NUM_50_NOTES = 300;
 
     public Atm() {
-        setId(UUID.randomUUID().toString());
+        setId(Id.generateUUID());
         setDefaultNumOfNotes();
     }
 
@@ -25,7 +25,7 @@ public class Atm {
     }
 
     public Atm(Address address) {
-        setId(UUID.randomUUID().toString());
+        setId(Id.generateUUID());
         setAddress(address);
         setDefaultNumOfNotes();
     }

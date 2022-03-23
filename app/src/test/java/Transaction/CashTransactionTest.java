@@ -2,19 +2,19 @@ package Transaction;
 
 import org.junit.jupiter.api.Test;
 
+import Helper.Id;
 import Transaction.CashTransaction.TransactionType;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 public class CashTransactionTest {
 
     @Test
     public void successDeposit() {
-        String accountId = UUID.randomUUID().toString();
-        String atmId = UUID.randomUUID().toString();
+        String accountId = Id.generateUUID();
+        String atmId = Id.generateUUID();
         BigDecimal amt = new BigDecimal(10);
 
         CashTransaction txn = new CashTransaction(accountId, amt, atmId, TransactionType.DEPOSIT);
@@ -26,8 +26,8 @@ public class CashTransactionTest {
 
     @Test
     public void successWithdraw() {
-        String accountId = UUID.randomUUID().toString();
-        String atmId = UUID.randomUUID().toString();
+        String accountId = Id.generateUUID();
+        String atmId = Id.generateUUID();
         BigDecimal amt = new BigDecimal(10.3);
 
         CashTransaction txn = new CashTransaction(accountId, amt, atmId, TransactionType.WITHDRAW);
@@ -39,8 +39,8 @@ public class CashTransactionTest {
 
     @Test
     public void failureIllegalAmount() {
-        String accountId = UUID.randomUUID().toString();
-        String atmId = UUID.randomUUID().toString();
+        String accountId = Id.generateUUID();
+        String atmId = Id.generateUUID();
         BigDecimal illegalAmt = new BigDecimal(0);
         BigDecimal illegalAmt2 = new BigDecimal(-10.5);
 

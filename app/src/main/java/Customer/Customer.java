@@ -1,12 +1,11 @@
 package Customer;
 
-import java.util.UUID;
-
 import Address.Address;
+import Helper.Id;
 
 public class Customer {
 
-    private UUID customerID;
+    private String id;
     private String name, email, phone;
     private Address address;
 
@@ -14,10 +13,15 @@ public class Customer {
         this.name = name;
         setEmail(email);
         setPhone(phone);
+        setId(Id.generateUUID());
     }
 
-    public UUID getCustomerID() {
-        return customerID;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

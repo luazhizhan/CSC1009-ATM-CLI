@@ -3,16 +3,17 @@ package Transaction;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
+
+import Helper.Id;
 
 public class TransferTransactionTest {
 
     @Test
     public void successTransfer() {
-        String accountId = UUID.randomUUID().toString();
-        String toAccountId = UUID.randomUUID().toString();
+        String accountId = Id.generateUUID();
+        String toAccountId = Id.generateUUID();
         BigDecimal amt = new BigDecimal(10);
 
         TransferTransaction txn = new TransferTransaction(accountId, toAccountId, amt);
@@ -26,8 +27,8 @@ public class TransferTransactionTest {
 
     @Test
     public void successTransferWithMsg() {
-        String accountId = UUID.randomUUID().toString();
-        String toAccountId = UUID.randomUUID().toString();
+        String accountId = Id.generateUUID();
+        String toAccountId = Id.generateUUID();
         BigDecimal amt = new BigDecimal(12.42);
         String msg = "Hello World";
 
@@ -43,7 +44,7 @@ public class TransferTransactionTest {
 
     @Test
     public void failureTransferToSameAccountId() {
-        String accountId = UUID.randomUUID().toString();
+        String accountId = Id.generateUUID();
         BigDecimal amt = new BigDecimal(5.3);
 
         Exception exception = assertThrows(IllegalArgumentException.class,
@@ -53,8 +54,8 @@ public class TransferTransactionTest {
 
     @Test
     public void failureIllegalAmount() {
-        String accountId = UUID.randomUUID().toString();
-        String toAccountId = UUID.randomUUID().toString();
+        String accountId = Id.generateUUID();
+        String toAccountId = Id.generateUUID();
         BigDecimal illegalAmt = new BigDecimal(0);
         BigDecimal illegalAmt2 = new BigDecimal(-10.5);
 

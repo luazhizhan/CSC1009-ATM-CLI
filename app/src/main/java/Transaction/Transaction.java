@@ -2,7 +2,8 @@ package Transaction;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.UUID;
+
+import Helper.Id;
 
 public abstract class Transaction {
     private String id;
@@ -11,13 +12,13 @@ public abstract class Transaction {
     private Date dateCreated;
 
     public Transaction() {
-        setId(UUID.randomUUID().toString());
+        setId(Id.generateUUID());
     }
 
     public Transaction(String accountId, BigDecimal amount) {
         setAccountId(accountId);
         setAmount(amount);
-        setId(UUID.randomUUID().toString());
+        setId(Id.generateUUID());
         setDateCreated(new Date());
     }
 
