@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 public class SavingsAccount extends Account {
     private BigDecimal interestRate = new BigDecimal("0.0005");
 
-    public SavingsAccount(String id, String customerId, String name, AccountStatus status, BigDecimal interestRate) {
+    public SavingsAccount(String id, String customerId, String name, AccountStatus status, BigDecimal availableBalance, BigDecimal holdBalance, BigDecimal withdrawLimit, BigDecimal transferLimit, BigDecimal overseasWithdrawLimit, BigDecimal overseasTransferLimit, BigDecimal interestRate) {
         super(id, customerId, name, status);
         this.interestRate = interestRate;
     }
