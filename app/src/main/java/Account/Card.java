@@ -1,8 +1,6 @@
 package Account;
 
 import java.time.YearMonth;
-import java.util.Date;
-import java.util.regex.*;
 
 public class Card {
     private String cardNumber;
@@ -11,19 +9,21 @@ public class Card {
     private int cvv;
     private String accountId;
     private CardStatus status;
-    public enum CardStatus{
+    private int pinNumber;
+
+    public enum CardStatus {
         VALID,
         CANCELLED,
         EXPIRED
     }
-    private int pinNumber;
 
-    public Card(String cardNumber, String name, YearMonth expiryDate, String accountId, CardStatus status) {
-        this.cardNumber= cardNumber;
-        this.name = name;
+    public Card(String cardNumber, String name, YearMonth expiryDate,
+            String accountId, CardStatus status) {
+        setCardNumber(cardNumber);
+        setName(name);
         setExpiryDate(expiryDate);
-        this.accountId = accountId;
-        this.status = status;
+        setAccountId(accountId);
+        setStatus(status);
     }
 
     public String getCardNumber() {
@@ -31,13 +31,10 @@ public class Card {
     }
 
     public void setCardNumber(String cardNumber) {
-
-        if(validateCardNumber(cardNumber)){
-            this.cardNumber = cardNumber;
+        if (validateCardNumber(cardNumber) == false) {
+            throw new IllegalArgumentException("Invalid Account Card Number Format!");
         }
-        else{
-            System.out.println("Invalid Account.Card Number Format!");
-        }
+        this.cardNumber = cardNumber;
     }
 
     public String getName() {
@@ -53,14 +50,10 @@ public class Card {
     }
 
     public void setExpiryDate(YearMonth expiryDate) {
-        YearMonth currentDate = YearMonth.now();
-        if (expiryDate.isBefore(currentDate)){
-            System.out.println("Your Account.Card have expired!");
+        if (expiryDate.isBefore(YearMonth.now())) {
+            throw new IllegalArgumentException("Invalid Account Card Number Format!");
         }
-        else
-        {
-            this.expiryDate = expiryDate;
-        }
+        this.expiryDate = expiryDate;
     }
 
     public int getCvv() {
@@ -68,12 +61,10 @@ public class Card {
     }
 
     public void setCvv(int cvv) {
-        if(validateCVV(String.valueOf(cvv))){
+        if (validateCVV(String.valueOf(cvv)) == false) {
+            throw new IllegalArgumentException("Invalid cvv number!");
+        }
         this.cvv = cvv;
-        }
-        else{
-            System.out.println("Invalid cvv number!");
-        }
     }
 
     public String getAccountId() {
@@ -97,71 +88,54 @@ public class Card {
     }
 
     public void setPinNumber(int pinNumber) {
-        if(validatePin(String.valueOf(pinNumber))){
-            this.pinNumber = pinNumber;
-        }else
-        {
-            System.out.println("Invalid Pin Number format!");
+        if (validatePin(String.valueOf(pinNumber)) == false) {
+            throw new IllegalArgumentException("Invalid Pin Number format!");
         }
-
+        this.pinNumber = pinNumber;
     }
-    private boolean validatePin(String pinNo){
-        // Regex to check valid pin
-        String regex = "^[0-9]{6}$";
-        // Compile the ReGex
-        Pattern p = Pattern.compile(regex);
-        // If the pin code is empty
-        // return false
+
+    private boolean validatePin(String pinNo) {
+        // Return false if the pin code is empty
         if (pinNo == null) {
             return false;
         }
-        // Pattern class contains matcher() method
-        // to find matching between given pin code
-        // and regular expression.
-        Matcher m = p.matcher(pinNo);
+
+        // Regex to check valid pin
+        String regex = "^[0-9]{6}$";
 
         // Return if the pin code
         // matched the ReGex
-        return m.matches();
+        return regex.matches(pinNo);
 
     }
-    private boolean validateCardNumber(String cardNo){
-        // Regex to check valid Account.Card No
-        String regex = "^(?:(?<visa>4[0-9]{12}(?:[0-9]{3})?)|" + "(?<mastercard>5[1-5][0-9]{14}))$";
-        // Compile the ReGex
-        Pattern p = Pattern.compile(regex);
-        // If the Account.Card No is empty
-        // return false
+
+    private boolean validateCardNumber(String cardNo) {
+        // Return false if the Account.Card No is empty
         if (cardNo == null) {
             return false;
         }
-        // Pattern class contains matcher() method
-        // to find matching between given Account.Card No
-        // and regular expression.
-        Matcher m = p.matcher(cardNo);
+
+        // Regex to check valid Account.Card No
+        String regex = "^(?:(?<visa>4[0-9]{12}(?:[0-9]{3})?)|" + "(?<mastercard>5[1-5][0-9]{14}))$";
 
         // Return if the Account.Card No
         // matched the ReGex
-        return m.matches();
+        return regex.matches(cardNo);
     }
-    private boolean validateCVV(String cvv){
-        // Regex to check valid pin
-        String regex = "^[0-9]{3}$";
-        // Compile the ReGex
-        Pattern p = Pattern.compile(regex);
+
+    private boolean validateCVV(String cvv) {
         // If the pin code is empty
         // return false
         if (cvv == null) {
             return false;
         }
-        // Pattern class contains matcher() method
-        // to find matching between given pin code
-        // and regular expression.
-        Matcher m = p.matcher(cvv);
+
+        // Regex to check valid pin
+        String regex = "^[0-9]{3}$";
 
         // Return if the pin code
         // matched the ReGex
-        return m.matches();
+        return regex.matches(regex);
 
     }
 }
