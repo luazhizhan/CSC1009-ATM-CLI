@@ -21,12 +21,10 @@ public class AtmListTest {
         // Set scanner input value
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         Scanner in = new Scanner(System.in);
-        Atm atm = ((AtmList) atmList).selectAtm(in); // TODO change to ATM object
+        Atm atm = ((AtmList) atmList).selectAtm(in);
         assertEquals(300, atm.getNumOf10DollarsNotes());
         assertEquals(300, atm.getNumOf50DollarsNotes());
         in.close();
-
-        // TODO test system exit?
     }
 
     @Test

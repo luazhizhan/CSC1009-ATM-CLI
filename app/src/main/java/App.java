@@ -9,6 +9,7 @@ import DataSource.TransactionDataSource;
 import Screen.AtmList;
 import Screen.CardPrompt;
 import Screen.Greeting;
+import Screen.MainOption;
 import Screen.PinPrompt;
 import Screen.ScreenState;
 import Screen.ScreenStateContext;
@@ -29,7 +30,7 @@ public class App {
             Atm ATM = null;
             while (ATM == null) {
                 ATM = ((AtmList) atmList).selectAtm(in);
-                in.nextLine(); // Clear scanner buffer
+                in.nextLine(); // Clear scanner int buffer
             }
 
             // Enter credit/debit card
@@ -40,13 +41,23 @@ public class App {
             while (isValidCardNum == false)
                 isValidCardNum = ((CardPrompt) cardPrompt).getCardNumber(in, card);
 
+            card.setPinNumber(123456); // TODO Remove this after getting the real card
+
             // Enter card pin
             ScreenState pinPrompt = new PinPrompt();
             stateContext.setAndPrintScreen(pinPrompt);
             boolean isCorrectPin = false;
             while (isCorrectPin == false) {
                 isCorrectPin = ((PinPrompt) pinPrompt).getPinNumber(in, card);
-                in.nextLine(); // Clear scanner buffer
+                in.nextLine(); // Clear scanner int buffer
+            }
+
+            ScreenState mainOption = new MainOption();
+            stateContext.setAndPrintScreen(mainOption);
+            int optionNum = -1;
+            while (optionNum == -1) {
+                optionNum = ((MainOption) mainOption).getSelectedOption(in);
+                in.nextLine(); // Clear scanner int buffer
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
