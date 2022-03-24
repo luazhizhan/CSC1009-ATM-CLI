@@ -40,12 +40,13 @@ public class MainOptionTest {
         int selectedOption = ((MainOption) mainOption).getSelectedOption(in);
         assertEquals(-1, selectedOption);
         assertTrue(outContent.toString().contains("No such option available! Please try again."));
+        in.close();
 
         System.setIn(new ByteArrayInputStream("8".getBytes()));
+        in = new Scanner(System.in);
         selectedOption = ((MainOption) mainOption).getSelectedOption(in);
         assertEquals(-1, selectedOption);
         assertTrue(outContent.toString().contains("No such option available! Please try again."));
-
         in.close();
     }
 
@@ -63,12 +64,13 @@ public class MainOptionTest {
         int selectedOption = ((MainOption) mainOption).getSelectedOption(in);
         assertEquals(-1, selectedOption);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
+        in.close();
 
         System.setIn(new ByteArrayInputStream("five".getBytes()));
+        in = new Scanner(System.in);
         selectedOption = ((MainOption) mainOption).getSelectedOption(in);
         assertEquals(-1, selectedOption);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
-
         in.close();
     }
 }

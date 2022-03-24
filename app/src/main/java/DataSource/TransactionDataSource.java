@@ -44,7 +44,7 @@ public class TransactionDataSource extends DataSource<Transaction> {
                  * type - 5
                  */
                 CashTransaction.TransactionType type;
-                if (data[5] == "DEPOSIT") {
+                if (data[5].compareTo("DEPOSIT") == 0) {
                     type = CashTransaction.TransactionType.DEPOSIT;
                 } else {
                     type = CashTransaction.TransactionType.WITHDRAW;

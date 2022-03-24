@@ -58,8 +58,10 @@ public class AtmListTest {
         Scanner in = new Scanner(System.in);
         ((AtmList) atmList).selectAtm(in);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
+        in.close();
 
         System.setIn(new ByteArrayInputStream("0.4".getBytes()));
+        in = new Scanner(System.in);
         ((AtmList) atmList).selectAtm(in);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         in.close();

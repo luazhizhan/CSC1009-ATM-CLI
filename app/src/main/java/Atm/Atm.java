@@ -24,6 +24,18 @@ public class Atm {
         setDefaultNumOfNotes();
     }
 
+    /**
+     * For test case purposes
+     * 
+     * @param numOf10DollarsNotes
+     * @param numOf50DollarsNotes
+     */
+    public Atm(int numOf10DollarsNotes, int numOf50DollarsNotes) {
+        setId(Id.generateUUID());
+        setNumOf10DollarsNotes(numOf10DollarsNotes);
+        setNumOf50DollarsNotes(numOf50DollarsNotes);
+    }
+
     public Atm(Address address) {
         setId(Id.generateUUID());
         setAddress(address);
@@ -100,6 +112,32 @@ public class Atm {
         return totalTenAmt.add(totalFiftyAmt);
     }
 
+    public void checkWithdrawAmount(BigDecimal amount) {
+        // Amount must be > 0
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Amount should be above 0.");
+        }
+
+        // Amounts must be multiplier of 10
+        if (amount.remainder(new BigDecimal(10)).compareTo(BigDecimal.ZERO) != 0) {
+            throw new IllegalArgumentException("Amount must be multiplier of 10.");
+        }
+    }
+
+    /**
+     * Calculate total value of 10 and 50 dollars notes.
+     * 
+     * @param notes Pair(Number of 10 dollars notes, Number of 50 dollars notes)
+     * @return
+     */
+    public BigDecimal calculateNotesAmount(Pair<Integer> notes) {
+        // Calculate total amount based on number of 10 and 50 dollars note
+        BigDecimal totalTenAmt = new BigDecimal(10).multiply(new BigDecimal(notes.first()));
+        BigDecimal totalFiftyAmt = new BigDecimal(50).multiply(new BigDecimal(notes.second()));
+
+        return totalTenAmt.add(totalFiftyAmt);
+    }
+
     /**
      * 
      * @param amount
@@ -112,18 +150,10 @@ public class Atm {
             throw new InsufficientNotesException("No notes left.");
         }
 
-        // Amount must be > 0
-        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Amount should be above 0.");
-        }
+        checkWithdrawAmount(amount);
 
         BigDecimal fifty = new BigDecimal(50);
         BigDecimal ten = new BigDecimal(10);
-
-        // Amounts must be multiplier of 10
-        if (amount.remainder(ten).compareTo(BigDecimal.ZERO) != 0) {
-            throw new IllegalArgumentException("Amount must be multiplier of 10.");
-        }
 
         // Get remainder after dividing amount by 50
         BigDecimal remainder = amount.remainder(fifty);

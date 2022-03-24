@@ -50,15 +50,15 @@ public class AccountDataSource extends DataSource<Account> {
                  * Interest_Rate - 12
                  */
                 AccountStatus status;
-                if (data[3] == "NORMAL") {
+                if (data[3].compareTo("NORMAL") == 0) {
                     status = AccountStatus.NORMAL;
-                } else if (data[3] == "FROZEN") {
+                } else if (data[3].compareTo("FROZEN") == 0) {
                     status = AccountStatus.FROZEN;
                 } else {
                     status = AccountStatus.CLOSED;
                 }
                 Account acc;
-                if (data[10] == "Current") {
+                if (data[10].compareTo("Current") == 0) {
                     acc = new CurrentAccount(data[0], data[1], data[2], status);
                     ((CurrentAccount) acc).setOverDraftLimit(new BigDecimal(data[11]));
                 } else {

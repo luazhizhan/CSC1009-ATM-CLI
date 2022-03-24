@@ -42,9 +42,9 @@ public class CardsDataSource extends DataSource<Card> {
                  * PIN_Number - 7
                  */
                 Card.CardStatus status;
-                if (data[6] == "VALID") {
+                if (data[6].compareTo("VALID") == 0) {
                     status = Card.CardStatus.VALID;
-                } else if (data[6] == "CANCELLED") {
+                } else if (data[6].compareTo("CANCELLED") == 0) {
                     status = Card.CardStatus.CANCELLED;
                 } else {
                     status = Card.CardStatus.EXPIRED;

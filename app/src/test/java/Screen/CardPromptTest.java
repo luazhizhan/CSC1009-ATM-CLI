@@ -1,6 +1,5 @@
 package Screen;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -61,8 +60,10 @@ public class CardPromptTest {
         Card card = ((CardPrompt) cardPrompt).getCardNumber(in, cardDataSource);
         assertNull(card);
         assertTrue(outContent.toString().contains("Invalid Account Card Number Format!"));
+        in.close();
 
         System.setIn(new ByteArrayInputStream("123456789".getBytes()));
+        in = new Scanner(System.in);
         card = ((CardPrompt) cardPrompt).getCardNumber(in, cardDataSource);
         assertNull(card);
         assertTrue(outContent.toString().contains("Invalid Account Card Number Format!"));
@@ -84,7 +85,7 @@ public class CardPromptTest {
         assertNull(card);
         assertTrue(outContent.toString().contains("Card not found on the system!"));
 
-        // Valid MasterCard that does not exist in the system
+        // Valid Visa that does not exist in the system
         System.setIn(new ByteArrayInputStream("4718258769126946".getBytes()));
         card = ((CardPrompt) cardPrompt).getCardNumber(in, cardDataSource);
         assertNull(card);
