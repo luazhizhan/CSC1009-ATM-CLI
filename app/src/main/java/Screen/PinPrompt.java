@@ -10,7 +10,7 @@ public class PinPrompt implements ScreenState {
     private int tries;
 
     public PinPrompt() {
-        prompt = "\n" + line + "\nPlease enter your PIN\nEnter 0 to quit.\n" + line;
+        prompt = "\n" + line + "\nPlease enter your PIN\nEnter 0 to exit.\n" + line;
         tries = 0;
     }
 
@@ -29,7 +29,7 @@ public class PinPrompt implements ScreenState {
 
             // Terminal program
             if (pinNumber == 0) {
-                System.out.println("Quit");
+                System.out.println("Exit");
                 System.exit(0);
             }
 

@@ -3,7 +3,7 @@ package Account;
 import java.time.YearMonth;
 
 public class Card {
-    private String cardNumber;
+    private String cardNumber; // Primary id
     private String name;
     private YearMonth expiryDate;
     private int cvv;
@@ -21,6 +21,13 @@ public class Card {
 
     }
 
+    public Card(String cardNumber, String name, String accountId, CardStatus status) {
+        setCardNumber(cardNumber);
+        setName(name);
+        setAccountId(accountId);
+        setStatus(status);
+    }
+
     public Card(String cardNumber, String name, YearMonth expiryDate,
             String accountId, CardStatus status) {
         setCardNumber(cardNumber);
@@ -35,9 +42,7 @@ public class Card {
     }
 
     public void setCardNumber(String cardNumber) {
-        if (validateCardNumber(cardNumber) == false) {
-            throw new IllegalArgumentException("Invalid Account Card Number Format!");
-        }
+        validateCardNumber(cardNumber);
         this.cardNumber = cardNumber;
     }
 
@@ -57,6 +62,15 @@ public class Card {
         if (expiryDate.isBefore(YearMonth.now())) {
             throw new IllegalArgumentException("Card has expired.");
         }
+        this.expiryDate = expiryDate;
+    }
+
+    /**
+     * This method is for DataSource class only!!
+     * 
+     * @param expiryDate
+     */
+    public void setExpiryDateWithoutCheck(YearMonth expiryDate) {
         this.expiryDate = expiryDate;
     }
 
@@ -120,7 +134,7 @@ public class Card {
      * @param cardNo credit/debit card number without space
      * @return boolean
      */
-    private boolean validateCardNumber(String cardNo) {
+    public static void validateCardNumber(String cardNo) {
         int nDigits = cardNo.length();
 
         int nSum = 0;
@@ -140,7 +154,9 @@ public class Card {
 
             isSecond = !isSecond;
         }
-        return (nSum % 10 == 0);
+        if (nSum % 10 != 0) {
+            throw new IllegalArgumentException("Invalid Account Card Number Format!");
+        }
     }
 
     private boolean validateCVV(String cvv) {

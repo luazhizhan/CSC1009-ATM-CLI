@@ -17,6 +17,12 @@ public abstract class DataSource<T> {
         return this.data;
     }
 
+    /**
+     * Get data by primary id
+     * 
+     * @param id Primary id
+     * @return T
+     */
     public abstract T getDataById(String id);
 
     protected void setData(List<T> data) {

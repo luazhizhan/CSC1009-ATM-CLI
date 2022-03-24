@@ -27,7 +27,7 @@ public class MainOption implements ScreenState {
             }
 
             if (option == 5) {
-                System.out.println("Quit");
+                System.out.println("Exit");
                 System.exit(0); // Terminal program
             }
             return option;

@@ -12,7 +12,7 @@ import java.util.List;
 import Account.Card;
 
 public class CardsDataSource extends DataSource<Card> {
-    private static final String Cards_CSV_PATH = "Account/accounts.csv";
+    private static final String Cards_CSV_PATH = "Account/cards.csv";
 
     public CardsDataSource() throws FileNotFoundException, IOException {
         super();
@@ -49,7 +49,8 @@ public class CardsDataSource extends DataSource<Card> {
                 } else {
                     status = Card.CardStatus.EXPIRED;
                 }
-                Card card = new Card(data[1], data[2], YearMonth.parse(data[3]), data[5], status);
+                Card card = new Card(data[1], data[2], data[5], status);
+                card.setExpiryDateWithoutCheck(YearMonth.parse(data[3]));
                 card.setCvv(Integer.parseInt(data[4]));
                 card.setPinNumber(Integer.parseInt(data[7]));
                 cardDataSource.add(card);
@@ -60,8 +61,8 @@ public class CardsDataSource extends DataSource<Card> {
 
     }
 
-    public Card getDataById(String id) {
-        return this.getData().stream().filter(data -> data.getAccountId().equals(id)).findFirst().orElse(null);
+    public Card getDataById(String cardNumber) {
+        return this.getData().stream().filter(data -> data.getCardNumber().equals(cardNumber)).findFirst().orElse(null);
     }
 
 }

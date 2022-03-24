@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import Account.Card;
 import Atm.Atm;
+import DataSource.CardsDataSource;
 import DataSource.DataSource;
 import DataSource.TransactionDataSource;
 import Screen.AtmList;
@@ -19,6 +20,8 @@ public class App {
     public static void main(String[] args) {
         try (Scanner in = new Scanner(System.in)) {
             DataSource<Transaction> txnDataSource = new TransactionDataSource();
+            DataSource<Card> cardDataSource = new CardsDataSource();
+
             ScreenStateContext stateContext = new ScreenStateContext();
 
             // Greetings
@@ -34,14 +37,11 @@ public class App {
             }
 
             // Enter credit/debit card
-            Card card = new Card();
             ScreenState cardPrompt = new CardPrompt();
             stateContext.setAndPrintScreen(cardPrompt);
-            boolean isValidCardNum = false;
-            while (isValidCardNum == false)
-                isValidCardNum = ((CardPrompt) cardPrompt).getCardNumber(in, card);
-
-            card.setPinNumber(123456); // TODO Remove this after getting the real card
+            Card card = null;
+            while (card == null)
+                card = ((CardPrompt) cardPrompt).getCardNumber(in, cardDataSource);
 
             // Enter card pin
             ScreenState pinPrompt = new PinPrompt();
