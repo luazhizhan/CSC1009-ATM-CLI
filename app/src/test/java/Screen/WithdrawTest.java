@@ -1,0 +1,161 @@
+package Screen;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import Account.Account;
+import Account.AccountStatus;
+import Account.CurrentAccount;
+import Atm.Atm;
+import Helper.Pair;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.math.BigDecimal;
+import java.util.Scanner;
+
+public class WithdrawTest {
+    private Atm atm;
+    private Account account;
+
+    @BeforeEach
+    public void setUp() throws FileNotFoundException, IOException {
+        atm = new Atm();
+        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL);
+        account.setAvailableBalance(new BigDecimal(10000));
+        ((CurrentAccount) account).setWithdrawLimit(new BigDecimal(1000));
+        ((CurrentAccount) account).setOverDraftLimit(new BigDecimal(100));
+    }
+
+    @Test
+    public void success() {
+        ScreenState withdraw = new Withdraw();
+        ScreenStateContext stateContext = new ScreenStateContext();
+        withdraw.printScreen(stateContext);
+
+        // Set scanner input value
+        System.setIn(new ByteArrayInputStream(String.valueOf("120").getBytes()));
+        Scanner in = new Scanner(System.in);
+
+        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        assertEquals(2, notes.first());
+        assertEquals(2, notes.second());
+        assertEquals(new BigDecimal(9880), account.getAvailableBalance());
+        assertEquals(298, atm.getNumOf10DollarsNotes());
+        assertEquals(298, atm.getNumOf50DollarsNotes());
+        in.close();
+    }
+
+    @Test
+    public void failureInsufficientNotes() {
+        ScreenState withdraw = new Withdraw();
+
+        // Set and read System.out content
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        atm = new Atm(3, 3); // 180 dollars
+        // Require 4 50 dollars note.
+        System.setIn(new ByteArrayInputStream("200".getBytes()));
+        Scanner in = new Scanner(System.in);
+        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        assertTrue(outContent.toString().contains("Insufficient notes."));
+        assertNull(notes);
+        in.close();
+
+        atm = new Atm(0, 0);
+        System.setIn(new ByteArrayInputStream("50".getBytes()));
+        in = new Scanner(System.in);
+        notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        assertTrue(outContent.toString().contains("No notes left."));
+        assertNull(notes);
+    }
+
+    @Test
+    public void failureInvalidWithdrawAmount() {
+        ScreenState withdraw = new Withdraw();
+
+        // Set and read System.out content
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Set scanner input value
+        System.setIn(new ByteArrayInputStream("-10".getBytes()));
+        Scanner in = new Scanner(System.in);
+        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        assertTrue(outContent.toString().contains("Amount should be above 0"));
+        assertNull(notes);
+        in.close();
+
+        System.setIn(new ByteArrayInputStream("77".getBytes()));
+        in = new Scanner(System.in);
+        notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        assertTrue(outContent.toString().contains("Amount must be multiplier of 10"));
+        assertNull(notes);
+    }
+
+    @Test
+    public void failureExceedWithdrawLimit() {
+        ScreenState withdraw = new Withdraw();
+
+        // Set and read System.out content
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Set scanner input value
+        System.setIn(new ByteArrayInputStream("1010".getBytes()));
+        Scanner in = new Scanner(System.in);
+        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        assertTrue(outContent.toString().contains("Withdraw amount exceeded withdraw limit!"));
+        assertNull(notes);
+        in.close();
+    }
+
+    @Test
+    public void failureExceedAvailableBalance() {
+        account.setAvailableBalance(new BigDecimal(300));
+        ScreenState withdraw = new Withdraw();
+
+        // Set and read System.out content
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Set scanner input value
+        System.setIn(new ByteArrayInputStream("500".getBytes()));
+        Scanner in = new Scanner(System.in);
+        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        assertTrue(outContent.toString().contains("Withdraw amount exceeded avaliable balance"));
+        assertNull(notes);
+        in.close();
+    }
+
+    @Test
+    public void failureInvalidInput() {
+        ScreenState withdraw = new Withdraw();
+
+        // Set and read System.out content
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Set scanner input value
+        System.setIn(new ByteArrayInputStream("~!abc".getBytes()));
+
+        Scanner in = new Scanner(System.in);
+        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        assertTrue(outContent.toString().contains("Invalid input! Please try again."));
+        assertNull(notes);
+        in.close();
+
+        System.setIn(new ByteArrayInputStream("three hundred".getBytes()));
+        in = new Scanner(System.in);
+        notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        assertTrue(outContent.toString().contains("Invalid input! Please try again."));
+        assertNull(notes);
+        in.close();
+    }
+}

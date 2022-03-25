@@ -36,7 +36,14 @@ public class CurrentAccount extends Account {
         if (availableBalance.compareTo(overDraftLimit.negate()) < 0) {
             throw new IllegalArgumentException("Exceeded Overdraft Limit!");
         }
-        this.setAvailableBalance(availableBalance);
+        super.availableBalance = availableBalance;
+    }
+
+    @Override
+    public void checkAvaliableBalance(BigDecimal amount) {
+        if (amount.compareTo(getAvailableBalance().add(getOverDraftLimit())) > 0) {
+            throw new IllegalArgumentException("Withdraw amount exceeded avaliable balance!");
+        }
     }
 
     @Override

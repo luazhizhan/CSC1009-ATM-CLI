@@ -3,24 +3,34 @@ package Screen;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import Account.Account;
 import Account.Card;
+import Account.CurrentAccount;
+import DataSource.AccountDataSource;
+import DataSource.DataSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class PinPromptTest {
     private Card card;
-    private int pin;
+    private static final int PIN = 123456;
+    private static final String ACCOUNT_ID = "6454856238";
+    private DataSource<Account> accountDataSource;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws FileNotFoundException, IOException {
         card = new Card();
-        int pin = 123456;
-        card.setPinNumber(pin);
+        card.setPinNumber(PIN);
+        card.setAccountId(ACCOUNT_ID);
+        accountDataSource = new AccountDataSource();
     }
 
     @Test
@@ -31,11 +41,13 @@ public class PinPromptTest {
         pinPrompt.printScreen(stateContext);
 
         // Set scanner input value
-        System.setIn(new ByteArrayInputStream("1".getBytes()));
+        System.setIn(new ByteArrayInputStream(String.valueOf(PIN).getBytes()));
         Scanner in = new Scanner(System.in);
 
-        System.setIn(new ByteArrayInputStream(String.valueOf(pin).getBytes()));
-        ((PinPrompt) pinPrompt).getPinNumber(in, card);
+        Account acc = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
+        assertEquals(ACCOUNT_ID, acc.getId());
+        assertEquals(new BigDecimal(3000000), acc.getAvailableBalance());
+        assertTrue(acc instanceof CurrentAccount);
         in.close();
     }
 
@@ -47,14 +59,26 @@ public class PinPromptTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        // Set scanner input value
         System.setIn(new ByteArrayInputStream("234567".getBytes()));
-
         Scanner in = new Scanner(System.in);
-        ((PinPrompt) pinPrompt).getPinNumber(in, card);
+        ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
         assertTrue(outContent.toString().contains("Incorrect PIN!"));
         assertEquals(1, ((PinPrompt) pinPrompt).getTries());
         in.close();
+
+        System.setIn(new ByteArrayInputStream("234567".getBytes()));
+        in = new Scanner(System.in);
+        ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
+        assertTrue(outContent.toString().contains("Incorrect PIN!"));
+        assertEquals(2, ((PinPrompt) pinPrompt).getTries());
+        in.close();
+
+        System.setIn(new ByteArrayInputStream("234567".getBytes()));
+        in = new Scanner(System.in);
+        ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
+
+        // Prove that program has exited
+        assertFalse(true);
     }
 
     @Test
@@ -69,16 +93,23 @@ public class PinPromptTest {
         System.setIn(new ByteArrayInputStream("abc".getBytes()));
 
         Scanner in = new Scanner(System.in);
-        ((PinPrompt) pinPrompt).getPinNumber(in, card);
+        Account acc = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
+        assertNull(acc);
+        in.close();
 
         System.setIn(new ByteArrayInputStream("5g6".getBytes()));
-        ((PinPrompt) pinPrompt).getPinNumber(in, card);
+        in = new Scanner(System.in);
+        acc = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
+        assertNull(acc);
+        in.close();
 
         System.setIn(new ByteArrayInputStream("74343g".getBytes()));
-        ((PinPrompt) pinPrompt).getPinNumber(in, card);
+        in = new Scanner(System.in);
+        acc = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
+        assertNull(acc);
         in.close();
     }
 }

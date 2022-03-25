@@ -3,14 +3,16 @@ package Screen;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import Account.Account;
 import Account.Card;
+import DataSource.DataSource;
 
 public class PinPrompt implements ScreenState {
     private String prompt;
     private int tries;
 
     public PinPrompt() {
-        prompt = "\n" + line + "\nPlease enter your PIN\nEnter 0 to quit.\n" + line;
+        prompt = "\n" + line + "\nPlease enter your PIN\nEnter 0 to exit.\n" + line;
         tries = 0;
     }
 
@@ -23,13 +25,13 @@ public class PinPrompt implements ScreenState {
         System.out.println(prompt);
     }
 
-    public boolean getPinNumber(Scanner in, Card card) {
+    public Account getPinNumber(Scanner in, Card card, DataSource<Account> ds) {
         try {
             int pinNumber = in.nextInt();
 
             // Terminal program
             if (pinNumber == 0) {
-                System.out.println("Quit");
+                System.out.println("Exit");
                 System.exit(0);
             }
 
@@ -44,13 +46,13 @@ public class PinPrompt implements ScreenState {
                         System.exit(0); // Terminal program
                     default:
                         System.out.println("\n" + line + "\nIncorrect PIN!\nPlease re-enter your PIN!\n" + line);
-                        return false;
+                        return null;
                 }
             }
-            return true;
+            return ds.getDataById(card.getAccountId());
         } catch (NoSuchElementException e) {
             System.out.println(ScreenState.invalidInput);
-            return false;
+            return null;
         }
     }
 }

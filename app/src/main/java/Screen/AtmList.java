@@ -11,7 +11,7 @@ public class AtmList implements ScreenState {
     public AtmList() {
         // TODO Print the list of ATMs
         String atmList = "TODO List all ATMs";
-        text = "\n" + line + "\nPlease select an ATM.\nEnter 0 to quit.\n"
+        text = "\n" + line + "\nPlease select an ATM.\nEnter 0 to exit.\n"
                 + atmList + "\n" + line;
     }
 
@@ -24,7 +24,7 @@ public class AtmList implements ScreenState {
         try {
             int atmNo = in.nextInt();
             if (atmNo == 0) {
-                System.out.println("Quit");
+                System.out.println("Exit");
                 System.exit(0); // Terminal program
             }
 

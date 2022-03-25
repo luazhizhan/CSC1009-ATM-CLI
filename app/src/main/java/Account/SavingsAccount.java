@@ -21,7 +21,7 @@ public class SavingsAccount extends Account {
 
     public void setInterestRate(BigDecimal interestRate) {
         if (interestRate.compareTo(BigDecimal.ZERO) <= 0) {
-            System.out.println("Interest Rate Below or equal to Zero!");
+            throw new IllegalArgumentException("Interest Rate cannot be below or equal to zero.");
         } else {
             this.interestRate = interestRate;
         }
