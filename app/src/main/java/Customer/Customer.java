@@ -9,6 +9,13 @@ public class Customer {
     private String name, email, phone;
     private Address address;
 
+    public Customer(String id, String name, String email, String phone, Address address) {
+        this.name = name;
+        setEmail(email);
+        setPhone(phone);
+        setId(id);
+        setAddress(address);
+    }
     public Customer(String name, String email, String phone) {
         this.name = name;
         setEmail(email);
@@ -56,7 +63,7 @@ public class Customer {
 
     public void setPhone(String phone) {
         // +65 optional, first digit 8/9, 7 digits between 0 - 9
-        String phoneValid = "(\\+?65)?(8|9)[0-9]{7}";
+        String phoneValid = "(\\+?65)?(6|8|9)[0-9]{7}";
         if (phone.matches(phoneValid)) {
             this.phone = phone;
         } else {

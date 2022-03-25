@@ -16,7 +16,6 @@ public class Address {
         setStreetAddress(streetAddress);
         setUnitNumber(unitNumber);
         setPostalCode(postalCode);
-        setPostalCode(postalCode);
         setCity(SINGAPORE);
         setState(SINGAPORE);
         setCountry(SINGAPORE);
