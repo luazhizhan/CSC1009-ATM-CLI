@@ -24,7 +24,6 @@ public class CardsDataSource extends DataSource<Card> {
     protected List<Card> readDataFromCSV(String filePath) throws FileNotFoundException, IOException
     {
         List<Card> cardDataSource = new ArrayList<Card>();
-<<<<<<< HEAD
         List<String[]> dataList = super.readDataFromCSV(filePath);
         String[] data;
         for (int i = 0; i<dataList.size(); i++)
@@ -41,49 +40,15 @@ public class CardsDataSource extends DataSource<Card> {
              */
             data = dataList.get(i);
             Card.CardStatus status;
-            if (data[6] == "VALID") {
+            if (data[6].compareTo("VALID") == 0) {
                 status = Card.CardStatus.VALID;
-            } else if (data[6] == "CANCELLED") {
+            } else if (data[6].compareTo("CANCELLED") == 0) {
                 status = Card.CardStatus.CANCELLED;
             } else {
                 status = Card.CardStatus.EXPIRED;
-=======
-
-        InputStream is = this.getClass().getClassLoader().getResourceAsStream(Cards_CSV_PATH);
-        try (InputStreamReader isr = new InputStreamReader(is);
-                BufferedReader br = new BufferedReader(isr)) {
-            br.readLine(); // Ignore first row
-            String line;
-
-            // Keep reading until last line
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
-                /**
-                 * Issuing_Network - 0
-                 * Card_Number - 1
-                 * Customer_Name - 2
-                 * Expiry_Date - 3
-                 * CVV - 4
-                 * Account_ID - 5
-                 * Card_Status - 6
-                 * PIN_Number - 7
-                 */
-                Card.CardStatus status;
-                if (data[6].compareTo("VALID") == 0) {
-                    status = Card.CardStatus.VALID;
-                } else if (data[6].compareTo("CANCELLED") == 0) {
-                    status = Card.CardStatus.CANCELLED;
-                } else {
-                    status = Card.CardStatus.EXPIRED;
-                }
-                Card card = new Card(data[1], data[2], data[5], status);
-                card.setExpiryDateWithoutCheck(YearMonth.parse(data[3]));
-                card.setCvv(Integer.parseInt(data[4]));
-                card.setPinNumber(Integer.parseInt(data[7]));
-                cardDataSource.add(card);
->>>>>>> main
             }
-            Card card = new Card(data[1], data[2], YearMonth.parse(data[3]), data[5], status);
+            Card card = new Card(data[1], data[2], data[5], status);
+            card.setExpiryDateWithoutCheck(YearMonth.parse(data[3]));
             card.setCvv(Integer.parseInt(data[4]));
             card.setPinNumber(Integer.parseInt(data[7]));
             cardDataSource.add(card);

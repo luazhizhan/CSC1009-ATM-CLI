@@ -36,16 +36,13 @@ public abstract class DataSource<T> {
         return this.data;
     }
 
-<<<<<<< HEAD
-
-=======
     /**
      * Get data by primary id
      * 
      * @param id Primary id
      * @return T
      */
->>>>>>> main
+
     public abstract T getDataById(String id);
 
     protected void setData(List<T> data) {
