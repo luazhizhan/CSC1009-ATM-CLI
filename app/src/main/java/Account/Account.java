@@ -77,13 +77,13 @@ public abstract class Account {
         this.availableBalance = availableBalance;
     }
 
-    public void checkAvaliableBalance(BigDecimal amount) {
+    public void checkAgainstAvailableBalance(BigDecimal amount) {
         if (amount.compareTo(getAvailableBalance()) > 0) {
-            throw new IllegalArgumentException("Withdraw amount exceeded avaliable balance!");
+            throw new IllegalArgumentException("Withdraw amount exceeded available balance!");
         }
     }
 
-    public void subtractAvaliableBalance(BigDecimal amount) {
+    public void subtractAvailableBalance(BigDecimal amount) {
         setAvailableBalance(getAvailableBalance().subtract(amount));
     }
 
@@ -100,7 +100,7 @@ public abstract class Account {
         return withdrawLimit;
     }
 
-    public void checkWithdrawLimit(BigDecimal amount) {
+    public void checkAgainstWithdrawLimit(BigDecimal amount) {
         if (amount.compareTo(getWithdrawLimit()) > 0) {
             throw new IllegalArgumentException("Withdraw amount exceeded withdraw limit!");
         }

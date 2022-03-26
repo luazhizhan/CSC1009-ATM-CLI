@@ -42,8 +42,8 @@ public class SavingsAccount extends Account {
     }
 
     public void rewardInterest() {
-        BigDecimal avaliableBalance = super.getAvailableBalance();
-        BigDecimal balanceAfterInterest = avaliableBalance.add(avaliableBalance.multiply(interestRate));
+        BigDecimal availableBalance = super.getAvailableBalance();
+        BigDecimal balanceAfterInterest = availableBalance.add(availableBalance.multiply(interestRate));
         super.setAvailableBalance(balanceAfterInterest);
     }
 }

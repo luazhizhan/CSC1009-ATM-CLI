@@ -32,7 +32,7 @@ public class CurrentAccount extends Account {
 
     @Override
     public void setAvailableBalance(BigDecimal availableBalance) {
-        // avaliable balance < negative over draft limit
+        // available balance < negative over draft limit
         if (availableBalance.compareTo(overDraftLimit.negate()) < 0) {
             throw new IllegalArgumentException("Exceeded Overdraft Limit!");
         }
@@ -40,9 +40,9 @@ public class CurrentAccount extends Account {
     }
 
     @Override
-    public void checkAvaliableBalance(BigDecimal amount) {
+    public void checkAgainstAvailableBalance(BigDecimal amount) {
         if (amount.compareTo(getAvailableBalance().add(getOverDraftLimit())) > 0) {
-            throw new IllegalArgumentException("Withdraw amount exceeded avaliable balance!");
+            throw new IllegalArgumentException("Withdraw amount exceeded available balance!");
         }
     }
 
