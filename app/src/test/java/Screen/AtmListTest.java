@@ -16,7 +16,7 @@ public class AtmListTest {
     public void success() {
         ScreenState atmList = new AtmList();
         ScreenStateContext stateContext = new ScreenStateContext();
-        atmList.printScreen(stateContext);
+        stateContext.setAndPrintScreen(atmList);
 
         // Set scanner input value
         System.setIn(new ByteArrayInputStream("1".getBytes()));

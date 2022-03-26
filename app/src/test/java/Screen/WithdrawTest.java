@@ -36,7 +36,7 @@ public class WithdrawTest {
     public void success() {
         ScreenState withdraw = new Withdraw();
         ScreenStateContext stateContext = new ScreenStateContext();
-        withdraw.printScreen(stateContext);
+        stateContext.setAndPrintScreen(withdraw);
 
         // Set scanner input value
         System.setIn(new ByteArrayInputStream(String.valueOf("120").getBytes()));

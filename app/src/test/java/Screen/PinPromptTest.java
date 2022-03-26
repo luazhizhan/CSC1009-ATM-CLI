@@ -38,7 +38,7 @@ public class PinPromptTest {
 
         ScreenState pinPrompt = new PinPrompt();
         ScreenStateContext stateContext = new ScreenStateContext();
-        pinPrompt.printScreen(stateContext);
+        stateContext.setAndPrintScreen(pinPrompt);
 
         // Set scanner input value
         System.setIn(new ByteArrayInputStream(String.valueOf(PIN).getBytes()));

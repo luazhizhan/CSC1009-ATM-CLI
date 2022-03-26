@@ -30,7 +30,7 @@ public class CardPromptTest {
     public void success() {
         ScreenState cardPrompt = new CardPrompt();
         ScreenStateContext stateContext = new ScreenStateContext();
-        cardPrompt.printScreen(stateContext);
+        stateContext.setAndPrintScreen(cardPrompt);
 
         // Set scanner input value VISA
         System.setIn(new ByteArrayInputStream(VISA.getBytes()));

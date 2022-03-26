@@ -16,7 +16,7 @@ public class MainOptionTest {
     public void success() {
         ScreenState mainOption = new MainOption();
         ScreenStateContext stateContext = new ScreenStateContext();
-        mainOption.printScreen(stateContext);
+        stateContext.setAndPrintScreen(mainOption);
 
         // Set scanner input value
         System.setIn(new ByteArrayInputStream("1".getBytes()));
