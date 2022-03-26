@@ -129,7 +129,7 @@ public class WithdrawTest {
         System.setIn(new ByteArrayInputStream("500".getBytes()));
         Scanner in = new Scanner(System.in);
         Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
-        assertTrue(outContent.toString().contains("Withdraw amount exceeded avaliable balance"));
+        assertTrue(outContent.toString().contains("Withdraw amount exceeded available balance"));
         assertNull(notes);
         in.close();
     }

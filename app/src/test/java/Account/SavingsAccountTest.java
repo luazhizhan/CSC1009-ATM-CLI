@@ -9,19 +9,17 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
 class SavingsAccountTest {
     private String id;
     private String customerId;
     private String name;
     private AccountStatus status;
-    protected BigDecimal availableBalance; //available balance
-    private BigDecimal holdBalance; //balance on hold
-    private BigDecimal withdrawLimit; //withdrawal limit local
-    private BigDecimal transferLimit; //transfer limit local
-    private BigDecimal overseasWithdrawLimit; //withdrawal limit overseas
-    private BigDecimal overseasTransferLimit; //transfer limit overseas
-    protected final int DEFAULT_LIMIT = 5000;
+    private BigDecimal availableBalance; // available balance
+    private BigDecimal withdrawLimit; // withdrawal limit local
+    private BigDecimal transferLimit; // transfer limit local
+    private BigDecimal overseasWithdrawLimit; // withdrawal limit overseas
+    private BigDecimal overseasTransferLimit; // transfer limit overseas
+    private final int DEFAULT_LIMIT = 5000;
     private BigDecimal interestRate;
 
     @BeforeEach
@@ -31,15 +29,15 @@ class SavingsAccountTest {
         name = "";
         status = AccountStatus.NORMAL;
         availableBalance = new BigDecimal(10000);
-        holdBalance = new BigDecimal(20);
         withdrawLimit = new BigDecimal(DEFAULT_LIMIT);
         transferLimit = new BigDecimal(DEFAULT_LIMIT);
         overseasWithdrawLimit = new BigDecimal(DEFAULT_LIMIT);
         overseasTransferLimit = new BigDecimal(DEFAULT_LIMIT);
+        interestRate = new BigDecimal("0.0005");
     }
 
     @Test
-    public void createSuccess(){
+    public void createSuccess() {
         Account account = new SavingsAccount(id, customerId, name, status);
         assertEquals(id, account.getId());
         assertEquals(customerId, account.getCustomerId());
@@ -49,6 +47,7 @@ class SavingsAccountTest {
         assertEquals(transferLimit, account.getTransferLimit());
         assertEquals(overseasWithdrawLimit, account.getOverseasWithdrawLimit());
         assertEquals(overseasTransferLimit, account.getOverseasTransferLimit());
+        assertEquals(interestRate, ((SavingsAccount) account).getInterestRate());
 
         id = Id.generateUUID();
         customerId = "3376259";
@@ -58,11 +57,19 @@ class SavingsAccountTest {
         transferLimit = new BigDecimal(1000);
         overseasWithdrawLimit = new BigDecimal(1000);
         overseasTransferLimit = new BigDecimal(1000);
+        interestRate = new BigDecimal("0.0010");
+
         account.setId(id);
         account.setCustomerId(customerId);
         account.setName(name);
         account.setStatus(status);
-        //Test if attributes were changed
+        account.setWithdrawLimit(withdrawLimit);
+        account.setTransferLimit(transferLimit);
+        account.setOverseasWithdrawLimit(overseasWithdrawLimit);
+        account.setOverseasTransferLimit(overseasTransferLimit);
+        ((SavingsAccount) account).setInterestRate(interestRate);
+
+        // Test if attributes were changed
         assertEquals(id, account.getId());
         assertEquals(customerId, account.getCustomerId());
         assertEquals(name, account.getName());
@@ -71,43 +78,38 @@ class SavingsAccountTest {
         assertEquals(transferLimit, account.getTransferLimit());
         assertEquals(overseasWithdrawLimit, account.getOverseasWithdrawLimit());
         assertEquals(overseasTransferLimit, account.getOverseasTransferLimit());
+        assertEquals(interestRate, ((SavingsAccount) account).getInterestRate());
     }
+
     @Test
-    public void successSetAvailableBalance(){
+    public void successSetAvailableBalance() {
         Account account = new SavingsAccount(id, customerId, name, status);
         availableBalance = new BigDecimal(1000000);
         account.setAvailableBalance(availableBalance);
         assertEquals(availableBalance, account.getAvailableBalance());
     }
+
     @Test
-    public void failureIllegalAvailableBalance(){
+    public void failureIllegalAvailableBalance() {
         availableBalance = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> new SavingsAccount(id, customerId, name, status).setAvailableBalance(availableBalance));
         assertEquals("Available Balance must be above zero.", exception.getMessage());
 
-
     }
 
     @Test
-    public void failureCheckAvailableBalance(){
+    public void failureCheckAgainstAvailableBalance() {
         availableBalance = new BigDecimal(1000);
         Account account = new SavingsAccount(id, customerId, name, status);
         account.setAvailableBalance(availableBalance);
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> account.checkAvailableBalance(new BigDecimal(1000)));
+                () -> account.checkAgainstAvailableBalance(new BigDecimal(1001)));
         assertEquals("Withdraw amount exceeded available balance!", exception.getMessage());
     }
 
     @Test
-    public void successSetWithdrawLimit(){
-        Account account = new SavingsAccount(id, customerId, name, status);
-        withdrawLimit = new BigDecimal(1000000);
-        account.setWithdrawLimit(withdrawLimit);
-        assertEquals(withdrawLimit, account.getWithdrawLimit());
-    }
-    @Test
-    public void failureIllegalWithdrawLimit(){
+    public void failureIllegalWithdrawLimit() {
         withdrawLimit = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> new SavingsAccount(id, customerId, name, status).setWithdrawLimit(withdrawLimit));
@@ -115,52 +117,33 @@ class SavingsAccountTest {
     }
 
     @Test
-    public void failureCheckWithdrawLimit(){
+    public void failureCheckAgainstWithdrawLimit() {
         withdrawLimit = new BigDecimal(1000);
         Account account = new SavingsAccount(id, customerId, name, status);
-        account.setWithdrawLimit(availableBalance);
+        account.setWithdrawLimit(withdrawLimit);
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> account.checkWithdrawLimit(new BigDecimal(2000)));
+                () -> account.checkAgainstWithdrawLimit(new BigDecimal(2000)));
         assertEquals("Withdraw amount exceeded withdraw limit!", exception.getMessage());
     }
 
     @Test
-    public void successSetTransferLimit(){
-        Account account = new SavingsAccount(id, customerId, name, status);
-        transferLimit = new BigDecimal(1000000);
-        account.setTransferLimit(transferLimit);
-        assertEquals(transferLimit, account.getTransferLimit());
-    }
-    @Test
-    public void failureIllegalTransferLimit(){
+    public void failureIllegalTransferLimit() {
         transferLimit = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> new SavingsAccount(id, customerId, name, status).setTransferLimit(transferLimit));
         assertEquals("Transfer limit must be above zero.", exception.getMessage());
     }
+
     @Test
-    public void successSetOverseasWithdrawLimit(){
-        Account account = new SavingsAccount(id, customerId, name, status);
-        overseasWithdrawLimit = new BigDecimal(1000000);
-        account.setOverseasWithdrawLimit(overseasWithdrawLimit);
-        assertEquals(overseasWithdrawLimit, account.getOverseasWithdrawLimit());
-    }
-    @Test
-    public void failureIllegalOverseasWithdrawLimit(){
+    public void failureIllegalOverseasWithdrawLimit() {
         transferLimit = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> new SavingsAccount(id, customerId, name, status).setOverseasWithdrawLimit(transferLimit));
         assertEquals("Oversea withdrawal limit must be above zero.", exception.getMessage());
     }
+
     @Test
-    public void successSetOverseasTransferLimit(){
-        Account account = new SavingsAccount(id, customerId, name, status);
-        overseasTransferLimit = new BigDecimal(1000000);
-        account.setOverseasTransferLimit(overseasTransferLimit);
-        assertEquals(overseasTransferLimit, account.getOverseasTransferLimit());
-    }
-    @Test
-    public void failureIllegalOverseasTransferLimit(){
+    public void failureIllegalOverseasTransferLimit() {
         transferLimit = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> new SavingsAccount(id, customerId, name, status).setOverseasTransferLimit(transferLimit));
@@ -168,14 +151,7 @@ class SavingsAccountTest {
     }
 
     @Test
-    public void successSInterestRate(){
-        SavingsAccount account = new SavingsAccount(id, customerId, name, status);
-        interestRate = new BigDecimal(1000000);
-        account.setOverseasTransferLimit(interestRate);
-        assertEquals(interestRate, account.getInterestRate());
-    }
-    @Test
-    public void failureIllegalInterestRate(){
+    public void failureIllegalInterestRate() {
         interestRate = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> new SavingsAccount(id, customerId, name, status).setInterestRate(interestRate));
