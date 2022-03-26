@@ -17,11 +17,12 @@ import Screen.Deposit;
 import Screen.Greeting;
 import Screen.MainOption;
 import Screen.PinPrompt;
-import Screen.WithdrawReceipt;
+import Screen.CashTransactionReceipt;
 import Screen.ScreenState;
 import Screen.ScreenStateContext;
 import Screen.Withdraw;
 import Transaction.Transaction;
+import Transaction.CashTransaction;
 
 public class App {
     private static DataSource<Transaction> txnDataSource = null;
@@ -110,12 +111,12 @@ public class App {
                 }
 
                 // Print receipt or just available balance
-                ScreenState receipt = new WithdrawReceipt();
-                stateContext.setAndPrintScreen(receipt);
-                boolean vaildOutput = false;
-                while (vaildOutput == false) {
-                    vaildOutput = ((WithdrawReceipt) receipt).getSelectedOption(in, account, withdrawNotePair,
-                            withdrawAmt);
+                ScreenState withdrawReceipt = new CashTransactionReceipt(CashTransaction.TransactionType.WITHDRAW);
+                stateContext.setAndPrintScreen(withdrawReceipt);
+                boolean vaildWithdrawOutput = false;
+                while (vaildWithdrawOutput == false) {
+                    vaildWithdrawOutput = ((CashTransactionReceipt) withdrawReceipt).getSelectedOption(in, account,
+                            withdrawNotePair, withdrawAmt);
                     in.nextLine(); // Clear scanner int buffer
                 }
 
@@ -129,11 +130,21 @@ public class App {
                     depositNotesPair = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
                     in.nextLine(); // Clear scanner int buffer
                 }
-                BigDecimal amt = Atm.calculateNotesAmount(depositNotesPair);
+                BigDecimal depositAmt = Atm.calculateNotesAmount(depositNotesPair);
 
                 // Return to main option screen if it's zero
-                if (amt.compareTo(BigDecimal.ZERO) == 0) {
+                if (depositAmt.compareTo(BigDecimal.ZERO) == 0) {
                     optionScreens(stateContext, in);
+                }
+
+                // Print receipt or just available balance
+                ScreenState depositReceipt = new CashTransactionReceipt(CashTransaction.TransactionType.DEPOSIT);
+                stateContext.setAndPrintScreen(depositReceipt);
+                boolean vaildDepositOutput = false;
+                while (vaildDepositOutput == false) {
+                    vaildDepositOutput = ((CashTransactionReceipt) depositReceipt).getSelectedOption(in, account,
+                            depositNotesPair, depositAmt);
+                    in.nextLine(); // Clear scanner int buffer
                 }
 
                 optionScreens(stateContext, in);

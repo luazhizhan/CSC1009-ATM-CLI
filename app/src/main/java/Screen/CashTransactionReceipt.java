@@ -5,14 +5,27 @@ import java.text.NumberFormat;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import javax.management.loading.PrivateClassLoader;
+
 import Account.Account;
 import Helper.Pair;
+import Transaction.CashTransaction;
+import Transaction.CashTransaction.TransactionType;
 
-public class WithdrawReceipt implements ScreenState {
+public class CashTransactionReceipt implements ScreenState {
     private String prompt;
+    private CashTransaction.TransactionType type;
+    private String header;
 
-    public WithdrawReceipt() {
-        prompt = "\n" + line + "\nDo you want a printed receipt\n1.  Print Receipt\n2.  No\n" + line;
+    public CashTransactionReceipt(CashTransaction.TransactionType type) {
+        if (type.compareTo(TransactionType.DEPOSIT) == 0) {
+            header = "Cash Deposit Receipt";
+        } else {
+            header = "Cash Withdraw Receipt";
+        }
+        prompt = "\n" + line + "\n" + header
+                + "\n\nDo you want a printed receipt\n1.  Print Receipt\n2.  No\n" + line;
+        this.type = type;
     }
 
     @Override
@@ -33,10 +46,16 @@ public class WithdrawReceipt implements ScreenState {
 
             if (option == 1) {
                 String amtStr = formatter.format(amt);
-                System.out.println("\n" + line + "\nReceipt\n");
+                System.out.println("\n" + line + "\n" + header + "\n");
                 System.out.println(String.format("$10 dollars note(s): %d", notesPair.first()));
                 System.out.println(String.format("$50 dollars note(s): %d", notesPair.second()));
-                System.out.println(String.format("Amount withdrawn: %s", amtStr));
+
+                // Print according to cash transaction type
+                if (type.compareTo(TransactionType.DEPOSIT) == 0) {
+                    System.out.println(String.format("Amount deposited: %s", amtStr));
+                } else {
+                    System.out.println(String.format("Amount withdrawn: %s", amtStr));
+                }
                 System.out.println(String.format("Available balance: %s", balanceStr));
             } else {
                 System.out.println("\n" + line + "\nAvailable balance: " + balanceStr);
