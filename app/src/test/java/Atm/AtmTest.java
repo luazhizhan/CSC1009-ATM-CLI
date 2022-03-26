@@ -110,7 +110,6 @@ public class AtmTest {
 
     @Test
     public void calculateNotesAmount() {
-        Atm atm = new Atm();
         assertEquals(new BigDecimal(60), Atm.calculateNotesAmount(new Pair<Integer>(1, 1)));
         assertEquals(new BigDecimal(50), Atm.calculateNotesAmount(new Pair<Integer>(0, 1)));
         assertEquals(new BigDecimal(10), Atm.calculateNotesAmount(new Pair<Integer>(1, 0)));
