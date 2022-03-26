@@ -7,6 +7,7 @@ import Account.Account;
 import Account.AccountStatus;
 import Account.CurrentAccount;
 import Atm.Atm;
+import Transaction.CashTransaction;
 import Helper.Pair;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -19,7 +20,7 @@ import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
-public class WithdrawReceiptTest {
+public class CashTransactionReceiptTest {
     private Account account;
     private Pair<Integer> notesPair;
     private BigDecimal amt;
@@ -37,21 +38,26 @@ public class WithdrawReceiptTest {
     }
 
     @Test
-    public void success() throws IOException {
-        ScreenState receipt = new WithdrawReceipt();
+    public void successDeposit() throws IOException {
+        ScreenState receipt = new CashTransactionReceipt(CashTransaction.TransactionType.WITHDRAW);
         ScreenStateContext stateContext = new ScreenStateContext();
-        stateContext.setAndPrintScreen(receipt);
 
         // Set and read System.out content
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        stateContext.setAndPrintScreen(receipt);
+        String contentString = outContent.toString();
+        assertTrue(contentString.contains("Cash Withdraw Receipt"));
+        outContent.close();
+
+        outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         // Print receipt
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         Scanner in = new Scanner(System.in);
-        boolean result = ((WithdrawReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
-        String contentString = outContent.toString();
-
+        boolean result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        contentString = outContent.toString();
         assertTrue(result);
         assertTrue(contentString.contains("$10 dollars note(s):"));
         assertTrue(contentString.contains("$50 dollars note(s):"));
@@ -67,7 +73,56 @@ public class WithdrawReceiptTest {
         // Print balance only
         System.setIn(new ByteArrayInputStream("2".getBytes()));
         in = new Scanner(System.in);
-        result = ((WithdrawReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        contentString = outContent.toString();
+        assertTrue(result);
+        assertFalse(contentString.contains("$10 dollars note(s):"));
+        assertTrue(contentString.contains("Available balance:"));
+        assertTrue(contentString.contains("Thank You For Banking With Us!"));
+        in.close();
+    }
+
+    @Test
+    public void successWithdraw() throws IOException {
+        ScreenState receipt = new CashTransactionReceipt(CashTransaction.TransactionType.DEPOSIT);
+        ScreenStateContext stateContext = new ScreenStateContext();
+
+        // Set and read System.out content
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        stateContext.setAndPrintScreen(receipt);
+        String contentString = outContent.toString();
+        assertTrue(contentString.contains("Cash Deposit Receipt"));
+        outContent.close();
+
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Set and read System.out content
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Print receipt
+        System.setIn(new ByteArrayInputStream("1".getBytes()));
+        Scanner in = new Scanner(System.in);
+        boolean result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        contentString = outContent.toString();
+        assertTrue(result);
+        assertTrue(contentString.contains("$10 dollars note(s):"));
+        assertTrue(contentString.contains("$50 dollars note(s):"));
+        assertTrue(contentString.contains("Amount deposited:"));
+        assertTrue(contentString.contains("Available balance:"));
+        assertTrue(contentString.contains("Thank You For Banking With Us!"));
+        in.close();
+        outContent.close();
+
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        // Print balance only
+        System.setIn(new ByteArrayInputStream("2".getBytes()));
+        in = new Scanner(System.in);
+        result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
         contentString = outContent.toString();
         assertTrue(result);
         assertFalse(contentString.contains("$10 dollars note(s):"));
@@ -78,7 +133,7 @@ public class WithdrawReceiptTest {
 
     @Test
     public void failureNoSuchOption() {
-        ScreenState receipt = new WithdrawReceipt();
+        ScreenState receipt = new CashTransactionReceipt(CashTransaction.TransactionType.DEPOSIT);
 
         // Set and read System.out content
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -87,14 +142,14 @@ public class WithdrawReceiptTest {
         // Set scanner input value
         System.setIn(new ByteArrayInputStream("-77".getBytes()));
         Scanner in = new Scanner(System.in);
-        boolean result = ((WithdrawReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        boolean result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
         assertFalse(result);
         assertTrue(outContent.toString().contains("No such option available! Please try again."));
         in.close();
 
         System.setIn(new ByteArrayInputStream("8".getBytes()));
         in = new Scanner(System.in);
-        result = ((WithdrawReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
         assertFalse(result);
         assertTrue(outContent.toString().contains("No such option available! Please try again."));
         in.close();
@@ -102,7 +157,7 @@ public class WithdrawReceiptTest {
 
     @Test
     public void failureInvalidInput() {
-        ScreenState receipt = new WithdrawReceipt();
+        ScreenState receipt = new CashTransactionReceipt(CashTransaction.TransactionType.DEPOSIT);
 
         // Set and read System.out content
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -112,14 +167,14 @@ public class WithdrawReceiptTest {
         System.setIn(new ByteArrayInputStream("abc".getBytes()));
 
         Scanner in = new Scanner(System.in);
-        boolean result = ((WithdrawReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        boolean result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
         assertFalse(result);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         in.close();
 
         System.setIn(new ByteArrayInputStream("5g6".getBytes()));
         in = new Scanner(System.in);
-        result = ((WithdrawReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
         assertFalse(result);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         in.close();

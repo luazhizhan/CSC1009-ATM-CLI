@@ -16,8 +16,7 @@ public class Withdraw implements ScreenState {
     private String prompt;
 
     public Withdraw() {
-        prompt = "\n" + line + "\nCash Withdrawal\n" + line + "\nPlease Enter Amount to Withdraw in Multiples of 10. "
-                + "Enter 0 to go back to option screen.\n" + line;
+        prompt = "\n" + line + "\nCash Withdrawal\n" + line;
     }
 
     @Override
@@ -27,6 +26,9 @@ public class Withdraw implements ScreenState {
 
     public Pair<Integer> getWithdrawalAmount(Scanner in, Atm atm, Account account, DataSource<Transaction> ds) {
         try {
+
+            System.out.println("\n" + line + "\nPlease Enter Amount to Withdraw in Multiples of 10."
+                    + "\nEnter 0 to go back to option screen.\n" + line);
             int amtInt = in.nextInt();
             if (amtInt == 0) {
                 return new Pair<Integer>(0, 0);

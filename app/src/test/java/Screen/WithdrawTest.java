@@ -10,6 +10,7 @@ import Atm.Atm;
 import DataSource.DataSource;
 import DataSource.TransactionDataSource;
 import Helper.Pair;
+import Transaction.CashTransaction;
 import Transaction.Transaction;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,12 +46,14 @@ public class WithdrawTest {
         stateContext.setAndPrintScreen(withdraw);
 
         // Set scanner input value
-        System.setIn(new ByteArrayInputStream(String.valueOf("120").getBytes()));
+        System.setIn(new ByteArrayInputStream("120".getBytes()));
         Scanner in = new Scanner(System.in);
 
         Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         List<Transaction> txns = ((TransactionDataSource) txnDataSource).getDataByAccountId(account.getId());
-        assertEquals(new BigDecimal(120), txns.get(0).getAmount());
+        Transaction txn = txns.get(0);
+        assertEquals(new BigDecimal(120), txn.getAmount());
+        assertEquals(CashTransaction.TransactionType.WITHDRAW, ((CashTransaction) txn).getType());
         assertEquals(2, notes.first());
         assertEquals(2, notes.second());
         assertEquals(new BigDecimal(9880), account.getAvailableBalance());
@@ -74,6 +77,8 @@ public class WithdrawTest {
         Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Insufficient notes."));
         assertNull(notes);
+        assertEquals(3, atm.getNumOf10DollarsNotes());
+        assertEquals(3, atm.getNumOf50DollarsNotes());
         in.close();
 
         atm = new Atm(0, 0);
@@ -82,6 +87,9 @@ public class WithdrawTest {
         notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("No notes left."));
         assertNull(notes);
+        assertEquals(0, atm.getNumOf10DollarsNotes());
+        assertEquals(0, atm.getNumOf50DollarsNotes());
+        in.close();
     }
 
     @Test
@@ -98,6 +106,8 @@ public class WithdrawTest {
         Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Amount should be above 0"));
         assertNull(notes);
+        assertEquals(300, atm.getNumOf10DollarsNotes());
+        assertEquals(300, atm.getNumOf50DollarsNotes());
         in.close();
 
         System.setIn(new ByteArrayInputStream("77".getBytes()));
@@ -105,6 +115,9 @@ public class WithdrawTest {
         notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Amount must be multiplier of 10"));
         assertNull(notes);
+        assertEquals(300, atm.getNumOf10DollarsNotes());
+        assertEquals(300, atm.getNumOf50DollarsNotes());
+        in.close();
     }
 
     @Test
@@ -121,6 +134,8 @@ public class WithdrawTest {
         Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Withdraw amount exceeded withdraw limit!"));
         assertNull(notes);
+        assertEquals(300, atm.getNumOf10DollarsNotes());
+        assertEquals(300, atm.getNumOf50DollarsNotes());
         in.close();
     }
 
@@ -139,6 +154,8 @@ public class WithdrawTest {
         Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Withdraw amount exceeded available balance"));
         assertNull(notes);
+        assertEquals(300, atm.getNumOf10DollarsNotes());
+        assertEquals(300, atm.getNumOf50DollarsNotes());
         in.close();
     }
 
@@ -164,6 +181,8 @@ public class WithdrawTest {
         notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         assertNull(notes);
+        assertEquals(300, atm.getNumOf10DollarsNotes());
+        assertEquals(300, atm.getNumOf50DollarsNotes());
         in.close();
     }
 }
