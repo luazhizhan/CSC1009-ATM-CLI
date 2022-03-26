@@ -85,17 +85,37 @@ public class App {
             in.nextLine(); // Clear scanner int buffer
         }
 
-        ScreenState withdraw = new Withdraw();
-        stateContext.setAndPrintScreen(withdraw);
-        Pair<Integer> notesPair = null;
-        while (notesPair == null) {
-            notesPair = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
-            in.nextLine(); // Clear scanner int buffer
+        switch (optionNum) {
+            case 1:
+                ScreenState withdraw = new Withdraw();
+                stateContext.setAndPrintScreen(withdraw);
+                Pair<Integer> notesPair = null;
+                while (notesPair == null) {
+                    notesPair = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+                    in.nextLine(); // Clear scanner int buffer
+                }
+
+                // Return to main option screen if it's zero
+                if (atm.calculateNotesAmount(notesPair).compareTo(BigDecimal.ZERO) == 0) {
+                    optionScreens(stateContext, in);
+                }
+                break;
+            case 2:
+                System.out.println("Not a valid option");
+                optionScreens(stateContext, in);
+            case 3:
+                System.out.println("Not a valid option");
+                optionScreens(stateContext, in);
+            case 4:
+                System.out.println("Not a valid option");
+                optionScreens(stateContext, in);
+            case 5:
+                System.out.println("Exit");
+                System.exit(0);
+            default:
+                System.out.println("Not a valid option");
+                optionScreens(stateContext, in);
         }
 
-        // Return to main option screen if it's zero
-        if (atm.calculateNotesAmount(notesPair).compareTo(BigDecimal.ZERO) == 0) {
-            optionScreens(stateContext, in);
-        }
     }
 }
