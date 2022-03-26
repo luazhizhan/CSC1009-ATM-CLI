@@ -13,6 +13,7 @@ import DataSource.TransactionDataSource;
 import Helper.Pair;
 import Screen.AtmList;
 import Screen.CardPrompt;
+import Screen.Deposit;
 import Screen.Greeting;
 import Screen.MainOption;
 import Screen.PinPrompt;
@@ -96,15 +97,15 @@ public class App {
                 // Enter withdrawal amount
                 ScreenState withdraw = new Withdraw();
                 stateContext.setAndPrintScreen(withdraw);
-                Pair<Integer> notesPair = null;
-                while (notesPair == null) {
-                    notesPair = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
+                Pair<Integer> withdrawNotePair = null;
+                while (withdrawNotePair == null) {
+                    withdrawNotePair = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
                     in.nextLine(); // Clear scanner int buffer
                 }
-                BigDecimal amt = Atm.calculateNotesAmount(notesPair);
+                BigDecimal withdrawAmt = Atm.calculateNotesAmount(withdrawNotePair);
 
                 // Return to main option screen if it's zero
-                if (amt.compareTo(BigDecimal.ZERO) == 0) {
+                if (withdrawAmt.compareTo(BigDecimal.ZERO) == 0) {
                     optionScreens(stateContext, in);
                 }
 
@@ -113,13 +114,28 @@ public class App {
                 stateContext.setAndPrintScreen(receipt);
                 boolean vaildOutput = false;
                 while (vaildOutput == false) {
-                    vaildOutput = ((WithdrawReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+                    vaildOutput = ((WithdrawReceipt) receipt).getSelectedOption(in, account, withdrawNotePair,
+                            withdrawAmt);
                     in.nextLine(); // Clear scanner int buffer
                 }
 
                 optionScreens(stateContext, in);
             case 2:
-                System.out.println("Not a valid option");
+                // Enter deposit amount
+                ScreenState deposit = new Deposit();
+                stateContext.setAndPrintScreen(deposit);
+                Pair<Integer> depositNotesPair = null;
+                while (depositNotesPair == null) {
+                    depositNotesPair = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
+                    in.nextLine(); // Clear scanner int buffer
+                }
+                BigDecimal amt = Atm.calculateNotesAmount(depositNotesPair);
+
+                // Return to main option screen if it's zero
+                if (amt.compareTo(BigDecimal.ZERO) == 0) {
+                    optionScreens(stateContext, in);
+                }
+
                 optionScreens(stateContext, in);
             case 3:
                 System.out.println("Not a valid option");

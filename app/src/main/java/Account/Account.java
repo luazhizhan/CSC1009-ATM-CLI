@@ -87,6 +87,10 @@ public abstract class Account {
         setAvailableBalance(getAvailableBalance().subtract(amount));
     }
 
+    public void addAvailableBalance(BigDecimal amount) {
+        setAvailableBalance(getAvailableBalance().add(amount));
+    }
+
     public BigDecimal getHoldBalance() {
         return holdBalance;
     }
