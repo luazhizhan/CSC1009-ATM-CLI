@@ -9,7 +9,6 @@ public class AtmList implements ScreenState {
     private String text;
 
     public AtmList() {
-        // TODO Print the list of ATMs
         String atmList = "TODO List all ATMs";
         text = "\n" + line + "\nPlease select an ATM.\nEnter 0 to exit.\n"
                 + atmList + "\n" + line;
@@ -28,13 +27,11 @@ public class AtmList implements ScreenState {
                 System.exit(0); // Terminal program
             }
 
-            // TODO Add more checks as necessary
             if (atmNo < 1) {
                 System.out.println(ScreenState.invalidInput);
                 return null;
             }
 
-            // TODO Return the actual ATM
             return new Atm();
         } catch (NoSuchElementException e) {
             System.out.println(ScreenState.invalidInput);
