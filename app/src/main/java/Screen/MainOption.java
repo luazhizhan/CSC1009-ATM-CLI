@@ -8,7 +8,7 @@ public class MainOption implements ScreenState {
 
     public MainOption() {
         printContents = "\n" + line
-                + "\n1:  Cash Withdrawal \n2:  Cash Deposit \n3:  Bank Transfer \n4:  Manage Account \n"
+                + "\nOptions\n\n1:  Cash Withdrawal \n2:  Cash Deposit \n3:  Bank Transfer \n4:  Manage Account \n"
                 + "5:  Exit \n\nPlease enter your choice:\n" + line;
     }
 

@@ -1,5 +1,5 @@
 ﻿Account_ID,Customer_ID,Account_Name,Status,Available_Balance,Hold_Balance,Withdraw_Limit,Transfer_Limit,Overseas_Withdraw_Limit,Overseas_Transfer_Limit,Account_Type,Overdraft_Limit,Interest_Rate
-6454856238,3314572,None,NORMAL,3000000,37.4,2000,1000,200,1000,Current,3000,0
+6454856238,3314572,None,NORMAL,33000,37.4,2000,1000,200,1000,Current,3000,0
 6452546388,3376259,None,NORMAL,50899,300,300,1000,300,1000,Savings,0,0.005
 6458457236,3490851,Mark,NORMAL,788990,8000,1000,1000,300,100,Savings,0,0.005
 6457589256,4099532,None,NORMAL,445678,888,500,1000,500,1000,Current,1000,0

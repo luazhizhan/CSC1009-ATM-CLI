@@ -46,7 +46,7 @@ public class PinPromptTest {
 
         Account acc = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
         assertEquals(ACCOUNT_ID, acc.getId());
-        assertEquals(new BigDecimal(3000000), acc.getAvailableBalance());
+        assertEquals(new BigDecimal(33000), acc.getAvailableBalance());
         assertTrue(acc instanceof CurrentAccount);
         in.close();
     }
@@ -76,6 +76,7 @@ public class PinPromptTest {
         System.setIn(new ByteArrayInputStream("234567".getBytes()));
         in = new Scanner(System.in);
         ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
+        in.close();
 
         // Prove that program has exited
         assertFalse(true);

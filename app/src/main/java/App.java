@@ -16,6 +16,7 @@ import Screen.CardPrompt;
 import Screen.Greeting;
 import Screen.MainOption;
 import Screen.PinPrompt;
+import Screen.WithdrawReceipt;
 import Screen.ScreenState;
 import Screen.ScreenStateContext;
 import Screen.Withdraw;
@@ -87,6 +88,7 @@ public class App {
 
         switch (optionNum) {
             case 1:
+                // Enter withdrawal amount
                 ScreenState withdraw = new Withdraw();
                 stateContext.setAndPrintScreen(withdraw);
                 Pair<Integer> notesPair = null;
@@ -94,12 +96,23 @@ public class App {
                     notesPair = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
                     in.nextLine(); // Clear scanner int buffer
                 }
+                BigDecimal amt = atm.calculateNotesAmount(notesPair);
 
                 // Return to main option screen if it's zero
-                if (atm.calculateNotesAmount(notesPair).compareTo(BigDecimal.ZERO) == 0) {
+                if (amt.compareTo(BigDecimal.ZERO) == 0) {
                     optionScreens(stateContext, in);
                 }
-                break;
+
+                // Print receipt or just available balance
+                ScreenState receipt = new WithdrawReceipt();
+                stateContext.setAndPrintScreen(receipt);
+                boolean vaildOutput = false;
+                while (vaildOutput == false) {
+                    vaildOutput = ((WithdrawReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+                    in.nextLine(); // Clear scanner int buffer
+                }
+
+                optionScreens(stateContext, in);
             case 2:
                 System.out.println("Not a valid option");
                 optionScreens(stateContext, in);

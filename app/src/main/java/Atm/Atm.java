@@ -130,7 +130,7 @@ public class Atm {
      * @param notes Pair(Number of 10 dollars notes, Number of 50 dollars notes)
      * @return
      */
-    public BigDecimal calculateNotesAmount(Pair<Integer> notes) {
+    public static BigDecimal calculateNotesAmount(Pair<Integer> notes) {
         // Calculate total amount based on number of 10 and 50 dollars note
         BigDecimal totalTenAmt = new BigDecimal(10).multiply(new BigDecimal(notes.first()));
         BigDecimal totalFiftyAmt = new BigDecimal(50).multiply(new BigDecimal(notes.second()));
