@@ -46,7 +46,7 @@ public class TransactionDataSource extends DataSource<Transaction> {
                     type = CashTransaction.TransactionType.WITHDRAW;
                 }
                 Transaction txn = new CashTransaction(data[1], new BigDecimal(data[2]), data[4], type);
-                txn.setAccountId((data[0]));
+                txn.setId(data[0]);
                 txn.setDateCreated(new Date(Long.parseLong(data[3])));
                 txnDataSource.add(txn);
             }
@@ -64,7 +64,7 @@ public class TransactionDataSource extends DataSource<Transaction> {
              * dateCompleted - 6
              */
             Transaction txn = new TransferTransaction(data[1], data[4], new BigDecimal(data[2]));
-            txn.setAccountId((data[0]));
+            txn.setId(data[0]);
             txn.setDateCreated(new Date(Long.parseLong(data[3])));
             ((TransferTransaction) txn).setDateCompleted(new Date(Long.parseLong(data[6])));
             txnDataSource.add(txn);
@@ -72,11 +72,33 @@ public class TransactionDataSource extends DataSource<Transaction> {
         return txnDataSource;
     }
 
+    /**
+     * Get transaction by transaction Id
+     * 
+     * @param id transaction id
+     * @return Transaction
+     */
     @Override
     public Transaction getDataById(String id) {
         return this.getData().stream()
-                .filter(data -> data.getAccountId().equals(id))
+                .filter(data -> data.getId().equals(id))
                 .findFirst().orElse(null);
+    }
+
+    /**
+     * Get transaction list by account id sorted by date created descendingly
+     * 
+     * @param accountId
+     * @return List<Transaction>
+     */
+    public List<Transaction> getDataByAccountId(String accountId) {
+        return this.getData().stream()
+                .filter(data -> data.getAccountId().equals(accountId))
+                .sorted((a, b) -> b.getDateCreated().compareTo(a.getDateCreated())).toList();
+    }
+
+    public void add(Transaction txn) {
+        this.getData().add(txn);
     }
 
 }

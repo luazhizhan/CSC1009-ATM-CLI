@@ -7,7 +7,10 @@ import Account.Account;
 import Account.AccountStatus;
 import Account.CurrentAccount;
 import Atm.Atm;
+import DataSource.DataSource;
+import DataSource.TransactionDataSource;
 import Helper.Pair;
+import Transaction.Transaction;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,11 +20,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 
 public class WithdrawTest {
     private Atm atm;
     private Account account;
+    private static DataSource<Transaction> txnDataSource;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
@@ -30,6 +35,7 @@ public class WithdrawTest {
         account.setAvailableBalance(new BigDecimal(10000));
         ((CurrentAccount) account).setWithdrawLimit(new BigDecimal(1000));
         ((CurrentAccount) account).setOverDraftLimit(new BigDecimal(100));
+        txnDataSource = new TransactionDataSource();
     }
 
     @Test
@@ -42,7 +48,9 @@ public class WithdrawTest {
         System.setIn(new ByteArrayInputStream(String.valueOf("120").getBytes()));
         Scanner in = new Scanner(System.in);
 
-        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
+        List<Transaction> txns = ((TransactionDataSource) txnDataSource).getDataByAccountId(account.getId());
+        assertEquals(new BigDecimal(120), txns.get(0).getAmount());
         assertEquals(2, notes.first());
         assertEquals(2, notes.second());
         assertEquals(new BigDecimal(9880), account.getAvailableBalance());
@@ -63,7 +71,7 @@ public class WithdrawTest {
         // Require 4 50 dollars note.
         System.setIn(new ByteArrayInputStream("200".getBytes()));
         Scanner in = new Scanner(System.in);
-        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Insufficient notes."));
         assertNull(notes);
         in.close();
@@ -71,7 +79,7 @@ public class WithdrawTest {
         atm = new Atm(0, 0);
         System.setIn(new ByteArrayInputStream("50".getBytes()));
         in = new Scanner(System.in);
-        notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("No notes left."));
         assertNull(notes);
     }
@@ -87,14 +95,14 @@ public class WithdrawTest {
         // Set scanner input value
         System.setIn(new ByteArrayInputStream("-10".getBytes()));
         Scanner in = new Scanner(System.in);
-        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Amount should be above 0"));
         assertNull(notes);
         in.close();
 
         System.setIn(new ByteArrayInputStream("77".getBytes()));
         in = new Scanner(System.in);
-        notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Amount must be multiplier of 10"));
         assertNull(notes);
     }
@@ -110,7 +118,7 @@ public class WithdrawTest {
         // Set scanner input value
         System.setIn(new ByteArrayInputStream("1010".getBytes()));
         Scanner in = new Scanner(System.in);
-        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Withdraw amount exceeded withdraw limit!"));
         assertNull(notes);
         in.close();
@@ -128,7 +136,7 @@ public class WithdrawTest {
         // Set scanner input value
         System.setIn(new ByteArrayInputStream("500".getBytes()));
         Scanner in = new Scanner(System.in);
-        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Withdraw amount exceeded available balance"));
         assertNull(notes);
         in.close();
@@ -146,14 +154,14 @@ public class WithdrawTest {
         System.setIn(new ByteArrayInputStream("~!abc".getBytes()));
 
         Scanner in = new Scanner(System.in);
-        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         assertNull(notes);
         in.close();
 
         System.setIn(new ByteArrayInputStream("three hundred".getBytes()));
         in = new Scanner(System.in);
-        notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+        notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         assertNull(notes);
         in.close();

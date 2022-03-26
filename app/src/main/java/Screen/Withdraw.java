@@ -7,7 +7,10 @@ import java.util.Scanner;
 import Account.Account;
 import Atm.Atm;
 import Atm.InsufficientNotesException;
+import DataSource.DataSource;
 import Helper.Pair;
+import Transaction.CashTransaction;
+import Transaction.Transaction;
 
 public class Withdraw implements ScreenState {
     private String prompt;
@@ -22,7 +25,7 @@ public class Withdraw implements ScreenState {
         System.out.println(prompt);
     }
 
-    public Pair<Integer> getWithdrawalAmount(Scanner in, Atm atm, Account account) {
+    public Pair<Integer> getWithdrawalAmount(Scanner in, Atm atm, Account account, DataSource<Transaction> ds) {
         try {
             int amtInt = in.nextInt();
             if (amtInt == 0) {
@@ -40,6 +43,11 @@ public class Withdraw implements ScreenState {
             // Withdraw from ATM and account
             Pair<Integer> notesPair = atm.withdraw(amt);
             account.subtractAvailableBalance(amt);
+
+            // Create record of transaction
+            Transaction txn = new CashTransaction(account.getId(), amt, atm.getId(),
+                    CashTransaction.TransactionType.WITHDRAW);
+            ds.add(txn);
 
             return notesPair;
         } catch (InsufficientNotesException e) {

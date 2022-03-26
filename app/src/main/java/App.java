@@ -23,15 +23,20 @@ import Screen.Withdraw;
 import Transaction.Transaction;
 
 public class App {
+    private static DataSource<Transaction> txnDataSource = null;
+    private static DataSource<Card> cardDataSource = null;
+    private static DataSource<Account> accountDataSource = null;
     private static Atm atm = null;
     private static Card card = null;
     private static Account account = null;
 
     public static void main(String[] args) {
         try (Scanner in = new Scanner(System.in)) {
-            DataSource<Transaction> txnDataSource = new TransactionDataSource();
-            DataSource<Card> cardDataSource = new CardsDataSource();
-            DataSource<Account> accountDataSource = new AccountDataSource();
+
+            // Get data from CSV files
+            txnDataSource = new TransactionDataSource();
+            cardDataSource = new CardsDataSource();
+            accountDataSource = new AccountDataSource();
 
             ScreenStateContext stateContext = new ScreenStateContext();
 
@@ -93,10 +98,10 @@ public class App {
                 stateContext.setAndPrintScreen(withdraw);
                 Pair<Integer> notesPair = null;
                 while (notesPair == null) {
-                    notesPair = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account);
+                    notesPair = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
                     in.nextLine(); // Clear scanner int buffer
                 }
-                BigDecimal amt = atm.calculateNotesAmount(notesPair);
+                BigDecimal amt = Atm.calculateNotesAmount(notesPair);
 
                 // Return to main option screen if it's zero
                 if (amt.compareTo(BigDecimal.ZERO) == 0) {
