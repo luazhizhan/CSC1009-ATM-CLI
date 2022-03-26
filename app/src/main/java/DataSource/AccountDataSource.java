@@ -1,10 +1,7 @@
 package DataSource;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,20 +12,18 @@ import Account.SavingsAccount;
 import Account.AccountStatus;
 
 public class AccountDataSource extends DataSource<Account> {
-    private static final String Account_CSV_PATH = "Account/accounts.csv";
+    private static final String ACCOUNT_CSV_PATH = "Account/accounts.csv";
 
     public AccountDataSource() throws FileNotFoundException, IOException {
         super();
-        setData(readDataFromCSV(Account_CSV_PATH));
+        setData(parseCSVDataList(readDataFromCSV(ACCOUNT_CSV_PATH)));
     }
 
     @Override
-    protected List<Account> readDataFromCSV(String filePath) throws FileNotFoundException, IOException {
+    protected List<Account> parseCSVDataList(List<String[]> dataList) {
         List<Account> accountDataSource = new ArrayList<Account>();
-        List<String[]> dataList = super.readDataFromCSV(filePath);
         String[] data;
-        for(int i =0; i<dataList.size();i++)
-        {
+        for (int i = 0; i < dataList.size(); i++) {
             /**
              * Account_ID - 0
              * Customer_ID - 1
@@ -46,25 +41,18 @@ public class AccountDataSource extends DataSource<Account> {
              */
             data = dataList.get(i);
             AccountStatus status;
-            if (data[3].equals("NORMAL"))
-            {
+            if (data[3].equals("NORMAL")) {
                 status = AccountStatus.NORMAL;
-            }
-            else if (data[3].equals("FROZEN"))
-            {
+            } else if (data[3].equals("FROZEN")) {
                 status = AccountStatus.FROZEN;
-            }
-            else {
+            } else {
                 status = AccountStatus.CLOSED;
             }
             Account acc;
-            if (data[10].equals("Current"))
-            {
+            if (data[10].equals("Current")) {
                 acc = new CurrentAccount(data[0], data[1], data[2], status);
                 ((CurrentAccount) acc).setOverDraftLimit(new BigDecimal(data[11]));
-            }
-            else
-            {
+            } else {
                 acc = new SavingsAccount(data[0], data[1], data[2], status);
                 ((SavingsAccount) acc).setInterestRate(new BigDecimal(data[12]));
             }
@@ -78,7 +66,6 @@ public class AccountDataSource extends DataSource<Account> {
         }
 
         return accountDataSource;
-
     }
 
     public Account getDataById(String id) {

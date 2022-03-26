@@ -17,31 +17,30 @@ public class TransactionDataSource extends DataSource<Transaction> {
 
     public TransactionDataSource() throws FileNotFoundException, IOException {
         super();
-        List<Transaction> transactions = readDataFromCSV(CASH_CSV_PATH);
-        transactions.addAll(readDataFromCSV(TRANSFER_CSV_PATH));
+        List<Transaction> transactions = parseCSVDataList(readDataFromCSV(CASH_CSV_PATH));
+        transactions.addAll(parseCSVDataList(readDataFromCSV(TRANSFER_CSV_PATH)));
         setData(transactions);
 
     }
 
     @Override
-    protected List<Transaction> readDataFromCSV(String filePath) throws FileNotFoundException, IOException {
+    protected List<Transaction> parseCSVDataList(List<String[]> dataList) {
         List<Transaction> txnDataSource = new ArrayList<Transaction>();
-        List<String[]> dataList = super.readDataFromCSV(filePath);
-        String[] data;
-        if(filePath.equals(CASH_CSV_PATH))
-        {
-            /**
-             * id - 0
-             * accountId - 1
-             * amount - 2
-             * dateCreated - 3
-             * atmId - 4
-             * type - 5
-             */
-            for (int i = 0; i < dataList.size(); i++) {
-                data = dataList.get(i);
+        String[] first = dataList.get(0);
+
+        // Is transfer transaction if no dateCompleted field found
+        if (first.length < 7) {
+            for (String[] data : dataList) {
+                /**
+                 * id - 0
+                 * accountId - 1
+                 * amount - 2
+                 * dateCreated - 3
+                 * atmId - 4
+                 * type - 5
+                 */
                 CashTransaction.TransactionType type;
-                if (data[5].compareTo("DEPOSIT")==0) {
+                if (data[5].compareTo("DEPOSIT") == 0) {
                     type = CashTransaction.TransactionType.DEPOSIT;
                 } else {
                     type = CashTransaction.TransactionType.WITHDRAW;
@@ -51,9 +50,10 @@ public class TransactionDataSource extends DataSource<Transaction> {
                 txn.setDateCreated(new Date(Long.parseLong(data[3])));
                 txnDataSource.add(txn);
             }
+            return txnDataSource;
         }
-        else if(filePath.equals(TRANSFER_CSV_PATH))
-        {
+
+        for (String[] data : dataList) {
             /**
              * id - 0
              * accountId - 1
@@ -63,18 +63,12 @@ public class TransactionDataSource extends DataSource<Transaction> {
              * message - 5
              * dateCompleted - 6
              */
-            for(int i = 0; i < dataList.size(); i++)
-            {
-                data = dataList.get(i);
-                Transaction txn = new TransferTransaction(data[1], data[4], new BigDecimal(data[2]));
-                txn.setAccountId((data[0]));
-                txn.setDateCreated(new Date(Long.parseLong(data[3])));
-                ((TransferTransaction) txn).setDateCompleted(new Date(Long.parseLong(data[6])));
-                txnDataSource.add(txn);
-            }
-
+            Transaction txn = new TransferTransaction(data[1], data[4], new BigDecimal(data[2]));
+            txn.setAccountId((data[0]));
+            txn.setDateCreated(new Date(Long.parseLong(data[3])));
+            ((TransferTransaction) txn).setDateCompleted(new Date(Long.parseLong(data[6])));
+            txnDataSource.add(txn);
         }
-
         return txnDataSource;
     }
 

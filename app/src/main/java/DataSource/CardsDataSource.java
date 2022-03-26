@@ -1,33 +1,26 @@
 package DataSource;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
 import Account.Card;
 
-
 public class CardsDataSource extends DataSource<Card> {
-    private static final String Cards_CSV_PATH = "Account/cards.csv";
+    private static final String CARDS_CSV_PATH = "Account/cards.csv";
 
     public CardsDataSource() throws FileNotFoundException, IOException {
         super();
-        setData(readDataFromCSV(Cards_CSV_PATH));
+        setData(parseCSVDataList(readDataFromCSV(CARDS_CSV_PATH)));
     }
 
     @Override
-    protected List<Card> readDataFromCSV(String filePath) throws FileNotFoundException, IOException
-    {
+    protected List<Card> parseCSVDataList(List<String[]> dataList) {
         List<Card> cardDataSource = new ArrayList<Card>();
-        List<String[]> dataList = super.readDataFromCSV(filePath);
         String[] data;
-        for (int i = 0; i<dataList.size(); i++)
-        {
+        for (int i = 0; i < dataList.size(); i++) {
             /**
              * Issuing_Network - 0
              * Card_Number - 1
