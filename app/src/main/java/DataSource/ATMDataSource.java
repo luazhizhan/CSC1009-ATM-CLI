@@ -9,7 +9,7 @@ import Address.Address;
 import Atm.Atm;
 
 public class ATMDataSource extends DataSource<Atm> {
-    private static final String ATM_CSV_PATH = "atm.csv";
+    private static final String ATM_CSV_PATH = "Atm/atm.csv";
 
     public ATMDataSource() throws FileNotFoundException, IOException {
         super();
