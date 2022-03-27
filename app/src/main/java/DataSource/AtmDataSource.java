@@ -8,17 +8,17 @@ import java.util.List;
 import Address.Address;
 import Atm.Atm;
 
-public class ATMDataSource extends DataSource<Atm> {
+public class AtmDataSource extends DataSource<Atm> {
     private static final String ATM_CSV_PATH = "Atm/atm.csv";
 
-    public ATMDataSource() throws FileNotFoundException, IOException {
+    public AtmDataSource() throws FileNotFoundException, IOException {
         super();
         setData(parseCSVDataList(readDataFromCSV(ATM_CSV_PATH)));
     }
 
     @Override
     protected List<Atm> parseCSVDataList(List<String[]> dataList) {
-        List<Atm> ATMDataSource = new ArrayList<Atm>();
+        List<Atm> atmDataSource = new ArrayList<Atm>();
         String[] data;
         /**
          * AtmID 0
@@ -34,10 +34,10 @@ public class ATMDataSource extends DataSource<Atm> {
             data = dataList.get(i);
             Atm atm = new Atm(data[0],
                     new Address(data[1], data[2], data[3], data[4], data[5], data[6], data[7]));
-            ATMDataSource.add(atm);
+            atmDataSource.add(atm);
         }
 
-        return ATMDataSource;
+        return atmDataSource;
     }
 
     @Override

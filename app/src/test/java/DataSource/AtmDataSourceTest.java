@@ -8,10 +8,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ATMDataSourceTest {
+public class AtmDataSourceTest {
     @Test
     public void success() throws FileNotFoundException, IOException {
-        DataSource<Atm> atmDataSource = new ATMDataSource();
+        DataSource<Atm> atmDataSource = new AtmDataSource();
         Atm atm = atmDataSource.getDataById("6a8145ec3be544879331c0c592e510b6");
         assertEquals(atm.getAddress().getBlkNum(), "4");
         assertEquals(atm.getAddress().getStreetAddress(), "Delta Road");
