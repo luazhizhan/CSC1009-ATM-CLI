@@ -31,6 +31,10 @@ public class CashTransaction extends Transaction {
         return type;
     }
 
+    public String getTypeInString() {
+        return type.compareTo(TransactionType.DEPOSIT) == 0 ? "DEPOSIT" : "WITHDRAW";
+    }
+
     public void setType(TransactionType type) {
         this.type = type;
     }

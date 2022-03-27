@@ -14,6 +14,7 @@ import Transaction.TransferTransaction;
 public class TransactionDataSource extends DataSource<Transaction> {
     private static final String CASH_CSV_PATH = "Transaction/cash_transactions.csv";
     private static final String TRANSFER_CSV_PATH = "Transaction/transfer_transactions.csv";
+    private static final int CONVERT_TO_MILLISECONDS = 1000;
 
     public TransactionDataSource() throws FileNotFoundException, IOException {
         super();
@@ -47,7 +48,7 @@ public class TransactionDataSource extends DataSource<Transaction> {
                 }
                 Transaction txn = new CashTransaction(data[1], new BigDecimal(data[2]), data[4], type);
                 txn.setId(data[0]);
-                txn.setDateCreated(new Date(Long.parseLong(data[3])));
+                txn.setDateCreated(new Date(Long.parseLong(data[3]) * CONVERT_TO_MILLISECONDS));
                 txnDataSource.add(txn);
             }
             return txnDataSource;
@@ -65,8 +66,9 @@ public class TransactionDataSource extends DataSource<Transaction> {
              */
             Transaction txn = new TransferTransaction(data[1], data[4], new BigDecimal(data[2]));
             txn.setId(data[0]);
-            txn.setDateCreated(new Date(Long.parseLong(data[3])));
-            ((TransferTransaction) txn).setDateCompleted(new Date(Long.parseLong(data[6])));
+            txn.setDateCreated(new Date(Long.parseLong(data[3]) * CONVERT_TO_MILLISECONDS));
+            ((TransferTransaction) txn).setMessage(data[5]);
+            ((TransferTransaction) txn).setDateCompleted(new Date(Long.parseLong(data[6]) * CONVERT_TO_MILLISECONDS));
             txnDataSource.add(txn);
         }
         return txnDataSource;
@@ -86,14 +88,20 @@ public class TransactionDataSource extends DataSource<Transaction> {
     }
 
     /**
-     * Get transaction list by account id sorted by date created descendingly
+     * Get all transaction by account id sorted by date created descendingly
      * 
      * @param accountId
      * @return List<Transaction>
      */
     public List<Transaction> getDataByAccountId(String accountId) {
         return this.getData().stream()
-                .filter(data -> data.getAccountId().equals(accountId))
+                .filter(data -> {
+                    if (data.getAccountId().equals(accountId))
+                        return true;
+                    if (data instanceof TransferTransaction)
+                        return ((TransferTransaction) data).getToAccountId().equals(accountId);
+                    return false;
+                })
                 .sorted((a, b) -> b.getDateCreated().compareTo(a.getDateCreated())).toList();
     }
 

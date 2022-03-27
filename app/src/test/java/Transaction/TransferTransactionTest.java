@@ -67,4 +67,20 @@ public class TransferTransactionTest {
                 () -> new TransferTransaction(accountId, toAccountId, illegalAmt2));
         assertEquals("Please enter a number > 0.", exception2.getMessage());
     }
+
+    @Test
+    public void successReceivedOrSent() {
+        String accountId = Id.generateUUID();
+        String toAccountId = Id.generateUUID();
+        BigDecimal amt = new BigDecimal(10);
+
+        TransferTransaction txn = new TransferTransaction(accountId, toAccountId, amt);
+
+        assertEquals(TransferTransaction.Type.SENT, txn.isReceivedOrSent(accountId));
+        assertEquals(TransferTransaction.Type.RECEIVED, txn.isReceivedOrSent(toAccountId));
+        assertEquals("SENT", txn.toTypeString(txn.isReceivedOrSent(accountId)));
+        assertEquals("RECEIVED", txn.toTypeString(txn.isReceivedOrSent(toAccountId)));
+
+        assertNull(txn.isReceivedOrSent("123"));
+    }
 }

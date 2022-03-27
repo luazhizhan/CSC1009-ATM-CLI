@@ -20,6 +20,7 @@ import Screen.PinPrompt;
 import Screen.CashTransactionReceipt;
 import Screen.ScreenState;
 import Screen.ScreenStateContext;
+import Screen.TransactionHistory;
 import Screen.Withdraw;
 import Transaction.Transaction;
 import Transaction.CashTransaction;
@@ -94,7 +95,7 @@ public class App {
         }
 
         switch (optionNum) {
-            case 1:
+            case 1: // Withdraw cash
                 // Enter withdrawal amount
                 ScreenState withdraw = new Withdraw();
                 stateContext.setAndPrintScreen(withdraw);
@@ -119,9 +120,8 @@ public class App {
                             withdrawNotePair, withdrawAmt);
                     in.nextLine(); // Clear scanner int buffer
                 }
-
                 optionScreens(stateContext, in);
-            case 2:
+            case 2: // Deposit cash
                 // Enter deposit amount
                 ScreenState deposit = new Deposit();
                 stateContext.setAndPrintScreen(deposit);
@@ -146,19 +146,23 @@ public class App {
                             depositNotesPair, depositAmt);
                     in.nextLine(); // Clear scanner int buffer
                 }
-
                 optionScreens(stateContext, in);
-            case 3:
-                System.out.println("Not a valid option");
+            case 3: // Bank Transfer
+                System.out.println("Not a valid option.");
                 optionScreens(stateContext, in);
-            case 4:
-                System.out.println("Not a valid option");
+            case 4: // Transaction History
+                ScreenState txnHistory = new TransactionHistory();
+                stateContext.setAndPrintScreen(txnHistory);
+                ((TransactionHistory) txnHistory).printTxnHistory(in, account.getId(), txnDataSource);
                 optionScreens(stateContext, in);
-            case 5:
+            case 5: // Manage Account
+                System.out.println("Not a valid option.");
+                optionScreens(stateContext, in);
+            case 6: // Exit
                 System.out.println("Exit");
                 System.exit(0);
             default:
-                System.out.println("Not a valid option");
+                System.out.println("Not a valid option.");
                 optionScreens(stateContext, in);
         }
 

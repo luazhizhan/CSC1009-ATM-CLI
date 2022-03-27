@@ -8,8 +8,8 @@ public class MainOption implements ScreenState {
 
     public MainOption() {
         printContents = "\n" + line
-                + "\nOptions\n\n1:  Cash Withdrawal \n2:  Cash Deposit \n3:  Bank Transfer \n4:  Manage Account \n"
-                + "5:  Exit \n\nPlease enter your choice:\n" + line;
+                + "\nOptions\n\n1:  Cash Withdrawal \n2:  Cash Deposit \n3:  Bank Transfer \n" +
+                "4:  Transaction History \n5:  Manage Account \n6:  Exit \n\nPlease enter your choice:\n" + line;
     }
 
     @Override
@@ -20,13 +20,13 @@ public class MainOption implements ScreenState {
     public int getSelectedOption(Scanner in) {
         try {
             int option = in.nextInt();
-            if (option < 1 || option > 5) {
+            if (option < 1 || option > 6) {
                 System.out.println("\n" + line + "\nNo such option available! Please try again.\n"
                         + line + "\n" + printContents);
                 return -1;
             }
 
-            if (option == 5) {
+            if (option == 6) {
                 System.out.println("Exit");
                 System.exit(0); // Terminal program
             }

@@ -8,10 +8,36 @@ public class TransferTransaction extends Transaction {
     private String message;
     private Date dateCompleted;
 
+    public enum Type {
+        SENT,
+        RECEIVED,
+    };
+
     public TransferTransaction(String accountId, String toAccountId, BigDecimal amount) {
         super(accountId, amount);
         setToAccountId(toAccountId);
         setDateCompleted(new Date());
+    }
+
+    /**
+     * Check if this transfer transaction received(+) or sent(+) using
+     * accountId argument
+     * 
+     * @param accountId
+     * @return
+     */
+    public Type isReceivedOrSent(String accountId) {
+        if (accountId.equals(this.getAccountId())) {
+            return Type.SENT;
+        }
+        if (accountId.equals(this.getToAccountId())) {
+            return Type.RECEIVED;
+        }
+        return null;
+    }
+
+    public String toTypeString(Type type) {
+        return type.equals(Type.SENT) ? "SENT" : "RECEIVED";
     }
 
     public String getToAccountId() {
