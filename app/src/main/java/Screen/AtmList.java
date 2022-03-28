@@ -15,11 +15,9 @@ import javax.xml.crypto.Data;
 
 public class AtmList implements ScreenState {
     private String prompt;
-    private List<Atm> atmList;
+    private List<Atm> atmList= new AtmDataSource().getAtmData();;
     public AtmList() throws IOException {
 
-        DataSource<Atm> data = new AtmDataSource();
-        atmList = data.getData();
 
             prompt = "\n" + line + "\nPlease select an ATM.\nEnter 0 to exit.\n";
             for(int i = 0; i< atmList.size();i++) {
