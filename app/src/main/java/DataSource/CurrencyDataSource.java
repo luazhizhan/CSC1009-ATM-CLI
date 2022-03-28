@@ -38,22 +38,22 @@ public class CurrencyDataSource extends DataSource<Currency> {
         // USD parsed first before rest, so the rest can set exchange rates to USD.
         data = dataList.get(0);
         Currency usd = new Currency(data[0]);
-        if (data[1] != null)
+        if (data[1] != "" || data[1] != null)
             usd.setBanknotes(bankNoteParser(data[1]));
-        if (data[2] != null)
+        if (data[2] != "" || data[2] != null)
             usd.setWithdrawMinimum(Integer.parseInt(data[2]));
-        if (data[3] != null)
+        if (data[3] != "" || data[3] != null)
             usd.setWithdrawMaximum(Integer.parseInt(data[3]));
         currencyDataSource.add(usd);
 
         for (int i = 1; i < dataList.size(); i++) {
             data = dataList.get(i);
             Currency currency = new Currency(data[0]);
-            if (data[1] != null)
+            if (data[1] != "" || data[1] != null)
                 currency.setBanknotes(bankNoteParser(data[1]));
-            if (data[2] != "")
+            if (data[2] != "" || data[2] != null)
                 currency.setWithdrawMinimum(Integer.parseInt(data[2]));
-            if (data[3] != "")
+            if (data[3] != "" || data[3] != null)
                 currency.setWithdrawMaximum(Integer.parseInt(data[3]));
             if (data[4] != "")
                 currency.setExchangeRate(new ExchangeRate(currencyDataSource.get(0), new BigDecimal(data[4])));

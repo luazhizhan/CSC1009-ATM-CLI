@@ -1,249 +1,76 @@
-ISO3166-1-Alpha-3,ISO4217-currency_alphabetic_code,CLDR display name,,,,,,,,,,,,,
-TWN,TWD,Taiwan,,,,,,,,,,,,,
-AFG,AFN,Afghanistan,,,,,,,,,,,,,
-ALB,ALL,Albania,,,,,,,,,,,,,
-DZA,DZD,Algeria,,,,,,,,,,,,,
-ASM,USD,American Samoa,,,,,,,,,,,,,
-AND,EUR,Andorra,,,,,,,,,,,,,
-AGO,AOA,Angola,,,,,,,,,,,,,
-AIA,XCD,Anguilla,,,,,,,,,,,,,
-ATA,USD,Antarctica,,,,,,,,,,,,,
-ATG,XCD,Antigua & Barbuda,,,,,,,,,,,,,
-ARG,ARS,Argentina,,,,,,,,,,,,,
-ARM,AMD,Armenia,,,,,,,,,,,,,
-ABW,AWG,Aruba,,,,,,,,,,,,,
-AUS,AUD,Australia,,,,,,,,,,,,,
-AUT,EUR,Austria,,,,,,,,,,,,,
-AZE,AZN,Azerbaijan,,,,,,,,,,,,,
-BHS,BSD,Bahamas,,,,,,,,,,,,,
-BHR,BHD,Bahrain,,,,,,,,,,,,,
-BGD,BDT,Bangladesh,,,,,,,,,,,,,
-BRB,BBD,Barbados,,,,,,,,,,,,,
-BLR,BYN,Belarus,,,,,,,,,,,,,
-BEL,EUR,Belgium,,,,,,,,,,,,,
-BLZ,BZD,Belize,,,,,,,,,,,,,
-BEN,XOF,Benin,,,,,,,,,,,,,
-BMU,BMD,Bermuda,,,,,,,,,,,,,
-BTN,BTN,Bhutan,,,,,,,,,,,,,
-BOL,BOB,Bolivia,,,,,,,,,,,,,
-BES,USD,Caribbean Netherlands,,,,,,,,,,,,,
-BIH,BAM,Bosnia,,,,,,,,,,,,,
-BWA,BWP,Botswana,,,,,,,,,,,,,
-BVT,NOK,Bouvet Island,,,,,,,,,,,,,
-BRA,BRL,Brazil,,,,,,,,,,,,,
-IOT,USD,British Indian Ocean Territory,,,,,,,,,,,,,
-VGB,USD,British Virgin Islands,,,,,,,,,,,,,
-BRN,BND,Brunei,,,,,,,,,,,,,
-BGR,BGN,Bulgaria,,,,,,,,,,,,,
-BFA,XOF,Burkina Faso,,,,,,,,,,,,,
-BDI,BIF,Burundi,,,,,,,,,,,,,
-CPV,CVE,Cape Verde,,,,,,,,,,,,,
-KHM,KHR,Cambodia,,,,,,,,,,,,,
-CMR,XAF,Cameroon,,,,,,,,,,,,,
-CAN,CAD,Canada,,,,,,,,,,,,,
-CYM,KYD,Cayman Islands,,,,,,,,,,,,,
-CAF,XAF,Central African Republic,,,,,,,,,,,,,
-TCD,XAF,Chad,,,,,,,,,,,,,
-CHL,CLP,Chile,,,,,,,,,,,,,
-CHN,CNY,China,,,,,,,,,,,,,
-HKG,HKD,Hong Kong,,,,,,,,,,,,,
-MAC,MOP,Macau,,,,,,,,,,,,,
-CXR,AUD,Christmas Island,,,,,,,,,,,,,
-CCK,AUD,Cocos (Keeling) Islands,,,,,,,,,,,,,
-COL,COP,Colombia,,,,,,,,,,,,,
-COM,KMF,Comoros,,,,,,,,,,,,,
-COG,XAF,Congo - Brazzaville,,,,,,,,,,,,,
-COK,NZD,Cook Islands,,,,,,,,,,,,,
-CRI,CRC,Costa Rica,,,,,,,,,,,,,
-HRV,HRK,Croatia,,,,,,,,,,,,,
-CUB,CUP,Cuba,,,,,,,,,,,,,
-CUW,ANG,Curacao,,,,,,,,,,,,,
-CYP,EUR,Cyprus,,,,,,,,,,,,,
-CZE,CZK,Czechia,,,,,,,,,,,,,
-CIV,XOF,Cote D'lvoire,,,,,,,,,,,,,
-PRK,KPW,North Korea,,,,,,,,,,,,,
-COD,CDF,Congo - Kinshasa,,,,,,,,,,,,,
-DNK,DKK,Denmark,,,,,,,,,,,,,
-DJI,DJF,Djibouti,,,,,,,,,,,,,
-DMA,XCD,Dominica,,,,,,,,,,,,,
-DOM,DOP,Dominican Republic,,,,,,,,,,,,,
-ECU,USD,Ecuador,,,,,,,,,,,,,
-EGY,EGP,Egypt,,,,,,,,,,,,,
-SLV,SVC,El Salvador,,,,,,,,,,,,,
-GNQ,XAF,Equatorial Guinea,,,,,,,,,,,,,
-ERI,ERN,Eritrea,,,,,,,,,,,,,
-EST,EUR,Estonia,,,,,,,,,,,,,
-SWZ,SZL,Eswatini,,,,,,,,,,,,,
-ETH,ETB,Ethiopia,,,,,,,,,,,,,
-FLK,FKP,Falkland Islands,,,,,,,,,,,,,
-FRO,DKK,Faroe Islands,,,,,,,,,,,,,
-FJI,FJD,Fiji,,,,,,,,,,,,,
-FIN,EUR,Finland,,,,,,,,,,,,,
-FRA,EUR,France,,,,,,,,,,,,,
-GUF,EUR,French Guiana,,,,,,,,,,,,,
-PYF,XPF,French Polynesia,,,,,,,,,,,,,
-ATF,EUR,French Southern Territories,,,,,,,,,,,,,
-GAB,XAF,Gabon,,,,,,,,,,,,,
-GMB,GMD,Gambia,,,,,,,,,,,,,
-GEO,GEL,Georgia,,,,,,,,,,,,,
-DEU,EUR,Germany,,,,,,,,,,,,,
-GHA,GHS,Ghana,,,,,,,,,,,,,
-GIB,GIP,Gibraltar,,,,,,,,,,,,,
-GRC,EUR,Greece,,,,,,,,,,,,,
-GRL,DKK,Greenland,,,,,,,,,,,,,
-GRD,XCD,Grenada,,,,,,,,,,,,,
-GLP,EUR,Guadeloupe,,,,,,,,,,,,,
-GUM,USD,Guam,,,,,,,,,,,,,
-GTM,GTQ,Guatemala,,,,,,,,,,,,,
-GGY,GBP,Guernsey,,,,,,,,,,,,,
-GIN,GNF,Guinea,,,,,,,,,,,,,
-GNB,XOF,Guinea-Bissau,,,,,,,,,,,,,
-GUY,GYD,Guyana,,,,,,,,,,,,,
-HTI,HTG,Haiti,,,,,,,,,,,,,
-HMD,AUD,Heard & McDonald Islands,,,,,,,,,,,,,
-VAT,EUR,Vatican City,,,,,,,,,,,,,
-HND,HNL,Honduras,,,,,,,,,,,,,
-HUN,HUF,Hungary,,,,,,,,,,,,,
-ISL,ISK,Iceland,,,,,,,,,,,,,
-IND,INR,India,,,,,,,,,,,,,
-IDN,IDR,Indonesia,,,,,,,,,,,,,
-IRN,IRR,Iran,,,,,,,,,,,,,
-IRQ,IQD,Iraq,,,,,,,,,,,,,
-IRL,EUR,Ireland,,,,,,,,,,,,,
-IMN,GBP,Isle of Man,,,,,,,,,,,,,
-ISR,ILS,Israel,,,,,,,,,,,,,
-ITA,EUR,Italy,,,,,,,,,,,,,
-JAM,JMD,Jamaica,,,,,,,,,,,,,
-JPN,JPY,Japan,,,,,,,,,,,,,
-JEY,GBP,Jersey,,,,,,,,,,,,,
-JOR,JOD,Jordan,,,,,,,,,,,,,
-KAZ,KZT,Kazakhstan,,,,,,,,,,,,,
-KEN,KES,Kenya,,,,,,,,,,,,,
-KIR,AUD,Kiribati,,,,,,,,,,,,,
-KWT,KWD,Kuwait,,,,,,,,,,,,,
-KGZ,KGS,Kyrgyzstan,,,,,,,,,,,,,
-LAO,LAK,Laos,,,,,,,,,,,,,
-LVA,EUR,Latvia,,,,,,,,,,,,,
-LBN,LBP,Lebanon,,,,,,,,,,,,,
-LSO,LSL,Lesotho,,,,,,,,,,,,,
-LBR,LRD,Liberia,,,,,,,,,,,,,
-LBY,LYD,Libya,,,,,,,,,,,,,
-LIE,CHF,Liechtenstein,,,,,,,,,,,,,
-LTU,EUR,Lithuania,,,,,,,,,,,,,
-LUX,EUR,Luxembourg,,,,,,,,,,,,,
-MDG,MGA,Madagascar,,,,,,,,,,,,,
-MWI,MWK,Malawi,,,,,,,,,,,,,
-MYS,MYR,Malaysia,,,,,,,,,,,,,
-MDV,MVR,Maldives,,,,,,,,,,,,,
-MLI,XOF,Mali,,,,,,,,,,,,,
-MLT,EUR,Malta,,,,,,,,,,,,,
-MHL,USD,Marshall Islands,,,,,,,,,,,,,
-MTQ,EUR,Martinique,,,,,,,,,,,,,
-MRT,MRU,Mauritania,,,,,,,,,,,,,
-MUS,MUR,Mauritius,,,,,,,,,,,,,
-MYT,EUR,Mayotte,,,,,,,,,,,,,
-MEX,MXN,Mexico,,,,,,,,,,,,,
-FSM,USD,Micronesia,,,,,,,,,,,,,
-MCO,EUR,Monaco,,,,,,,,,,,,,
-MNG,MNT,Mongolia,,,,,,,,,,,,,
-MNE,EUR,Montenegro,,,,,,,,,,,,,
-MSR,XCD,Montserrat,,,,,,,,,,,,,
-MAR,MAD,Morocco,,,,,,,,,,,,,
-MOZ,MZN,Mozambique,,,,,,,,,,,,,
-MMR,MMK,Myanmar,,,,,,,,,,,,,
-NAM,NAD,Namibia,,,,,,,,,,,,,
-NRU,AUD,Nauru,,,,,,,,,,,,,
-NPL,NPR,Nepal,,,,,,,,,,,,,
-NLD,EUR,Netherlands,,,,,,,,,,,,,
-NCL,XPF,New Caledonia,,,,,,,,,,,,,
-NZL,NZD,New Zealand,,,,,,,,,,,,,
-NIC,NIO,Nicaragua,,,,,,,,,,,,,
-NER,XOF,Niger,,,,,,,,,,,,,
-NGA,NGN,Nigeria,,,,,,,,,,,,,
-NIU,NZD,Niue,,,,,,,,,,,,,
-NFK,AUD,Norfolk Island,,,,,,,,,,,,,
-MNP,USD,Northern Mariana Islands,,,,,,,,,,,,,
-NOR,NOK,Norway,,,,,,,,,,,,,
-OMN,OMR,Oman,,,,,,,,,,,,,
-PAK,PKR,Pakistan,,,,,,,,,,,,,
-PLW,USD,Palau,,,,,,,,,,,,,
-PAN,PAB,Panama,,,,,,,,,,,,,
-PNG,PGK,Papua New Guinea,,,,,,,,,,,,,
-PRY,PYG,Paraguay,,,,,,,,,,,,,
-PER,PEN,Peru,,,,,,,,,,,,,
-PHL,PHP,Philippines,,,,,,,,,,,,,
-PCN,NZD,Pitcairn Islands,,,,,,,,,,,,,
-POL,PLN,Poland,,,,,,,,,,,,,
-PRT,EUR,Portugal,,,,,,,,,,,,,
-PRI,USD,Puerto Rico,,,,,,,,,,,,,
-QAT,QAR,Qatar,,,,,,,,,,,,,
-KOR,KRW,South Korea,,,,,,,,,,,,,
-MDA,MDL,Moldova,,,,,,,,,,,,,
-ROU,RON,Romania,,,,,,,,,,,,,
-RUS,RUB,Russia,,,,,,,,,,,,,
-RWA,RWF,Rwanda,,,,,,,,,,,,,
-REU,EUR,Reunion,,,,,,,,,,,,,
-BLM,EUR,Saint Barthelemy,,,,,,,,,,,,,
-SHN,SHP,St. Helena,,,,,,,,,,,,,
-KNA,XCD,St. Kitts & Nevis,,,,,,,,,,,,,
-LCA,XCD,St. Lucia,,,,,,,,,,,,,
-MAF,EUR,St. Martin,,,,,,,,,,,,,
-SPM,EUR,St. Pierre & Miquelon,,,,,,,,,,,,,
-VCT,XCD,St. Vincent & Grenadines,,,,,,,,,,,,,
-WSM,WST,Samoa,,,,,,,,,,,,,
-SMR,EUR,San Marino,,,,,,,,,,,,,
-STP,STN,Sao Tome and Principe,,,,,,,,,,,,,
-SAU,SAR,Saudi Arabia,,,,,,,,,,,,,
-SEN,XOF,Senegal,,,,,,,,,,,,,
-SRB,RSD,Serbia,,,,,,,,,,,,,
-SYC,SCR,Seychelles,,,,,,,,,,,,,
-SLE,SLL,Sierra Leone,,,,,,,,,,,,,
-SGP,SGD,Singapore,,,,,,,,,,,,,
-SXM,ANG,Sint Maarten,,,,,,,,,,,,,
-SVK,EUR,Slovakia,,,,,,,,,,,,,
-SVN,EUR,Slovenia,,,,,,,,,,,,,
-SLB,SBD,Solomon Islands,,,,,,,,,,,,,
-SOM,SOS,Somalia,,,,,,,,,,,,,
-ZAF,ZAR,South Africa,,,,,,,,,,,,,
-SSD,SSP,South Sudan,,,,,,,,,,,,,
-ESP,EUR,Spain,,,,,,,,,,,,,
-LKA,LKR,Sri Lanka,,,,,,,,,,,,,
-PSE,EGP,Palestine,,,,,,,,,,,,,
-SDN,SDG,Sudan,,,,,,,,,,,,,
-SUR,SRD,Suriname,,,,,,,,,,,,,
-SJM,NOK,Svalbard & Jan Mayen,,,,,,,,,,,,,
-SWE,SEK,Sweden,,,,,,,,,,,,,
-CHE,CHF,Switzerland,,,,,,,,,,,,,
-SYR,SYP,Syria,,,,,,,,,,,,,
-TJK,TJS,Tajikistan,,,,,,,,,,,,,
-THA,THB,Thailand,,,,,,,,,,,,,
-MKD,MKD,North Macedonia,,,,,,,,,,,,,
-TLS,USD,Timor-Leste,,,,,,,,,,,,,
-TGO,XOF,Togo,,,,,,,,,,,,,
-TKL,NZD,Tokelau,,,,,,,,,,,,,
-TON,TOP,Tonga,,,,,,,,,,,,,
-TTO,TTD,Trinidad & Tobago,,,,,,,,,,,,,
-TUN,TND,Tunisia,,,,,,,,,,,,,
-TUR,TRY,Turkey,,,,,,,,,,,,,
-TKM,TMT,Turkmenistan,,,,,,,,,,,,,
-TCA,USD,Turks & Caicos Islands,,,,,,,,,,,,,
-TUV,AUD,Tuvalu,,,,,,,,,,,,,
-UGA,UGX,Uganda,,,,,,,,,,,,,
-UKR,UAH,Ukraine,,,,,,,,,,,,,
-ARE,AED,United Arab Emirates,,,,,,,,,,,,,
-GBR,GBP,United Kingdom,,,,,,,,,,,,,
-TZA,TZS,Tanzania,,,,,,,,,,,,,
-UMI,USD,U.S. Outlying Islands,,,,,,,,,,,,,
-VIR,USD,U.S. Virgin Islands,,,,,,,,,,,,,
-USA,USD,United States,,,,,,,,,,,,,
-URY,UYU,Uruguay,,,,,,,,,,,,,
-UZB,UZS,Uzbekistan,,,,,,,,,,,,,
-VUT,VUV,Vanuatu,,,,,,,,,,,,,
-VEN,VED,Venezuela,,,,,,,,,,,,,
-VNM,VND,Vietnam,,,,,,,,,,,,,
-WLF,XPF,Wallis & Futuna,,,,,,,,,,,,,
-ESH,MAD,Western Sahara,,,,,,,,,,,,,
-YEM,YER,Yemen,,,,,,,,,,,,,
-ZMB,ZMW,Zambia,,,,,,,,,,,,,
-ZWE,ZWL,Zimbabwe,,,,,,,,,,,,,
-ALA,EUR,Aland Islands,,,,,,,,,,,,,
+ISO3166-1-Alpha-3,ISO4217-currency_alphabetic_code,CLDR display name
+USA,USD,United States
+BES,USD,Caribbean Netherlands
+IOT,USD,British Indian Ocean Territory
+VGB,USD,British Virgin Islands
+ECU,USD,Ecuador
+GUM,USD,Guam
+MHL,USD,Marshall Islands
+FSM,USD,Micronesia
+MNP,USD,Northern Mariana Islands
+PLW,USD,Palau
+PRI,USD,Puerto Rico
+TLS,USD,Timor-Leste
+TCA,USD,Turks & Caicos Islands
+UMI,USD,U.S. Outlying Islands
+VIR,USD,U.S. Virgin Islands
+USA,USD,United States
+AUS,AUD,Australia
+CXR,AUD,Christmas Island
+CCK,AUD,Cocos (Keeling) Islands
+HMD,AUD,Heard & McDonald Islands
+KIR,AUD,Kiribati
+NRU,AUD,Nauru
+NFK,AUD,Norfolk Island
+TUV,AUD,Tuvalu
+GBR,GBP,United Kingdom
+GGY,GBP,Guernsey
+IMN,GBP,Isle of Man
+JEY,GBP,Jersey
+JPN,JPY,Japan
+SGP,SGD,Singapore
+CHE,CHF,Switzerland
+LIE,CHF,Liechtenstein
+SWE,SEK,Sweden
+IND,INR,India
+CHN,CNY,China
+HKG,HKD,Hong Kong
+CAN,CAD,Canada
+AUT,EUR,Austria
+BEL,EUR,Belgium
+CYP,EUR,Cyprus
+EST,EUR,Estonia
+FIN,EUR,Finland
+FRA,EUR,France
+GUF,EUR,French Guiana
+DEU,EUR,Germany
+GLP,EUR,Guadeloupe
+VAT,EUR,Vatican City
+IRL,EUR,Ireland
+LVA,EUR,Latvia
+LTU,EUR,Lithuania
+LUX,EUR,Luxembourg
+MLT,EUR,Malta
+MTQ,EUR,Martinique
+MYT,EUR,Mayotte
+MCO,EUR,Monaco
+MNE,EUR,Montenegro
+NLD,EUR,Netherlands
+PRT,EUR,Portugal
+REU,EUR,Reunion
+BLM,EUR,Saint Barthelemy
+MAF,EUR,St. Martin
+SPM,EUR,St. Pierre & Miquelon
+SMR,EUR,San Marino
+SVK,EUR,Slovakia
+SVN,EUR,Slovenia
+ESP,EUR,Spain
+ALA,EUR,Aland Islands
+BEN,XOF,Benin
+MLI,XOF,Mali
+NER,XOF,Niger
+BFA,XOF,Burkina Faso
+CIV,XOF,Cote D'lvoire
+GNB,XOF,Guinea-Bissau
+SEN,XOF,Senegal
+TGO,XOF,Togo
