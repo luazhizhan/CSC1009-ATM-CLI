@@ -26,7 +26,7 @@ public class TransactionDataSourceTest {
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL);
+        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL, "SGP");
         txnDataSource = new TransactionDataSource();
     }
 
