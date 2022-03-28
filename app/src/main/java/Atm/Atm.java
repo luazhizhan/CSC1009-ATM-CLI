@@ -125,9 +125,4 @@ public class Atm {
 
         return result;
     }
-
-    public BigDecimal calculateNotesAmount(int[] notes) {
-        return moneyHandler.getTotalValue(notes);
-    }
-
 }

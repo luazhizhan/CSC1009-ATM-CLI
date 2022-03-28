@@ -108,6 +108,7 @@ public class MoneyHandler {
                 dispenserAmounts[1][i] += depositAmounts[i];
                 totalValue += depositAmounts[i] * dispenserAmounts[0][i];
             }
+            totalValue = getTotalValue(depositAmounts);
 
             returnTuple = new Tuple<Boolean, BigDecimal>(true, new BigDecimal(totalValue));
 
@@ -117,14 +118,15 @@ public class MoneyHandler {
         return returnTuple;
     }
 
-    public BigDecimal getTotalValue(int[] notes) {
+    // Helper method for computing the total value given an array of notes
+    private int getTotalValue(int[] notes) {
         int totalValue = 0;
         for (int i = 0; i < dispenserAmounts[0].length; i++) {
             if (i >= notes.length)
                 continue;
             totalValue += notes[i] * dispenserAmounts[0][i];
         }
-        return new BigDecimal(totalValue);
+        return totalValue;
     }
 
 }
