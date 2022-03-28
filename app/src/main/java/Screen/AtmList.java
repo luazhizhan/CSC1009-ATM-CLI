@@ -1,22 +1,41 @@
 package Screen;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import Atm.Atm;
+import DataSource.AtmDataSource;
+import DataSource.DataSource;
+
+import javax.xml.crypto.Data;
+
 
 public class AtmList implements ScreenState {
-    private String text;
+    private String prompt;
+    private List<Atm> atmList;
+    public AtmList() throws IOException {
 
-    public AtmList() {
-        String atmList = "TODO List all ATMs";
-        text = "\n" + line + "\nPlease select an ATM.\nEnter 0 to exit.\n"
-                + atmList + "\n" + line;
+        DataSource<Atm> data = new AtmDataSource();
+        atmList = data.getData();
+
+            prompt = "\n" + line + "\nPlease select an ATM.\nEnter 0 to exit.\n";
+            for(int i = 0; i< atmList.size();i++) {
+
+                prompt =prompt + (i+1)
+                        + "  Atm at:  " + atmList.get(i).getAddress().getBlkNum()
+                        + ", " + atmList.get(i).getAddress().getStreetAddress()
+                        + ",  " + atmList.get(i).getAddress().getCity()
+                        + " " + atmList.get(i).getAddress().getPostalCode()+ "\n";
+            }
+
     }
 
     @Override
     public void printScreen(ScreenStateContext stateContext) {
-        System.out.println(text);
+        System.out.println(prompt);
     }
 
     public Atm selectAtm(Scanner in) {
