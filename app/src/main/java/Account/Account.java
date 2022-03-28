@@ -2,11 +2,16 @@ package Account;
 
 import java.math.BigDecimal;
 
+import Currency.Currency;
+import DataSource.CurrencyDataSource;
+
 public abstract class Account {
     private String id; // Account ID
     private String customerId; // Customer ID
     private String name; // name of Account, not customer's name
     private AccountStatus status; // status of Account: Enum
+
+    private Currency currency; // Currency this account uses
 
     protected BigDecimal availableBalance; // available balance
     private BigDecimal holdBalance; // balance on hold
@@ -16,27 +21,39 @@ public abstract class Account {
     private BigDecimal overseasTransferLimit; // transfer limit overseas
     protected final int DEFAULT_LIMIT = 5000;
 
-    public Account(String id, String customerId, String name) {
+    public Account(String id, String customerId, String name, String currencyCode) {
         /* create account according to most important attributes */
         setId(id);
         setCustomerId(customerId);
         setName(name);
         setStatus(AccountStatus.NORMAL);
         setDefaultLimits();
+
+        try {
+            this.currency = new CurrencyDataSource().getDataById(currencyCode);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    public Account(String id, String customerId, String name, AccountStatus status) {
+    public Account(String id, String customerId, String name, AccountStatus status, String currencyCode) {
         /* create account according to most important attributes */
         setId(id);
         setCustomerId(customerId);
         setName(name);
         setStatus(status);
         setDefaultLimits();
+
+        try {
+            this.currency = new CurrencyDataSource().getDataById(currencyCode);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     protected void setDefaultLimits() {
         BigDecimal limit = new BigDecimal(DEFAULT_LIMIT);
-        setWithdrawLimit(limit);
+        setWithdrawLimit(new BigDecimal(currency.getWithdrawMaximum()));
         setTransferLimit(limit);
         setOverseasWithdrawLimit(limit);
         setOverseasTransferLimit(limit);
@@ -64,6 +81,10 @@ public abstract class Account {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Currency getCurrency() {
+        return currency;
     }
 
     public BigDecimal getAvailableBalance() {

@@ -9,7 +9,7 @@ import Account.CurrentAccount;
 import Atm.Atm;
 import DataSource.DataSource;
 import DataSource.TransactionDataSource;
-import Helper.Pair;
+import Helper.Tuple;
 import Transaction.CashTransaction;
 import Transaction.Transaction;
 
@@ -32,7 +32,7 @@ public class DepositTest {
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
         atm = new Atm();
-        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL);
+        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL, "SGP");
         account.setAvailableBalance(new BigDecimal(10000));
         ((CurrentAccount) account).setWithdrawLimit(new BigDecimal(1000));
         ((CurrentAccount) account).setOverDraftLimit(new BigDecimal(100));
@@ -50,17 +50,15 @@ public class DepositTest {
         String input = "1" + System.getProperty("line.separator") + "2";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        Pair<Integer> notes = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
+        Tuple<BigDecimal, int[]> withdrawResult = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
         List<Transaction> txns = ((TransactionDataSource) txnDataSource).getDataByAccountId(account.getId());
 
         Transaction txn = txns.get(0);
         assertEquals(new BigDecimal(110), txn.getAmount());
         assertEquals(CashTransaction.TransactionType.DEPOSIT, ((CashTransaction) txn).getType());
-        assertEquals(1, notes.first());
-        assertEquals(2, notes.second());
+        assertEquals(1, withdrawResult.y[0]);
+        assertEquals(2, withdrawResult.y[1]);
         assertEquals(new BigDecimal(10110), account.getAvailableBalance());
-        assertEquals(301, atm.getNumOf10DollarsNotes());
-        assertEquals(302, atm.getNumOf50DollarsNotes());
         in.close();
     }
 
@@ -77,11 +75,9 @@ public class DepositTest {
         String input = "0" + System.getProperty("line.separator") + "0";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        Pair<Integer> notes = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
+        Tuple<BigDecimal, int[]> notes = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Please deposit at least one note"));
         assertNull(notes);
-        assertEquals(300, atm.getNumOf10DollarsNotes());
-        assertEquals(300, atm.getNumOf50DollarsNotes());
         in.close();
     }
 
@@ -98,11 +94,9 @@ public class DepositTest {
         String input = "abc" + System.getProperty("line.separator") + "3";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        Pair<Integer> notes = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
+        Tuple<BigDecimal, int[]> notes = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         assertNull(notes);
-        assertEquals(300, atm.getNumOf10DollarsNotes());
-        assertEquals(300, atm.getNumOf50DollarsNotes());
         in.close();
 
         // Set scanner input values
@@ -113,9 +107,6 @@ public class DepositTest {
         notes = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         assertNull(notes);
-        assertNull(notes);
-        assertEquals(300, atm.getNumOf10DollarsNotes());
-        assertEquals(300, atm.getNumOf50DollarsNotes());
         in.close();
 
     }

@@ -6,7 +6,6 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import Account.Account;
-import Helper.Pair;
 import Transaction.CashTransaction;
 import Transaction.CashTransaction.TransactionType;
 
@@ -31,7 +30,7 @@ public class CashTransactionReceipt implements ScreenState {
         System.out.println(prompt);
     }
 
-    public boolean getSelectedOption(Scanner in, Account account, Pair<Integer> notesPair, BigDecimal amt) {
+    public boolean getSelectedOption(Scanner in, Account account, int[] notesPair, BigDecimal amt) {
         try {
             int option = in.nextInt();
             if (option < 1 || option > 2) {
@@ -45,8 +44,9 @@ public class CashTransactionReceipt implements ScreenState {
             if (option == 1) {
                 String amtStr = formatter.format(amt);
                 System.out.println("\n" + line + "\n" + header + "\n");
-                System.out.println(String.format("$10 dollars note(s): %d", notesPair.first()));
-                System.out.println(String.format("$50 dollars note(s): %d", notesPair.second()));
+                for (int i = 0; i < notesPair.length; i++) {
+                    System.out.println(String.format("$10 dollars note(s): %d", notesPair[i]));
+                }
 
                 // Print according to cash transaction type
                 if (type.compareTo(TransactionType.DEPOSIT) == 0) {

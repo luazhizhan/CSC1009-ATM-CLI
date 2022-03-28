@@ -26,7 +26,7 @@ public class TransactionHistoryTest {
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL);
+        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL, "SGP");
         txnDataSource = new TransactionDataSource();
     }
 
@@ -132,7 +132,7 @@ public class TransactionHistoryTest {
 
     @Test
     public void successNoTxns() {
-        account = new SavingsAccount("6452255402", "3314572", "Tom", AccountStatus.NORMAL);
+        account = new SavingsAccount("6452255402", "3314572", "Tom", AccountStatus.NORMAL, "SGP");
         ScreenState txnHistory = new TransactionHistory();
 
         // Set and read System.out content

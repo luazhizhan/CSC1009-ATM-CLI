@@ -3,55 +3,70 @@ package Atm;
 import java.math.BigDecimal;
 
 import Address.Address;
+import Country.Country;
+import DataSource.CurrencyDataSource;
 import Helper.Id;
-import Helper.Pair;
+import Helper.Tuple;
 
 public class Atm {
     private String id;
     private Address address;
-    private int numOf10DollarsNotes;
-    private int numOf50DollarsNotes;
-    protected static final int DEFAULT_NUM_10_NOTES = 300;
-    protected static final int DEFAULT_NUM_50_NOTES = 300;
+    private Country country;
 
+    MoneyHandler moneyHandler;
+
+    // For test
     public Atm() {
         setId(Id.generateUUID());
-        setDefaultNumOfNotes();
+        try {
+            moneyHandler = new MoneyHandler(new CurrencyDataSource().getDataById("SGP"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
+    // For test
     public Atm(String id) {
         setId(id);
-        setDefaultNumOfNotes();
+        try {
+            moneyHandler = new MoneyHandler(new CurrencyDataSource().getDataById("SGP"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    /**
-     * For test case purposes
-     * 
-     * @param numOf10DollarsNotes
-     * @param numOf50DollarsNotes
-     */
-    public Atm(int numOf10DollarsNotes, int numOf50DollarsNotes) {
+    // For test
+    public Atm(Country country, int[] amounts) {
         setId(Id.generateUUID());
-        setNumOf10DollarsNotes(numOf10DollarsNotes);
-        setNumOf50DollarsNotes(numOf50DollarsNotes);
+        setCountry(country);
+        try {
+            moneyHandler = new MoneyHandler(new CurrencyDataSource().getDataById(country.getCurrencyAcronym()),
+                    amounts);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    public Atm(Address address) {
-        setId(Id.generateUUID());
-        setAddress(address);
-        setDefaultNumOfNotes();
-    }
-
-    public Atm(String id, Address address) {
+    // For test
+    public Atm(String id, Country country) {
         setId(id);
-        setAddress(address);
-        setDefaultNumOfNotes();
+        setCountry(country);
+        try {
+            moneyHandler = new MoneyHandler(new CurrencyDataSource().getDataById(country.getCurrencyAcronym()));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    private void setDefaultNumOfNotes() {
-        // $18,000
-        setNumOf10DollarsNotes(DEFAULT_NUM_10_NOTES);
-        setNumOf50DollarsNotes(DEFAULT_NUM_50_NOTES);
+    public Atm(String id, Country country, Address address) {
+        setId(id);
+        setCountry(country);
+        try {
+            moneyHandler = new MoneyHandler(new CurrencyDataSource().getDataById(country.getCurrencyAcronym()));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        setAddress(address);
     }
 
     public String getId() {
@@ -70,134 +85,49 @@ public class Atm {
         this.address = address;
     }
 
-    public int getNumOf10DollarsNotes() {
-        return numOf10DollarsNotes;
+    public Country getCountry() {
+        return country;
     }
 
-    protected void setNumOf10DollarsNotes(int numOf10DollarsNotes) {
-        if (numOf10DollarsNotes < 0) {
-            throw new IllegalArgumentException("Number of notes should be >= 0.");
-        }
-        this.numOf10DollarsNotes = numOf10DollarsNotes;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
-    public int getNumOf50DollarsNotes() {
-        return numOf50DollarsNotes;
-    }
+    public BigDecimal deposit(int[] depositAmounts) {
+        Tuple<Boolean, BigDecimal> result = moneyHandler.deposit(depositAmounts);
+        try {
+            if (result.x == false) {
+                throw new InsufficientNotesException("Deposit failed!");
+            }
 
-    protected void setNumOf50DollarsNotes(int numOf50DollarsNotes) {
-        if (numOf50DollarsNotes < 0) {
-            throw new IllegalArgumentException("Number of notes should be >= 0.");
-        }
-        this.numOf50DollarsNotes = numOf50DollarsNotes;
-    }
-
-    public BigDecimal deposit(int numOf10DollarsNotes, int numOf50DollarsNotes) {
-        if (numOf10DollarsNotes < 0 || numOf50DollarsNotes < 0) {
-            throw new IllegalArgumentException("Number of notes should be >= 0.");
-        }
-        if (numOf10DollarsNotes == 0 && numOf50DollarsNotes == 0) {
-            throw new IllegalArgumentException("Please deposit at least one note.");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
-        // Calculate total amount based on number of 10 and 50 dollars note
-        BigDecimal totalTenAmt = new BigDecimal(10).multiply(new BigDecimal(numOf10DollarsNotes));
-        BigDecimal totalFiftyAmt = new BigDecimal(50).multiply(new BigDecimal(numOf50DollarsNotes));
-
-        // Set number of 10 and 50 dollars note
-        setNumOf10DollarsNotes(getNumOf10DollarsNotes() + numOf10DollarsNotes);
-        setNumOf50DollarsNotes(getNumOf50DollarsNotes() + numOf50DollarsNotes);
-
-        // Return total amount deposited
-        return totalTenAmt.add(totalFiftyAmt);
-    }
-
-    public void checkWithdrawAmount(BigDecimal amount) {
-        // Amount must be > 0
-        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Amount should be above 0.");
-        }
-
-        // Amounts must be multiplier of 10
-        if (amount.remainder(new BigDecimal(10)).compareTo(BigDecimal.ZERO) != 0) {
-            throw new IllegalArgumentException("Amount must be multiplier of 10.");
-        }
-    }
-
-    /**
-     * Calculate total value of 10 and 50 dollars notes.
-     * 
-     * @param notes Pair(Number of 10 dollars notes, Number of 50 dollars notes)
-     * @return
-     */
-    public static BigDecimal calculateNotesAmount(Pair<Integer> notes) {
-        // Calculate total amount based on number of 10 and 50 dollars note
-        BigDecimal totalTenAmt = new BigDecimal(10).multiply(new BigDecimal(notes.first()));
-        BigDecimal totalFiftyAmt = new BigDecimal(50).multiply(new BigDecimal(notes.second()));
-
-        return totalTenAmt.add(totalFiftyAmt);
+        return result.y;
     }
 
     /**
      * 
      * @param amount
      * @return Pair<Integer>(numOf10DollarsNotes, numOf50DollarsNotes)
+     * @throws IllegalArgumentException
      * @throws InsufficientNotesException
      */
-    public Pair<Integer> withdraw(BigDecimal amount) throws InsufficientNotesException {
-        // ATM must have at least one 10 dollars or 50 dollars note
-        if (getNumOf10DollarsNotes() <= 0 && getNumOf50DollarsNotes() <= 0) {
-            throw new InsufficientNotesException("No notes left.");
+    public Tuple<BigDecimal, int[]> withdraw(BigDecimal amount)
+            throws IllegalArgumentException, InsufficientNotesException {
+
+        Tuple<BigDecimal, int[]> result = moneyHandler.withdraw(amount.intValue());
+
+        if (result.x == BigDecimal.ZERO) {
+            throw new InsufficientNotesException("ATM has insufficient funds!");
         }
 
-        checkWithdrawAmount(amount);
+        return result;
+    }
 
-        BigDecimal fifty = new BigDecimal(50);
-        BigDecimal ten = new BigDecimal(10);
-
-        // Get remainder after dividing amount by 50
-        BigDecimal remainder = amount.remainder(fifty);
-
-        // Calculate number of 50 dollars notes to withdraw
-        int numOf50Notes = 0;
-        if (remainder.compareTo(BigDecimal.ZERO) == 0) {
-            numOf50Notes = amount.divide(fifty).intValue();
-        } else {
-            numOf50Notes = amount.subtract(remainder).divide(fifty).intValue();
-        }
-
-        // Calculate remaining 50 dollar notes left for ATM
-        int numOf50NotesLeft = getNumOf50DollarsNotes() - numOf50Notes;
-
-        // Add back by 50 if there is not enough 50 dollars notes in ATM
-        if (numOf50NotesLeft < 0) {
-            while (numOf50NotesLeft < 0) {
-                numOf50Notes--;
-                numOf50NotesLeft++;
-                remainder = remainder.add(fifty);
-            }
-        }
-
-        // Set number of 50 dollars note in ATM if remainder amoumt == 0
-        if (remainder.compareTo(BigDecimal.ZERO) == 0) {
-            setNumOf50DollarsNotes(numOf50NotesLeft);
-            return new Pair<Integer>(0, numOf50Notes);
-        }
-
-        // Calculate number of 10 dollars notes to withdraw
-        int numOf10Notes = remainder.divide(ten).intValue();
-
-        // Calculate remaining 10 dollar notes left for ATM
-        int numOf10NotesLeft = getNumOf10DollarsNotes() - numOf10Notes;
-        if (numOf10NotesLeft < 0) {
-            throw new InsufficientNotesException("Insufficient notes.");
-        }
-
-        // Set number of 10 and 50 dollars note in bank
-        setNumOf10DollarsNotes(numOf10NotesLeft);
-        setNumOf50DollarsNotes(numOf50NotesLeft);
-
-        return new Pair<Integer>(numOf10Notes, numOf50Notes);
+    public BigDecimal calculateNotesAmount(int[] notes) {
+        return moneyHandler.getTotalValue(notes);
     }
 
 }

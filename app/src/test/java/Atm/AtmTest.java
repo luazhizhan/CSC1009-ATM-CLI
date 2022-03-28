@@ -3,7 +3,8 @@ package Atm;
 import org.junit.jupiter.api.Test;
 
 import Address.Address;
-import Helper.Pair;
+import DataSource.CountryDataSource;
+import Helper.Tuple;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 
 public class AtmTest {
+    Atm atm;
     private Address address;
 
     @BeforeEach
@@ -21,10 +23,8 @@ public class AtmTest {
 
     @Test
     public void success() {
-        Atm atm = new Atm();
+        atm = new Atm();
         assertNotNull(atm.getId());
-        assertEquals(Atm.DEFAULT_NUM_10_NOTES, atm.getNumOf10DollarsNotes());
-        assertEquals(Atm.DEFAULT_NUM_50_NOTES, atm.getNumOf50DollarsNotes());
         assertNull(atm.getAddress());
         atm.setAddress(address);
         assertEquals(address, atm.getAddress());
@@ -32,88 +32,74 @@ public class AtmTest {
         atm = new Atm("1234");
         assertEquals("1234", atm.getId());
         assertNull(atm.getAddress());
-        assertEquals(Atm.DEFAULT_NUM_10_NOTES, atm.getNumOf10DollarsNotes());
-        assertEquals(Atm.DEFAULT_NUM_50_NOTES, atm.getNumOf50DollarsNotes());
 
-        atm = new Atm(address);
-        assertNotNull(atm.getId());
-        assertEquals(address, atm.getAddress());
-        assertEquals(Atm.DEFAULT_NUM_10_NOTES, atm.getNumOf10DollarsNotes());
-        assertEquals(Atm.DEFAULT_NUM_50_NOTES, atm.getNumOf50DollarsNotes());
+        try {
+            CountryDataSource countryDS = new CountryDataSource();
+            atm = new Atm("1234", countryDS.getDataById("SGP"));
+            assertEquals("1234", atm.getId());
+            assertNull(atm.getAddress());
 
-        atm = new Atm("1234", address);
-        assertEquals("1234", atm.getId());
-        assertEquals(address, atm.getAddress());
-        assertEquals(Atm.DEFAULT_NUM_10_NOTES, atm.getNumOf10DollarsNotes());
-        assertEquals(Atm.DEFAULT_NUM_50_NOTES, atm.getNumOf50DollarsNotes());
+            atm = new Atm("1234", countryDS.getDataById("SGP"), address);
+            assertEquals("1234", atm.getId());
+            assertEquals(address, atm.getAddress());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @Test
     public void successDeposit() {
-        Atm atm = new Atm();
-        BigDecimal total = atm.deposit(10, 10);
-        int tenDollarsNotes = Atm.DEFAULT_NUM_10_NOTES + 10;
-        int fiftyDollarsNotes = Atm.DEFAULT_NUM_50_NOTES + 10;
-        assertEquals(tenDollarsNotes, atm.getNumOf10DollarsNotes());
-        assertEquals(fiftyDollarsNotes, atm.getNumOf50DollarsNotes());
+        atm = new Atm();
+        int[] depositAmounts = new int[] { 10, 10 };
+        BigDecimal total = atm.deposit(depositAmounts);
         assertEquals(total, new BigDecimal(600));
 
-        total = atm.deposit(0, 5);
-        fiftyDollarsNotes += 5;
-        assertEquals(tenDollarsNotes, atm.getNumOf10DollarsNotes());
-        assertEquals(fiftyDollarsNotes, atm.getNumOf50DollarsNotes());
+        depositAmounts[0] = 0;
+        depositAmounts[1] = 5;
+        total = atm.deposit(depositAmounts);
         assertEquals(total, new BigDecimal(250));
 
-        total = atm.deposit(2, 0);
-        tenDollarsNotes += 2;
-        assertEquals(tenDollarsNotes, atm.getNumOf10DollarsNotes());
-        assertEquals(fiftyDollarsNotes, atm.getNumOf50DollarsNotes());
+        depositAmounts[0] = 2;
+        depositAmounts[1] = 0;
+        total = atm.deposit(depositAmounts);
         assertEquals(total, new BigDecimal(20));
     }
 
     @Test
     public void successWithdraw() throws InsufficientNotesException {
-        Atm atm = new Atm();
-        Pair<Integer> notes = atm.withdraw(new BigDecimal(20));
-        assertEquals(2, notes.first());
-        assertEquals(0, notes.second());
+        atm = new Atm();
+        try {
+            CountryDataSource countryDS = new CountryDataSource();
+            atm = new Atm(countryDS.getDataById("SGP"), new int[] { 50, 3 });
+            Tuple<BigDecimal, int[]> notes = atm.withdraw(new BigDecimal(20));
+            assertEquals(2, notes.y[0]);
+            assertEquals(0, notes.y[1]);
 
-        int tenDollarsNotes = Atm.DEFAULT_NUM_10_NOTES - 2;
-        int fiftyDollarsNotes = Atm.DEFAULT_NUM_50_NOTES;
-        assertEquals(tenDollarsNotes, atm.getNumOf10DollarsNotes());
-        assertEquals(fiftyDollarsNotes, atm.getNumOf50DollarsNotes());
+            notes = atm.withdraw(new BigDecimal(50));
+            assertEquals(0, notes.y[0]);
+            assertEquals(1, notes.y[1]);
 
-        notes = atm.withdraw(new BigDecimal(50));
-        assertEquals(0, notes.first());
-        assertEquals(1, notes.second());
-        fiftyDollarsNotes--;
-        assertEquals(tenDollarsNotes, atm.getNumOf10DollarsNotes());
-        assertEquals(fiftyDollarsNotes, atm.getNumOf50DollarsNotes());
+            notes = atm.withdraw(new BigDecimal(90));
+            assertEquals(4, notes.y[0]);
+            assertEquals(1, notes.y[1]);
 
-        notes = atm.withdraw(new BigDecimal(90));
-        assertEquals(4, notes.first());
-        assertEquals(1, notes.second());
-        tenDollarsNotes -= 4;
-        fiftyDollarsNotes--;
-        assertEquals(tenDollarsNotes, atm.getNumOf10DollarsNotes());
-        assertEquals(fiftyDollarsNotes, atm.getNumOf50DollarsNotes());
+            // Insufficent 50 dollars notes case
+            notes = atm.withdraw(new BigDecimal(130));
+            assertEquals(8, notes.y[0]);
+            assertEquals(1, notes.y[1]);
 
-        // Insufficent 50 dollars notes case
-        atm.setNumOf10DollarsNotes(10);
-        atm.setNumOf50DollarsNotes(1);
-        notes = atm.withdraw(new BigDecimal(130));
-        assertEquals(8, notes.first());
-        assertEquals(1, notes.second());
-        assertEquals(2, atm.getNumOf10DollarsNotes());
-        assertEquals(0, atm.getNumOf50DollarsNotes());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @Test
     public void calculateNotesAmount() {
-        assertEquals(new BigDecimal(60), Atm.calculateNotesAmount(new Pair<Integer>(1, 1)));
-        assertEquals(new BigDecimal(50), Atm.calculateNotesAmount(new Pair<Integer>(0, 1)));
-        assertEquals(new BigDecimal(10), Atm.calculateNotesAmount(new Pair<Integer>(1, 0)));
-        assertEquals(new BigDecimal(850), Atm.calculateNotesAmount(new Pair<Integer>(10, 15)));
+        atm = new Atm();
+        assertEquals(new BigDecimal(60), atm.calculateNotesAmount(new int[] { 1, 1 }));
+        assertEquals(new BigDecimal(50), atm.calculateNotesAmount(new int[] { 0, 1 }));
+        assertEquals(new BigDecimal(10), atm.calculateNotesAmount(new int[] { 1, 0 }));
+        assertEquals(new BigDecimal(850), atm.calculateNotesAmount(new int[] { 10, 15 }));
     }
 
     @Test
@@ -121,55 +107,46 @@ public class AtmTest {
         Atm atm = new Atm();
 
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> atm.deposit(-1, 10));
+                () -> atm.deposit(new int[] { -1, 10 }));
         assertEquals("Number of notes should be >= 0.", exception.getMessage());
-        assertEquals(Atm.DEFAULT_NUM_10_NOTES, atm.getNumOf10DollarsNotes());
-        assertEquals(Atm.DEFAULT_NUM_50_NOTES, atm.getNumOf50DollarsNotes());
 
         exception = assertThrows(IllegalArgumentException.class,
-                () -> atm.deposit(0, -2));
+                () -> atm.deposit(new int[] { 0, -2 }));
         assertEquals("Number of notes should be >= 0.", exception.getMessage());
-        assertEquals(Atm.DEFAULT_NUM_10_NOTES, atm.getNumOf10DollarsNotes());
-        assertEquals(Atm.DEFAULT_NUM_50_NOTES, atm.getNumOf50DollarsNotes());
 
         exception = assertThrows(IllegalArgumentException.class,
-                () -> atm.deposit(0, 0));
+                () -> atm.deposit(new int[] { 0, 0 }));
         assertEquals("Please deposit at least one note.", exception.getMessage());
-        assertEquals(Atm.DEFAULT_NUM_10_NOTES, atm.getNumOf10DollarsNotes());
-        assertEquals(Atm.DEFAULT_NUM_50_NOTES, atm.getNumOf50DollarsNotes());
     }
 
     @Test
     public void failureWithdraw() {
-        Atm atm = new Atm();
+        final Atm atm = new Atm();
+
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> atm.withdraw(new BigDecimal(0)));
         assertEquals("Amount should be above 0.", exception.getMessage());
-        assertEquals(Atm.DEFAULT_NUM_10_NOTES, atm.getNumOf10DollarsNotes());
-        assertEquals(Atm.DEFAULT_NUM_50_NOTES, atm.getNumOf50DollarsNotes());
 
-        atm.setNumOf10DollarsNotes(0);
-        atm.setNumOf50DollarsNotes(0);
         exception = assertThrows(InsufficientNotesException.class,
                 () -> atm.withdraw(new BigDecimal(100)));
         assertEquals("No notes left.", exception.getMessage());
-        assertEquals(0, atm.getNumOf10DollarsNotes());
-        assertEquals(0, atm.getNumOf50DollarsNotes());
 
-        // Set total notes amount to $130
-        atm.setNumOf10DollarsNotes(3);
-        atm.setNumOf50DollarsNotes(2);
+        try {
+            CountryDataSource countryDS = new CountryDataSource();
+            final Atm atm1 = new Atm(countryDS.getDataById("SGP"), new int[] { 3, 2 });
+            Tuple<BigDecimal, int[]> notes = atm1.withdraw(new BigDecimal(20));
 
-        exception = assertThrows(IllegalArgumentException.class,
-                () -> atm.withdraw(new BigDecimal(75)));
-        assertEquals("Amount must be multiplier of 10.", exception.getMessage());
-        assertEquals(3, atm.getNumOf10DollarsNotes());
-        assertEquals(2, atm.getNumOf50DollarsNotes());
+            exception = assertThrows(IllegalArgumentException.class,
+                    () -> atm1.withdraw(new BigDecimal(75)));
+            assertEquals("Amount must be multiplier of 10.", exception.getMessage());
 
-        exception = assertThrows(InsufficientNotesException.class,
-                () -> atm.withdraw(new BigDecimal(150)));
-        assertEquals("Insufficient notes.", exception.getMessage());
-        assertEquals(3, atm.getNumOf10DollarsNotes());
-        assertEquals(2, atm.getNumOf50DollarsNotes());
+            exception = assertThrows(InsufficientNotesException.class,
+                    () -> atm1.withdraw(new BigDecimal(150)));
+            assertEquals("Insufficient notes.", exception.getMessage());
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
+
 }

@@ -50,10 +50,10 @@ public class AccountDataSource extends DataSource<Account> {
             }
             Account acc;
             if (data[10].equals("Current")) {
-                acc = new CurrentAccount(data[0], data[1], data[2], status);
+                acc = new CurrentAccount(data[0], data[1], data[2], status, "SGP");
                 ((CurrentAccount) acc).setOverDraftLimit(new BigDecimal(data[11]));
             } else {
-                acc = new SavingsAccount(data[0], data[1], data[2], status);
+                acc = new SavingsAccount(data[0], data[1], data[2], status, "SGP");
                 ((SavingsAccount) acc).setInterestRate(new BigDecimal(data[12]));
             }
             acc.setAvailableBalance(new BigDecimal(data[4]));

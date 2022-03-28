@@ -10,7 +10,7 @@ import DataSource.AccountDataSource;
 import DataSource.CardsDataSource;
 import DataSource.DataSource;
 import DataSource.TransactionDataSource;
-import Helper.Pair;
+import Helper.Tuple;
 import Screen.AtmList;
 import Screen.CardPrompt;
 import Screen.Deposit;
@@ -99,15 +99,14 @@ public class App {
                 // Enter withdrawal amount
                 ScreenState withdraw = new Withdraw();
                 stateContext.setAndPrintScreen(withdraw);
-                Pair<Integer> withdrawNotePair = null;
-                while (withdrawNotePair == null) {
-                    withdrawNotePair = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
+                Tuple<BigDecimal, int[]> withdrawResult = null;
+                while (withdrawResult == null) {
+                    withdrawResult = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
                     in.nextLine(); // Clear scanner int buffer
                 }
-                BigDecimal withdrawAmt = Atm.calculateNotesAmount(withdrawNotePair);
 
                 // Return to main option screen if it's zero
-                if (withdrawAmt.compareTo(BigDecimal.ZERO) == 0) {
+                if (withdrawResult.x.compareTo(BigDecimal.ZERO) == 0) {
                     optionScreens(stateContext, in);
                 }
 
@@ -117,7 +116,7 @@ public class App {
                 boolean vaildWithdrawOutput = false;
                 while (vaildWithdrawOutput == false) {
                     vaildWithdrawOutput = ((CashTransactionReceipt) withdrawReceipt).getSelectedOption(in, account,
-                            withdrawNotePair, withdrawAmt);
+                            withdrawResult.y, withdrawResult.x);
                     in.nextLine(); // Clear scanner int buffer
                 }
                 optionScreens(stateContext, in);
@@ -125,15 +124,14 @@ public class App {
                 // Enter deposit amount
                 ScreenState deposit = new Deposit();
                 stateContext.setAndPrintScreen(deposit);
-                Pair<Integer> depositNotesPair = null;
-                while (depositNotesPair == null) {
-                    depositNotesPair = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
+                Tuple<BigDecimal, int[]> depositResult = null;
+                while (depositResult == null) {
+                    depositResult = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
                     in.nextLine(); // Clear scanner int buffer
                 }
-                BigDecimal depositAmt = Atm.calculateNotesAmount(depositNotesPair);
 
                 // Return to main option screen if it's zero
-                if (depositAmt.compareTo(BigDecimal.ZERO) == 0) {
+                if (depositResult.x.compareTo(BigDecimal.ZERO) == 0) {
                     optionScreens(stateContext, in);
                 }
 
@@ -143,7 +141,7 @@ public class App {
                 boolean vaildDepositOutput = false;
                 while (vaildDepositOutput == false) {
                     vaildDepositOutput = ((CashTransactionReceipt) depositReceipt).getSelectedOption(in, account,
-                            depositNotesPair, depositAmt);
+                            depositResult.y, depositResult.x);
                     in.nextLine(); // Clear scanner int buffer
                 }
                 optionScreens(stateContext, in);

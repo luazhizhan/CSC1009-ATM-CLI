@@ -8,7 +8,6 @@ import Account.AccountStatus;
 import Account.CurrentAccount;
 import Atm.Atm;
 import Transaction.CashTransaction;
-import Helper.Pair;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,20 +20,22 @@ import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class CashTransactionReceiptTest {
+    private Atm atm;
     private Account account;
-    private Pair<Integer> notesPair;
+    private int[] notes;
     private BigDecimal amt;
 
     @BeforeEach
     public void setUp() {
-        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL);
+        atm = new Atm();
+        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL, "SGP");
         account.setAvailableBalance(new BigDecimal(30000));
         setNotesPairAndAmt(2, 2); // 120
     }
 
     private void setNotesPairAndAmt(int numOf10DollarNotes, int numOf50DollarsNotes) {
-        notesPair = new Pair<Integer>(numOf10DollarNotes, numOf50DollarsNotes);
-        amt = Atm.calculateNotesAmount(notesPair);
+        notes = new int[] { numOf10DollarNotes, numOf50DollarsNotes };
+        amt = atm.calculateNotesAmount(notes);
     }
 
     @Test
@@ -56,7 +57,7 @@ public class CashTransactionReceiptTest {
         // Print receipt
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         Scanner in = new Scanner(System.in);
-        boolean result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        boolean result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notes, amt);
         contentString = outContent.toString();
         assertTrue(result);
         assertTrue(contentString.contains("$10 dollars note(s):"));
@@ -73,7 +74,7 @@ public class CashTransactionReceiptTest {
         // Print balance only
         System.setIn(new ByteArrayInputStream("2".getBytes()));
         in = new Scanner(System.in);
-        result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notes, amt);
         contentString = outContent.toString();
         assertTrue(result);
         assertFalse(contentString.contains("$10 dollars note(s):"));
@@ -105,7 +106,7 @@ public class CashTransactionReceiptTest {
         // Print receipt
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         Scanner in = new Scanner(System.in);
-        boolean result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        boolean result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notes, amt);
         contentString = outContent.toString();
         assertTrue(result);
         assertTrue(contentString.contains("$10 dollars note(s):"));
@@ -122,7 +123,7 @@ public class CashTransactionReceiptTest {
         // Print balance only
         System.setIn(new ByteArrayInputStream("2".getBytes()));
         in = new Scanner(System.in);
-        result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notes, amt);
         contentString = outContent.toString();
         assertTrue(result);
         assertFalse(contentString.contains("$10 dollars note(s):"));
@@ -142,14 +143,14 @@ public class CashTransactionReceiptTest {
         // Set scanner input value
         System.setIn(new ByteArrayInputStream("-77".getBytes()));
         Scanner in = new Scanner(System.in);
-        boolean result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        boolean result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notes, amt);
         assertFalse(result);
         assertTrue(outContent.toString().contains("No such option available! Please try again."));
         in.close();
 
         System.setIn(new ByteArrayInputStream("8".getBytes()));
         in = new Scanner(System.in);
-        result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notes, amt);
         assertFalse(result);
         assertTrue(outContent.toString().contains("No such option available! Please try again."));
         in.close();
@@ -167,14 +168,14 @@ public class CashTransactionReceiptTest {
         System.setIn(new ByteArrayInputStream("abc".getBytes()));
 
         Scanner in = new Scanner(System.in);
-        boolean result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        boolean result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notes, amt);
         assertFalse(result);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         in.close();
 
         System.setIn(new ByteArrayInputStream("5g6".getBytes()));
         in = new Scanner(System.in);
-        result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notesPair, amt);
+        result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notes, amt);
         assertFalse(result);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         in.close();

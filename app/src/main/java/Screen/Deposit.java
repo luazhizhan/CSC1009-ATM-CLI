@@ -7,7 +7,7 @@ import java.util.Scanner;
 import Account.Account;
 import Atm.Atm;
 import DataSource.DataSource;
-import Helper.Pair;
+import Helper.Tuple;
 import Transaction.CashTransaction;
 import Transaction.Transaction;
 
@@ -24,27 +24,26 @@ public class Deposit implements ScreenState {
         System.out.println(prompt);
     }
 
-    public Pair<Integer> getDepositAmt(Scanner in, Atm atm, Account account, DataSource<Transaction> ds) {
+    public Tuple<BigDecimal, int[]> getDepositAmt(Scanner in, Atm atm, Account account, DataSource<Transaction> ds) {
         try {
 
-            // Number of 10 dollar notes
-            System.out.println("\n" + line + "\nPlease enter number of 10 dollars notes." +
-                    "\nEnter < 0 to go back options screen.\n" + line);
-            int numOf10DollarNotes = in.nextInt();
-            if (numOf10DollarNotes < 0) { // Return to main option screen if below zero
-                return new Pair<Integer>(0, 0);
+            int[] currencyDenominations = account.getCurrency().getBanknotes();
+            int[] depositAmounts = new int[currencyDenominations.length];
+            int counter = 0;
+            for (int i = 0; i < currencyDenominations.length; i++) {
+                System.out.println(
+                        "\n" + line + "\nPlease enter number of "
+                                + currencyDenominations[i] + " dollars notes." +
+                                "\nEnter < 0 to go back options screen.\n" + line);
+                depositAmounts[i] = in.nextInt();
+                counter += depositAmounts[i];
             }
-
-            // Number of 50 dollar notes
-            System.out.println("\n" + line + "\nPlease enter number of 50 dollars notes:" +
-                    "\nEnter < 0 to go back options screen.\n" + line);
-            int numOf50DollarNotes = in.nextInt();
-            if (numOf50DollarNotes < 0) { // Return to main option screen if below zero
-                return new Pair<Integer>(0, 0);
+            if (counter < 0) { // Return to main option screen if below zero
+                return new Tuple<BigDecimal, int[]>(BigDecimal.ZERO, new int[0]);
             }
 
             // Deposit to ATM and account
-            BigDecimal amt = atm.deposit(numOf10DollarNotes, numOf50DollarNotes);
+            BigDecimal amt = atm.deposit(depositAmounts);
             account.addAvailableBalance(amt);
 
             // Create record of transaction
@@ -52,7 +51,7 @@ public class Deposit implements ScreenState {
                     CashTransaction.TransactionType.DEPOSIT);
             ds.add(txn);
 
-            return new Pair<Integer>(numOf10DollarNotes, numOf50DollarNotes);
+            return new Tuple<BigDecimal, int[]>(amt, depositAmounts);
 
         } catch (IllegalArgumentException e) {
             System.out.println("\n" + line + "\n" + e.getMessage() + "\n" + line);

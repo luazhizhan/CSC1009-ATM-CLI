@@ -5,12 +5,12 @@ import java.math.BigDecimal;
 public class CurrentAccount extends Account {
     private BigDecimal overDraftLimit;
 
-    public CurrentAccount(String id, String customerId, String name, AccountStatus status) {
-        super(id, customerId, name, status);
+    public CurrentAccount(String id, String customerId, String name, AccountStatus status, String currencyCode) {
+        super(id, customerId, name, status, currencyCode);
     }
 
-    public CurrentAccount(String id, String customerId, String name) {
-        super(id, customerId, name);
+    public CurrentAccount(String id, String customerId, String name, String currencyCode) {
+        super(id, customerId, name, currencyCode);
     }
 
     @Override

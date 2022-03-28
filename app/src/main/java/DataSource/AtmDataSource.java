@@ -22,19 +22,27 @@ public class AtmDataSource extends DataSource<Atm> {
         String[] data;
         /**
          * AtmID 0
-         * blkNum 1
-         * streetAddress 2
-         * unitNumber 3
-         * postalCode 4
-         * city 5
-         * state 6
-         * country 7
+         * countryCode 1
+         * blkNum 2
+         * streetAddress 3
+         * unitNumber 4
+         * postalCode 5
+         * city 6
+         * state 7
+         * Use countryDS instead
          **/
-        for (int i = 0; i < dataList.size(); i++) {
-            data = dataList.get(i);
-            Atm atm = new Atm(data[0],
-                    new Address(data[1], data[2], data[3], data[4], data[5], data[6], data[7]));
-            atmDataSource.add(atm);
+
+        try {
+            CountryDataSource countryDS = new CountryDataSource();
+            for (int i = 0; i < dataList.size(); i++) {
+                data = dataList.get(i);
+                Atm atm = new Atm(data[0], countryDS.getDataById(data[1]),
+                        new Address(data[2], data[3], data[4], data[5], data[6], data[7],
+                                countryDS.getDataById(data[1]).getCountryName().toUpperCase()));
+                atmDataSource.add(atm);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
 
         return atmDataSource;

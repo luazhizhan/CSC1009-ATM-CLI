@@ -38,7 +38,7 @@ class SavingsAccountTest {
 
     @Test
     public void createSuccess() {
-        Account account = new SavingsAccount(id, customerId, name, status);
+        Account account = new SavingsAccount(id, customerId, name, status, "SGP");
         assertEquals(id, account.getId());
         assertEquals(customerId, account.getCustomerId());
         assertEquals(name, account.getName());
@@ -83,7 +83,7 @@ class SavingsAccountTest {
 
     @Test
     public void successSetAvailableBalance() {
-        Account account = new SavingsAccount(id, customerId, name, status);
+        Account account = new SavingsAccount(id, customerId, name, status, "SGP");
         availableBalance = new BigDecimal(1000000);
         account.setAvailableBalance(availableBalance);
         assertEquals(availableBalance, account.getAvailableBalance());
@@ -93,7 +93,7 @@ class SavingsAccountTest {
     public void failureIllegalAvailableBalance() {
         availableBalance = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> new SavingsAccount(id, customerId, name, status).setAvailableBalance(availableBalance));
+                () -> new SavingsAccount(id, customerId, name, status, "SGP").setAvailableBalance(availableBalance));
         assertEquals("Available Balance must be above zero.", exception.getMessage());
 
     }
@@ -101,7 +101,7 @@ class SavingsAccountTest {
     @Test
     public void failureCheckAgainstAvailableBalance() {
         availableBalance = new BigDecimal(1000);
-        Account account = new SavingsAccount(id, customerId, name, status);
+        Account account = new SavingsAccount(id, customerId, name, status, "SGP");
         account.setAvailableBalance(availableBalance);
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> account.checkAgainstAvailableBalance(new BigDecimal(1001)));
@@ -112,14 +112,14 @@ class SavingsAccountTest {
     public void failureIllegalWithdrawLimit() {
         withdrawLimit = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> new SavingsAccount(id, customerId, name, status).setWithdrawLimit(withdrawLimit));
+                () -> new SavingsAccount(id, customerId, name, status, "SGP").setWithdrawLimit(withdrawLimit));
         assertEquals("Withdraw limit must be above zero.", exception.getMessage());
     }
 
     @Test
     public void failureCheckAgainstWithdrawLimit() {
         withdrawLimit = new BigDecimal(1000);
-        Account account = new SavingsAccount(id, customerId, name, status);
+        Account account = new SavingsAccount(id, customerId, name, status, "SGP");
         account.setWithdrawLimit(withdrawLimit);
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> account.checkAgainstWithdrawLimit(new BigDecimal(2000)));
@@ -130,7 +130,7 @@ class SavingsAccountTest {
     public void failureIllegalTransferLimit() {
         transferLimit = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> new SavingsAccount(id, customerId, name, status).setTransferLimit(transferLimit));
+                () -> new SavingsAccount(id, customerId, name, status, "SGP").setTransferLimit(transferLimit));
         assertEquals("Transfer limit must be above zero.", exception.getMessage());
     }
 
@@ -138,7 +138,7 @@ class SavingsAccountTest {
     public void failureIllegalOverseasWithdrawLimit() {
         transferLimit = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> new SavingsAccount(id, customerId, name, status).setOverseasWithdrawLimit(transferLimit));
+                () -> new SavingsAccount(id, customerId, name, status, "SGP").setOverseasWithdrawLimit(transferLimit));
         assertEquals("Oversea withdrawal limit must be above zero.", exception.getMessage());
     }
 
@@ -146,7 +146,7 @@ class SavingsAccountTest {
     public void failureIllegalOverseasTransferLimit() {
         transferLimit = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> new SavingsAccount(id, customerId, name, status).setOverseasTransferLimit(transferLimit));
+                () -> new SavingsAccount(id, customerId, name, status, "SGP").setOverseasTransferLimit(transferLimit));
         assertEquals("Oversea transfer limit must be above zero.", exception.getMessage());
     }
 
@@ -154,7 +154,7 @@ class SavingsAccountTest {
     public void failureIllegalInterestRate() {
         interestRate = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> new SavingsAccount(id, customerId, name, status).setInterestRate(interestRate));
+                () -> new SavingsAccount(id, customerId, name, status, "SGP").setInterestRate(interestRate), "SGP");
         assertEquals("Interest Rate cannot be below or equal to zero.", exception.getMessage());
     }
 }

@@ -5,13 +5,13 @@ import java.math.BigDecimal;
 public class SavingsAccount extends Account {
     private BigDecimal interestRate = new BigDecimal("0.0005");
 
-    public SavingsAccount(String id, String customerId, String name, AccountStatus status) {
-        super(id, customerId, name, status);
+    public SavingsAccount(String id, String customerId, String name, AccountStatus status, String currencyCode) {
+        super(id, customerId, name, status, currencyCode);
         setInterestRate(interestRate);
     }
 
-    public SavingsAccount(String id, String customerId, String name) {
-        super(id, customerId, name);
+    public SavingsAccount(String id, String customerId, String name, String currencyCode) {
+        super(id, customerId, name, currencyCode);
         setInterestRate(interestRate);
     }
 
