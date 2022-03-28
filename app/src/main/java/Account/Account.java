@@ -206,6 +206,7 @@ public abstract class Account {
         System.out.println("Account.Account ID:                 " + getId());
         System.out.println("Account.Account Name:               " + getName());
         System.out.println("Account.Account Status:             " + getStatus());
+        System.out.println("Account.Account Status:             " + getCurrency());
         System.out.println("Available Balance:          " + getAvailableBalance());
         System.out.println("Hold Balance:               " + getHoldBalance());
         System.out.println("Withdrawal Limit:           " + getWithdrawLimit());
