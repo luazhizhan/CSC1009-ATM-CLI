@@ -1,4 +1,0 @@
-This branch is meant for me to tinker with the project, pull safely from other branches, branch off to work on features, etc.
-
-Also misc notes for self. 
-
