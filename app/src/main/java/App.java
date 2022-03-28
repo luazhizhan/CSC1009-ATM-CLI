@@ -194,17 +194,8 @@ public class App {
                 customer = customerDataSource.getDataById(account.getCustomerId());
                 AccountScreen accountScreen = new AccountScreen(customer, account);
                 stateContext.setAndPrintScreen(accountScreen);
-                try {
-                    switch (in.nextInt()) {
-                        case 1:
-                            accountScreen.changeLimits(in, account);
-                            optionScreens(stateContext, in);
-                        default:
-                            optionScreens(stateContext, in);
-                    }
-                } finally {
-                    optionScreens(stateContext, in);
-                }
+                accountScreen.getUserChoice(in,account);
+                optionScreens(stateContext, in);
             case 6: // Exit
                 System.out.println("Exit");
                 System.exit(0);

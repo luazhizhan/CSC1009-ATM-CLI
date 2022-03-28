@@ -26,6 +26,14 @@ public class AccountScreen implements ScreenState {
                 account.getOverseasWithdrawLimit(), account.getOverseasTransferLimit());
     }
 
+    public void getUserChoice(Scanner in, Account account)
+    {
+        switch (in.nextInt()) {
+            case 1:
+                this.changeLimits(in, account);
+        }
+    }
+
     public void changeLimits(Scanner in, Account account) {
         try {
             System.out.println(String.format("\n" + line + "\nEdit Limits:\n" + line
