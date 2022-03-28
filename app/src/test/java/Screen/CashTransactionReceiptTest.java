@@ -179,6 +179,5 @@ public class CashTransactionReceiptTest {
         assertFalse(result);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         in.close();
-
     }
 }

@@ -72,14 +72,6 @@ public class PinPromptTest {
         assertTrue(outContent.toString().contains("Incorrect PIN!"));
         assertEquals(2, ((PinPrompt) pinPrompt).getTries());
         in.close();
-
-        System.setIn(new ByteArrayInputStream("234567".getBytes()));
-        in = new Scanner(System.in);
-        ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
-        in.close();
-
-        // Prove that program has exited
-        assertFalse(true);
     }
 
     @Test

@@ -37,15 +37,13 @@ public class Withdraw implements ScreenState {
 
             BigDecimal amt = new BigDecimal(amtInt);
 
-            // Validate amount with ATM notes, withdraw limit and
-            // available balance
-            // atm.checkWithdrawAmount(amt);
+            // Validate amount against ATM notes, withdraw limit and available balance
             account.checkAgainstWithdrawLimit(amt);
             account.checkAgainstAvailableBalance(amt);
 
             // Withdraw from ATM and account
             Tuple<BigDecimal, int[]> withdrawResult = atm.withdraw(amt);
-            account.subtractAvailableBalance(amt);
+            account.withdrawAvailableBalance(amt);
 
             // Create record of transaction
             Transaction txn = new CashTransaction(account.getId(), amt, atm.getId(),

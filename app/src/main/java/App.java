@@ -6,11 +6,15 @@ import java.util.Scanner;
 import Account.Account;
 import Account.Card;
 import Atm.Atm;
+import Customer.Customer;
 import DataSource.AccountDataSource;
+import DataSource.AtmDataSource;
 import DataSource.CardsDataSource;
 import DataSource.DataSource;
 import DataSource.TransactionDataSource;
 import Helper.Tuple;
+import DataSource.CustomerDataSource;
+import Screen.AccountScreen;
 import Screen.AtmList;
 import Screen.CardPrompt;
 import Screen.Deposit;
@@ -21,6 +25,8 @@ import Screen.CashTransactionReceipt;
 import Screen.ScreenState;
 import Screen.ScreenStateContext;
 import Screen.TransactionHistory;
+import Screen.Transfer;
+import Screen.TransferTransactionReceipt;
 import Screen.Withdraw;
 import Transaction.Transaction;
 import Transaction.CashTransaction;
@@ -28,10 +34,13 @@ import Transaction.CashTransaction;
 public class App {
     private static DataSource<Transaction> txnDataSource = null;
     private static DataSource<Card> cardDataSource = null;
+    private static DataSource<Customer> customerDataSource = null;
     private static DataSource<Account> accountDataSource = null;
+    private static DataSource<Atm> atmDataSource = null;
     private static Atm atm = null;
     private static Card card = null;
     private static Account account = null;
+    private static Customer customer = null;
 
     public static void main(String[] args) {
         try (Scanner in = new Scanner(System.in)) {
@@ -40,6 +49,8 @@ public class App {
             txnDataSource = new TransactionDataSource();
             cardDataSource = new CardsDataSource();
             accountDataSource = new AccountDataSource();
+            customerDataSource = new CustomerDataSource();
+            atmDataSource = new AtmDataSource();
 
             ScreenStateContext stateContext = new ScreenStateContext();
 
@@ -50,7 +61,7 @@ public class App {
             ScreenState atmList = new AtmList();
             stateContext.setAndPrintScreen(atmList);
             while (atm == null) {
-                atm = ((AtmList) atmList).selectAtm(in);
+                atm = ((AtmList) atmList).selectAtm(in, atmDataSource);
                 in.nextLine(); // Clear scanner int buffer
             }
 
@@ -146,7 +157,31 @@ public class App {
                 }
                 optionScreens(stateContext, in);
             case 3: // Bank Transfer
-                System.out.println("Not a valid option.");
+
+                // Enter transfer amount
+                ScreenState transfer = new Transfer();
+                stateContext.setAndPrintScreen(transfer);
+                BigDecimal transferAmt = null;
+                while (transferAmt == null) {
+                    transferAmt = ((Transfer) transfer).getTransferAmt(in, account, accountDataSource,
+                            txnDataSource);
+                }
+
+                // Return to main option screen if it's zero
+                if (transferAmt.compareTo(BigDecimal.ZERO) == 0) {
+                    optionScreens(stateContext, in);
+                }
+
+                // Print receipt or just available balance
+                ScreenState transferReceipt = new TransferTransactionReceipt();
+                stateContext.setAndPrintScreen(transferReceipt);
+                boolean vaildTransferOutput = false;
+                while (vaildTransferOutput == false) {
+                    vaildTransferOutput = ((TransferTransactionReceipt) transferReceipt).getSelectedOption(in, account,
+                            txnDataSource, transferAmt);
+                    in.nextLine(); // Clear scanner int buffer
+                }
+
                 optionScreens(stateContext, in);
             case 4: // Transaction History
                 ScreenState txnHistory = new TransactionHistory();
@@ -154,8 +189,20 @@ public class App {
                 ((TransactionHistory) txnHistory).printTxnHistory(in, account.getId(), txnDataSource);
                 optionScreens(stateContext, in);
             case 5: // Manage Account
-                System.out.println("Not a valid option.");
-                optionScreens(stateContext, in);
+                customer = customerDataSource.getDataById(account.getCustomerId());
+                AccountScreen accountScreen = new AccountScreen(customer, account);
+                stateContext.setAndPrintScreen(accountScreen);
+                try {
+                    switch (in.nextInt()) {
+                        case 1:
+                            accountScreen.changeLimits(in, account);
+                            optionScreens(stateContext, in);
+                        default:
+                            optionScreens(stateContext, in);
+                    }
+                } finally {
+                    optionScreens(stateContext, in);
+                }
             case 6: // Exit
                 System.out.println("Exit");
                 System.exit(0);

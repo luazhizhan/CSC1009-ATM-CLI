@@ -32,7 +32,7 @@ public class AddressTest {
         assertEquals(SINGAPORE, address.getCity());
         assertEquals(SINGAPORE, address.getState());
         assertEquals(SINGAPORE, address.getCountry());
-        assertEquals("2021, Bukit Batok Street 23, 02-178, Singapore, Singapore, Singapore", address.getAddress());
+        assertEquals("2021 Bukit Batok Street 23, 02-178, Singapore, Singapore, Singapore", address.getAddress());
 
         blkNum = "10";
         streetAddress = "Glasgow Terrace,9B Glasgow Road";
@@ -56,7 +56,7 @@ public class AddressTest {
         assertEquals(city, address.getCity());
         assertEquals(state, address.getState());
         assertEquals(country, address.getCountry());
-        assertEquals("10, Glasgow Terrace,9B Glasgow Road, 01-525, City Square, Johor Bahru, Malaysia",
+        assertEquals("10 Glasgow Terrace,9B Glasgow Road, 01-525, City Square, Johor Bahru, Malaysia",
                 address.getAddress());
     }
 

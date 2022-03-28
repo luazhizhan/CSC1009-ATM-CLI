@@ -28,7 +28,7 @@ import java.util.Scanner;
 public class WithdrawTest {
     private Atm atm;
     private Account account;
-    private static DataSource<Transaction> txnDataSource;
+    private DataSource<Transaction> txnDataSource;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {

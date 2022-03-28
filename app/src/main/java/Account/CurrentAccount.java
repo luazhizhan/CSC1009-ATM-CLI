@@ -42,7 +42,7 @@ public class CurrentAccount extends Account {
     @Override
     public void checkAgainstAvailableBalance(BigDecimal amount) {
         if (amount.compareTo(getAvailableBalance().add(getOverDraftLimit())) > 0) {
-            throw new IllegalArgumentException("Withdraw amount exceeded available balance!");
+            throw new IllegalArgumentException("Amount exceeded available balance!");
         }
     }
 

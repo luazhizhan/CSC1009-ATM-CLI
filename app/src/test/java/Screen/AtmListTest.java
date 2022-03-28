@@ -1,27 +1,49 @@
 package Screen;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import Atm.Atm;
+import DataSource.AtmDataSource;
+import DataSource.DataSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Scanner;
 
 public class AtmListTest {
+    private DataSource<Atm> atmDataSource;
+
+    @BeforeEach
+    public void setUp() throws FileNotFoundException, IOException {
+        atmDataSource = new AtmDataSource();
+    }
+
     @Test
     public void success() {
         ScreenState atmList = new AtmList();
         ScreenStateContext stateContext = new ScreenStateContext();
         stateContext.setAndPrintScreen(atmList);
 
+        // Set and read System.out content
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
         // Set scanner input value
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         Scanner in = new Scanner(System.in);
-        Atm atm = ((AtmList) atmList).selectAtm(in);
+        Atm atm = ((AtmList) atmList).selectAtm(in, atmDataSource);
+        String out = outContent.toString();
+        assertEquals(300, atm.getNumOf10DollarsNotes());
+        assertEquals(300, atm.getNumOf50DollarsNotes());
+        assertTrue(out.contains("Alpha Street"));
+        assertTrue(out.contains("Bravo Way"));
+        assertTrue(out.contains("Charlie Walk"));
         in.close();
     }
 
@@ -37,7 +59,7 @@ public class AtmListTest {
         System.setIn(new ByteArrayInputStream("-1".getBytes()));
 
         Scanner in = new Scanner(System.in);
-        ((AtmList) atmList).selectAtm(in);
+        ((AtmList) atmList).selectAtm(in, atmDataSource);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         in.close();
     }
@@ -54,13 +76,13 @@ public class AtmListTest {
         System.setIn(new ByteArrayInputStream("test".getBytes()));
 
         Scanner in = new Scanner(System.in);
-        ((AtmList) atmList).selectAtm(in);
+        ((AtmList) atmList).selectAtm(in, atmDataSource);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         in.close();
 
         System.setIn(new ByteArrayInputStream("0.4".getBytes()));
         in = new Scanner(System.in);
-        ((AtmList) atmList).selectAtm(in);
+        ((AtmList) atmList).selectAtm(in, atmDataSource);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         in.close();
     }

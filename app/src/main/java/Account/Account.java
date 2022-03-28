@@ -100,16 +100,8 @@ public abstract class Account {
 
     public void checkAgainstAvailableBalance(BigDecimal amount) {
         if (amount.compareTo(getAvailableBalance()) > 0) {
-            throw new IllegalArgumentException("Withdraw amount exceeded available balance!");
+            throw new IllegalArgumentException("Amount exceeded available balance!");
         }
-    }
-
-    public void subtractAvailableBalance(BigDecimal amount) {
-        setAvailableBalance(getAvailableBalance().subtract(amount));
-    }
-
-    public void addAvailableBalance(BigDecimal amount) {
-        setAvailableBalance(getAvailableBalance().add(amount));
     }
 
     public BigDecimal getHoldBalance() {
@@ -149,6 +141,12 @@ public abstract class Account {
         this.transferLimit = transferLimit;
     }
 
+    public void checkAgainstTransferLimit(BigDecimal amount) {
+        if (amount.compareTo(getTransferLimit()) > 0) {
+            throw new IllegalArgumentException("Transfer amount exceeded transfer limit!");
+        }
+    }
+
     public BigDecimal getOverseasWithdrawLimit() {
         return overseasWithdrawLimit;
     }
@@ -177,6 +175,31 @@ public abstract class Account {
 
     public void setStatus(AccountStatus status) {
         this.status = status;
+    }
+
+    public void checkReceivingAccountStatus() throws InvalidAccountException {
+        if (this.status.compareTo(AccountStatus.CLOSED) == 0) {
+            throw new InvalidAccountException("Receiving Account is closed!");
+        }
+        if (this.status.compareTo(AccountStatus.FROZEN) == 0) {
+            throw new InvalidAccountException("Receiving Account is frozen!");
+        }
+    }
+
+    public void addAvailableBalance(BigDecimal amount) {
+        setAvailableBalance(getAvailableBalance().add(amount));
+    }
+
+    public void withdrawAvailableBalance(BigDecimal amount) {
+        checkAgainstWithdrawLimit(amount);
+        checkAgainstAvailableBalance(amount);
+        setAvailableBalance(getAvailableBalance().subtract(amount));
+    }
+
+    public void transferAvailableBalance(BigDecimal amount) {
+        checkAgainstTransferLimit(amount);
+        checkAgainstAvailableBalance(amount);
+        setAvailableBalance(getAvailableBalance().subtract(amount));
     }
 
     public void printAccountInfo() {
