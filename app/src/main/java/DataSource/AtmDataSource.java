@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Address.Address;
-import Country.Country;
 import Atm.Atm;
 
 public class AtmDataSource extends DataSource<Atm> {
@@ -18,7 +17,11 @@ public class AtmDataSource extends DataSource<Atm> {
     }
 
     @Override
-    protected List<Atm> parseCSVDataList(List<String[]> dataList, CountryDataSource countryDataSource) {
+    protected List<Atm> parseCSVDataList(List<String[]> dataList) {
+        return null;
+    }
+
+    private List<Atm> parseCSVDataList(List<String[]> dataList, CountryDataSource countryDataSource) {
         List<Atm> atmDataSource = new ArrayList<Atm>();
         String[] data;
         /**
@@ -32,6 +35,19 @@ public class AtmDataSource extends DataSource<Atm> {
          * state 7
          * Use countryDS instead
          **/
+
+        // try {
+        // CountryDataSource countryDataSource = new CountryDataSource();
+        // for (int i = 0; i < dataList.size(); i++) {
+        // data = dataList.get(i);
+        // Atm atm = new Atm(data[0], countryDataSource.getDataById(data[1]),
+        // new Address(data[2], data[3], data[4], data[5], data[6], data[7],
+        // countryDataSource.getDataById(data[1]).getCountryName().toUpperCase()));
+        // atmDataSource.add(atm);
+        // }
+        // } catch (Exception e) {
+        // }
+
         for (int i = 0; i < dataList.size(); i++) {
             data = dataList.get(i);
             Atm atm = new Atm(data[0], countryDataSource.getDataById(data[1]),

@@ -2,8 +2,8 @@ package Account;
 
 import java.math.BigDecimal;
 
-import Currency.Currency;
 import DataSource.CurrencyDataSource;
+import Currency.Currency;
 
 public abstract class Account {
     private String id; // Account ID

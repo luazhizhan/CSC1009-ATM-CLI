@@ -1,4 +1,4 @@
-package Screen;
+package screen;
 
 public interface ScreenState {
     final static String line = "--------------------------------------------------";

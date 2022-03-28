@@ -6,32 +6,34 @@ import java.util.Scanner;
 import Account.Account;
 import Account.Card;
 import Atm.Atm;
+import Country.Country;
+import Currency.Currency;
 import Customer.Customer;
 import DataSource.AccountDataSource;
 import DataSource.AtmDataSource;
-import DataSource.CurrencyDataSource;
-import DataSource.CountryDataSource;
 import DataSource.CardsDataSource;
+import DataSource.CountryDataSource;
+import DataSource.CurrencyDataSource;
+import DataSource.CustomerDataSource;
 import DataSource.DataSource;
 import DataSource.TransactionDataSource;
 import Helper.Tuple;
-import DataSource.CustomerDataSource;
 import Screen.AccountScreen;
 import Screen.AtmList;
 import Screen.CardPrompt;
+import Screen.CashTransactionReceipt;
 import Screen.Deposit;
 import Screen.Greeting;
 import Screen.MainOption;
 import Screen.PinPrompt;
-import Screen.CashTransactionReceipt;
 import Screen.ScreenState;
 import Screen.ScreenStateContext;
 import Screen.TransactionHistory;
 import Screen.Transfer;
 import Screen.TransferTransactionReceipt;
 import Screen.Withdraw;
-import Transaction.Transaction;
 import Transaction.CashTransaction;
+import Transaction.Transaction;
 
 public class App {
     private static DataSource<Transaction> txnDataSource = null;
@@ -56,7 +58,8 @@ public class App {
             customerDataSource = new CustomerDataSource();
             countryDataSource = new CountryDataSource();
             currencyDataSource = new CurrencyDataSource();
-            atmDataSource = new AtmDataSource(countryDataSource);
+            // atmDataSource = new AtmDataSource();
+            atmDataSource = new AtmDataSource((CountryDataSource) countryDataSource);
 
             ScreenStateContext stateContext = new ScreenStateContext();
 

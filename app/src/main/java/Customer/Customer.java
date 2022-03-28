@@ -1,7 +1,7 @@
 package Customer;
 
-import Address.Address;
 import Helper.Id;
+import Address.Address;
 
 public class Customer {
 
@@ -16,6 +16,7 @@ public class Customer {
         setId(id);
         setAddress(address);
     }
+
     public Customer(String name, String email, String phone) {
         this.name = name;
         setEmail(email);

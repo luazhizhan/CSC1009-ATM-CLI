@@ -3,9 +3,8 @@ package Atm;
 import java.math.BigDecimal;
 import java.util.InputMismatchException;
 
-import Currency.Currency;
-
 import Helper.Tuple;
+import Currency.Currency;
 
 // Dispenses $.
 public class MoneyHandler {
@@ -74,7 +73,7 @@ public class MoneyHandler {
             for (int i = 0; i < dispenserAmounts[0].length; i++) {
                 dispenserAmounts[1][i] -= dispensed.y[i];
             }
-            returnValue = new Tuple<BigDecimal, int[]>(getTotalValue(dispensed.y), dispensed.y);
+            returnValue = new Tuple<BigDecimal, int[]>(new BigDecimal(getTotalValue(dispensed.y)), dispensed.y);
 
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -128,9 +127,10 @@ public class MoneyHandler {
         }
         return totalValue;
     }
-    
-    // Algorithm for making change, given an array of denominations, limits per each denomination, and a value.
-    private Tuple<Boolean, int[]> MakeChange(int[] denominations, int[] limits, int value) {
+
+    // Algorithm for making change, given an array of denominations, limits per each
+    // denomination, and a value.
+    public Tuple<Boolean, int[]> MakeChange(int[] denominations, int[] limits, int value) {
 
         if (limits.length != denominations.length) {
             // We have an error. Sizes do not match. Print error and exit.
@@ -161,6 +161,17 @@ public class MoneyHandler {
         // Everything works. Return the values.
         return new Tuple<Boolean, int[]>(true, values);
 
+    }
+
+    public void PrintRemainingBills() {
+        for (int i = 0; i < dispenserAmounts[0].length; i++) {
+            System.out.println(
+                    "Number of " + dispenserAmounts[0][i] + " denomination banknotes left: " + dispenserAmounts[1][i]);
+        }
+    }
+
+    public int[] getBills() {
+        return dispenserAmounts[1];
     }
 
 }

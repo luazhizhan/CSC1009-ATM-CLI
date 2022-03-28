@@ -30,13 +30,14 @@ public class CashTransactionReceiptTest {
         atm = new Atm();
         account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL, "SGP");
         account.setAvailableBalance(new BigDecimal(30000));
-        setNotesPairAndAmt(2, 2); // 120
+        // setNotesPairAndAmt(2, 2); // 120
     }
 
-    private void setNotesPairAndAmt(int numOf10DollarNotes, int numOf50DollarsNotes) {
-        notes = new int[] { numOf10DollarNotes, numOf50DollarsNotes };
-        amt = atm.calculateNotesAmount(notes);
-    }
+    // private void setNotesPairAndAmt(int numOf10DollarNotes, int
+    // numOf50DollarsNotes) {
+    // notes = new int[] { numOf10DollarNotes, numOf50DollarsNotes };
+    // amt = atm.calculateNotesAmount(notes);
+    // }
 
     @Test
     public void successDeposit() throws IOException {

@@ -2,11 +2,11 @@ package Atm;
 
 import java.math.BigDecimal;
 
+import Helper.Id;
+import Helper.Tuple;
 import Address.Address;
 import Country.Country;
 import DataSource.CurrencyDataSource;
-import Helper.Id;
-import Helper.Tuple;
 
 public class Atm {
     private String id;
@@ -91,6 +91,14 @@ public class Atm {
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+
+    public void PrintRemainingBills() {
+        moneyHandler.PrintRemainingBills();
+    }
+
+    public int[] getBills() {
+        return moneyHandler.getBills();
     }
 
     public BigDecimal deposit(int[] depositAmounts) {

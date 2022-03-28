@@ -94,15 +94,6 @@ public class AtmTest {
     }
 
     @Test
-    public void calculateNotesAmount() {
-        atm = new Atm();
-        assertEquals(new BigDecimal(60), atm.calculateNotesAmount(new int[] { 1, 1 }));
-        assertEquals(new BigDecimal(50), atm.calculateNotesAmount(new int[] { 0, 1 }));
-        assertEquals(new BigDecimal(10), atm.calculateNotesAmount(new int[] { 1, 0 }));
-        assertEquals(new BigDecimal(850), atm.calculateNotesAmount(new int[] { 10, 15 }));
-    }
-
-    @Test
     public void failureDeposit() {
         Atm atm = new Atm();
 

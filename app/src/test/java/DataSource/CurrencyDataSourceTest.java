@@ -3,7 +3,6 @@ package DataSource;
 import org.junit.jupiter.api.Test;
 
 import Currency.Currency;
-
 import Helper.ArraysEqual;
 
 import java.io.FileNotFoundException;

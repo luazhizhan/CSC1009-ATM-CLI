@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Account.Account;
+import Account.AccountStatus;
 import Account.CurrentAccount;
 import Account.SavingsAccount;
-import Account.AccountStatus;
 
 public class AccountDataSource extends DataSource<Account> {
     private static final String ACCOUNT_CSV_PATH = "Account/accounts.csv";

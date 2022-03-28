@@ -4,7 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import Atm.Atm;
+import Country.Country;
 import DataSource.AtmDataSource;
+import DataSource.CountryDataSource;
 import DataSource.DataSource;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,10 +20,12 @@ import java.util.Scanner;
 
 public class AtmListTest {
     private DataSource<Atm> atmDataSource;
+    private DataSource<Country> countryDataSource;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        atmDataSource = new AtmDataSource();
+        countryDataSource = new CountryDataSource();
+        atmDataSource = new AtmDataSource((CountryDataSource) countryDataSource);
     }
 
     @Test
@@ -39,8 +43,8 @@ public class AtmListTest {
         Scanner in = new Scanner(System.in);
         Atm atm = ((AtmList) atmList).selectAtm(in, atmDataSource);
         String out = outContent.toString();
-        assertEquals(300, atm.getNumOf10DollarsNotes());
-        assertEquals(300, atm.getNumOf50DollarsNotes());
+        assertEquals(300, atm.getBills()[0]);
+        assertEquals(300, atm.getBills()[1]);
         assertTrue(out.contains("Alpha Street"));
         assertTrue(out.contains("Bravo Way"));
         assertTrue(out.contains("Charlie Walk"));

@@ -1,10 +1,10 @@
 package Screen;
 
-import Account.Account;
-import Customer.Customer;
-
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+
+import Account.Account;
+import Customer.Customer;
 
 public class AccountScreen implements ScreenState {
     private String prompt;

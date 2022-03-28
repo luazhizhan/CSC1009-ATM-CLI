@@ -3,15 +3,18 @@ package DataSource;
 import org.junit.jupiter.api.Test;
 
 import Atm.Atm;
+import Country.Country;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AtmDataSourceTest {
     @Test
     public void success() throws FileNotFoundException, IOException {
-        DataSource<Atm> atmDataSource = new AtmDataSource();
+        DataSource<Country> countryDataSource = new CountryDataSource();
+        DataSource<Atm> atmDataSource = new AtmDataSource((CountryDataSource) countryDataSource);
         Atm atm = atmDataSource.getDataById("6a8145ec3be544879331c0c592e510b6");
         assertEquals(atm.getAddress().getBlkNum(), "4");
         assertEquals(atm.getAddress().getStreetAddress(), "Delta Road");

@@ -16,7 +16,7 @@ public class PinPrompt implements ScreenState {
         tries = 0;
     }
 
-    protected int getTries() {
+    public int getTries() {
         return tries;
     }
 

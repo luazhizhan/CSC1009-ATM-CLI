@@ -1,13 +1,14 @@
 package DataSource;
 
-import Customer.Customer;
 import org.junit.jupiter.api.Test;
+
+import Customer.Customer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CustomerDataSourceTest {
+public class CustomerDatasourceTest {
     @Test
     public void success() throws FileNotFoundException, IOException {
         DataSource<Customer> customerDataSource = new CustomerDataSource();
