@@ -9,6 +9,8 @@ import Atm.Atm;
 import Customer.Customer;
 import DataSource.AccountDataSource;
 import DataSource.AtmDataSource;
+import DataSource.CurrencyDataSource;
+import DataSource.CountryDataSource;
 import DataSource.CardsDataSource;
 import DataSource.DataSource;
 import DataSource.TransactionDataSource;
@@ -37,6 +39,8 @@ public class App {
     private static DataSource<Customer> customerDataSource = null;
     private static DataSource<Account> accountDataSource = null;
     private static DataSource<Atm> atmDataSource = null;
+    private static DataSource<Country> countryDataSource = null;
+    private static DataSource<Currency> currencyDataSource = null;
     private static Atm atm = null;
     private static Card card = null;
     private static Account account = null;
@@ -50,7 +54,9 @@ public class App {
             cardDataSource = new CardsDataSource();
             accountDataSource = new AccountDataSource();
             customerDataSource = new CustomerDataSource();
-            atmDataSource = new AtmDataSource();
+            countryDataSource = new CountryDataSource();
+            currencyDataSource = new CurrencyDataSource();
+            atmDataSource = new AtmDataSource(countryDataSource);
 
             ScreenStateContext stateContext = new ScreenStateContext();
 
