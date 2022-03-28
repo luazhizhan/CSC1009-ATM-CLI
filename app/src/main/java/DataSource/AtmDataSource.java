@@ -44,4 +44,7 @@ public class AtmDataSource extends DataSource<Atm> {
     public Atm getDataById(String id) {
         return this.getData().stream().filter(data -> data.getId().equals(id)).findFirst().orElse(null);
     }
+    public List<Atm> getAtmData() {
+        return super.getData();
+    }
 }
