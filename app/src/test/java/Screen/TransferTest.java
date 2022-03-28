@@ -179,7 +179,7 @@ public class TransferTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        String input = toAccountId + System.getProperty("line.separator") + "123";
+        String input = toAccountId + System.getProperty("line.separator") + "-123";
         input += System.getProperty("line.separator") + System.getProperty("line.separator");
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);

@@ -7,6 +7,7 @@ import Account.Account;
 import Account.Card;
 import Atm.Atm;
 import DataSource.AccountDataSource;
+import DataSource.AtmDataSource;
 import DataSource.CardsDataSource;
 import DataSource.DataSource;
 import DataSource.TransactionDataSource;
@@ -30,6 +31,7 @@ public class App {
     private static DataSource<Transaction> txnDataSource = null;
     private static DataSource<Card> cardDataSource = null;
     private static DataSource<Account> accountDataSource = null;
+    private static DataSource<Atm> atmDataSource = null;
     private static Atm atm = null;
     private static Card card = null;
     private static Account account = null;
@@ -41,6 +43,7 @@ public class App {
             txnDataSource = new TransactionDataSource();
             cardDataSource = new CardsDataSource();
             accountDataSource = new AccountDataSource();
+            atmDataSource = new AtmDataSource();
 
             ScreenStateContext stateContext = new ScreenStateContext();
 
@@ -51,7 +54,7 @@ public class App {
             ScreenState atmList = new AtmList();
             stateContext.setAndPrintScreen(atmList);
             while (atm == null) {
-                atm = ((AtmList) atmList).selectAtm(in);
+                atm = ((AtmList) atmList).selectAtm(in, atmDataSource);
                 in.nextLine(); // Clear scanner int buffer
             }
 

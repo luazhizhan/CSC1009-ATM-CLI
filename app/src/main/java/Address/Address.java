@@ -94,6 +94,10 @@ public class Address {
         this.country = country;
     }
 
+    public String getShortAddress() {
+        return (blkNum + " " + streetAddress + " " + unitNumber + " S" + postalCode);
+    }
+
     public String getAddress() {
         return (blkNum + ", " + streetAddress + ", " + unitNumber + ", "
                 + city + ", " + state + ", " + country);
