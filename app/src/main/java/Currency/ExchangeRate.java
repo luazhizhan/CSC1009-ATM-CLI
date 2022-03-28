@@ -2,6 +2,7 @@ package Currency;
 
 import java.math.BigDecimal;
 
+// Structure for holding exchange rates from one currency to another.
 public class ExchangeRate {
     private final Currency currency;
     private final BigDecimal rate;

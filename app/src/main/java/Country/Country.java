@@ -4,8 +4,6 @@ package Country;
 
 // Contains the currency code (ISO 3166), 
 // an array of banknote values in of that currencies latest series, <-- Presumed to be what ATMs are configured to accept and dispense.
-
-// Leaving the property setters means they are mutable, so only permit valid users, if we get that far.
 public class Country {
 
     // CONSTRUCTORS
