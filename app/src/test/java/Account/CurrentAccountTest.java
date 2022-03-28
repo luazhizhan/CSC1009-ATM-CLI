@@ -96,7 +96,7 @@ class CurrentAccountTest {
 
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> account.checkAgainstAvailableBalance(new BigDecimal(DEFAULT_LIMIT + 1000 + 1)));
-        assertEquals("Withdraw amount exceeded available balance!", exception.getMessage());
+        assertEquals("Amount exceeded available balance!", exception.getMessage());
     }
 
     @Test

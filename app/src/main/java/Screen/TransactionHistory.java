@@ -84,9 +84,9 @@ public class TransactionHistory implements ScreenState {
                 }
 
                 // Ask user whether he/she want to continue or quit
-                System.out.println("Enter to continue or q to quit.\n" + line);
+                System.out.println("Enter to continue or 0 to quit.\n" + line);
                 String option = in.nextLine();
-                if (option.toLowerCase().equals("q")) {
+                if (option.compareToIgnoreCase("0") == 0) {
                     return;
                 }
 

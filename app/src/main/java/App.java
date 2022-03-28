@@ -21,6 +21,7 @@ import Screen.CashTransactionReceipt;
 import Screen.ScreenState;
 import Screen.ScreenStateContext;
 import Screen.TransactionHistory;
+import Screen.Transfer;
 import Screen.Withdraw;
 import Transaction.Transaction;
 import Transaction.CashTransaction;
@@ -148,7 +149,21 @@ public class App {
                 }
                 optionScreens(stateContext, in);
             case 3: // Bank Transfer
-                System.out.println("Not a valid option.");
+
+                // Enter transfer amount
+                ScreenState transfer = new Transfer();
+                stateContext.setAndPrintScreen(transfer);
+                BigDecimal transferAmt = null;
+                while (transferAmt == null) {
+                    transferAmt = ((Transfer) transfer).getTransferAmt(in, account, accountDataSource,
+                            txnDataSource);
+                }
+
+                // Return to main option screen if it's zero
+                if (transferAmt.compareTo(BigDecimal.ZERO) == 0) {
+                    optionScreens(stateContext, in);
+                }
+
                 optionScreens(stateContext, in);
             case 4: // Transaction History
                 ScreenState txnHistory = new TransactionHistory();

@@ -27,7 +27,7 @@ import java.util.Scanner;
 public class WithdrawTest {
     private Atm atm;
     private Account account;
-    private static DataSource<Transaction> txnDataSource;
+    private DataSource<Transaction> txnDataSource;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
@@ -152,7 +152,7 @@ public class WithdrawTest {
         System.setIn(new ByteArrayInputStream("500".getBytes()));
         Scanner in = new Scanner(System.in);
         Pair<Integer> notes = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
-        assertTrue(outContent.toString().contains("Withdraw amount exceeded available balance"));
+        assertTrue(outContent.toString().contains("Amount exceeded available balance"));
         assertNull(notes);
         assertEquals(300, atm.getNumOf10DollarsNotes());
         assertEquals(300, atm.getNumOf50DollarsNotes());

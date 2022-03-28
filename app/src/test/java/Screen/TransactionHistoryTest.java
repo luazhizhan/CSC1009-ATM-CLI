@@ -41,7 +41,7 @@ public class TransactionHistoryTest {
         System.setOut(new PrintStream(outContent));
 
         // Print 5 transaction
-        String input = "q";
+        String input = "0";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
         ((TransactionHistory) txnHistory).printTxnHistory(in, account.getId(), txnDataSource);
