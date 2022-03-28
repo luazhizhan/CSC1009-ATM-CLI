@@ -12,7 +12,7 @@ public class AtmList implements ScreenState {
     private String prompt;
 
     public AtmList() {
-        prompt = "\n" + line + "\nPlease select an ATM.\nEnter 0 to exit.\n" + line;
+        prompt = "\n" + line + "\nPlease select an ATM.\nEnter 0 to exit.\n";
     }
 
     @Override
@@ -51,7 +51,7 @@ public class AtmList implements ScreenState {
                 return null;
             }
 
-            return atms.get(atmNo);
+            return atms.get(atmNo - 1); // minus 1 as index starts from 0
         } catch (NoSuchElementException e) {
             System.out.println(ScreenState.invalidInput);
             return null;

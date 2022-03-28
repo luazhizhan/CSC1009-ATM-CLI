@@ -23,6 +23,7 @@ import Screen.ScreenState;
 import Screen.ScreenStateContext;
 import Screen.TransactionHistory;
 import Screen.Transfer;
+import Screen.TransferTransactionReceipt;
 import Screen.Withdraw;
 import Transaction.Transaction;
 import Transaction.CashTransaction;
@@ -165,6 +166,16 @@ public class App {
                 // Return to main option screen if it's zero
                 if (transferAmt.compareTo(BigDecimal.ZERO) == 0) {
                     optionScreens(stateContext, in);
+                }
+
+                // Print receipt or just available balance
+                ScreenState transferReceipt = new TransferTransactionReceipt();
+                stateContext.setAndPrintScreen(transferReceipt);
+                boolean vaildTransferOutput = false;
+                while (vaildTransferOutput == false) {
+                    vaildTransferOutput = ((TransferTransactionReceipt) transferReceipt).getSelectedOption(in, account,
+                            txnDataSource, transferAmt);
+                    in.nextLine(); // Clear scanner int buffer
                 }
 
                 optionScreens(stateContext, in);
