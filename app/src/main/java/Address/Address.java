@@ -99,7 +99,7 @@ public class Address {
     }
 
     public String getAddress() {
-        return (blkNum + ", " + streetAddress + ", " + unitNumber + ", "
+        return (blkNum + " " + streetAddress + ", " + unitNumber + ", "
                 + city + ", " + state + ", " + country);
     }
 
