@@ -60,9 +60,4 @@ public class CurrentAccount extends Account {
         }
     }
 
-    @Override
-    public void printAccountInfo() {
-        super.printAccountInfo();
-        System.out.println("Overdraft Limit:            " + getOverDraftLimit());
-    }
 }

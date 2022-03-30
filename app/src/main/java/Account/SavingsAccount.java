@@ -35,20 +35,6 @@ public class SavingsAccount extends Account {
         }
     }
 
-    @Override
-    public void printAccountInfo() {
-        System.out.println("Account.Account ID:                   " + getId());
-        System.out.println("Account.Account Name:                 " + getName());
-        System.out.println("Account.Account Status:               " + getStatus());
-        System.out.println("Available Balance:                    " + getAvailableBalance());
-        System.out.println("Hold Balance:                         " + getHoldBalance());
-        System.out.println("Withdrawal Limit:                     " + getWithdrawLimit());
-        System.out.println("Transfer Limit:                       " + getTransferLimit());
-        System.out.println("Overseas Withdrawal Limit:            " + getOverseasWithdrawLimit());
-        System.out.println("Overseas Transfer Limit:              " + getOverseasTransferLimit());
-        System.out.println("Savings Account.Account Interest Rate:" + getInterestRate());
-    }
-
     public void rewardInterest() {
         BigDecimal availableBalance = super.getAvailableBalance();
         BigDecimal balanceAfterInterest = availableBalance.add(availableBalance.multiply(interestRate));
