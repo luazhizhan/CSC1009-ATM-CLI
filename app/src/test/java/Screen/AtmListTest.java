@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import Atm.Atm;
 import Country.Country;
+import Currency.Currency;
 import DataSource.AtmDataSource;
 import DataSource.CountryDataSource;
+import DataSource.CurrencyDataSource;
 import DataSource.DataSource;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,12 +22,15 @@ import java.util.Scanner;
 
 public class AtmListTest {
     private DataSource<Atm> atmDataSource;
-    private DataSource<Country> countryDataSource;
+    private DataSource<Country> countryDataSource = null;
+    private DataSource<Currency> currencyDataSource = null;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
         countryDataSource = new CountryDataSource();
-        atmDataSource = new AtmDataSource((CountryDataSource) countryDataSource);
+        currencyDataSource = new CurrencyDataSource();
+        atmDataSource = new AtmDataSource((CountryDataSource) countryDataSource,
+                (CurrencyDataSource) currencyDataSource);
     }
 
     @Test

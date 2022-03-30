@@ -6,66 +6,63 @@ import Helper.Id;
 import Helper.Tuple;
 import Address.Address;
 import Country.Country;
-import DataSource.CurrencyDataSource;
+import Currency.Currency;
 
 public class Atm {
     private String id;
     private Address address;
     private Country country;
+    public MoneyHandler moneyHandler;
 
-    MoneyHandler moneyHandler;
-
-    // For test
-    public Atm() {
-        setId(Id.generateUUID());
-        try {
-            moneyHandler = new MoneyHandler(new CurrencyDataSource().getDataById("SGP"));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    // For test
-    public Atm(String id) {
-        setId(id);
-        try {
-            moneyHandler = new MoneyHandler(new CurrencyDataSource().getDataById("SGP"));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    // For test
-    public Atm(Country country, int[] amounts) {
+    public Atm(Country country, Currency currency) {
         setId(Id.generateUUID());
         setCountry(country);
-        try {
-            moneyHandler = new MoneyHandler(new CurrencyDataSource().getDataById(country.getCurrencyAcronym()),
-                    amounts);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        moneyHandler = new MoneyHandler(currency);
     }
 
-    // For test
-    public Atm(String id, Country country) {
+    public Atm(String id, Country country, Currency currency) {
         setId(id);
         setCountry(country);
-        try {
-            moneyHandler = new MoneyHandler(new CurrencyDataSource().getDataById(country.getCurrencyAcronym()));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        moneyHandler = new MoneyHandler(currency);
     }
 
-    public Atm(String id, Country country, Address address) {
+    public Atm(String id, Country country, Currency currency, Address address) {
         setId(id);
         setCountry(country);
-        try {
-            moneyHandler = new MoneyHandler(new CurrencyDataSource().getDataById(country.getCurrencyAcronym()));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        moneyHandler = new MoneyHandler(currency);
+        setAddress(address);
+    }
+
+    public Atm(Country country, Currency currency, Address address) {
+        setId(Id.generateUUID());
+        setCountry(country);
+        moneyHandler = new MoneyHandler(currency);
+        setAddress(address);
+    }
+
+    public Atm(Country country, Currency currency, int[] amounts) {
+        setId(Id.generateUUID());
+        setCountry(country);
+        moneyHandler = new MoneyHandler(currency, amounts);
+    }
+
+    public Atm(String id, Country country, Currency currency, int[] amounts) {
+        setId(id);
+        setCountry(country);
+        moneyHandler = new MoneyHandler(currency, amounts);
+    }
+
+    public Atm(String id, Country country, Currency currency, int[] amounts, Address address) {
+        setId(id);
+        setCountry(country);
+        moneyHandler = new MoneyHandler(currency, amounts);
+        setAddress(address);
+    }
+
+    public Atm(Country country, Currency currency, int[] amounts, Address address) {
+        setId(Id.generateUUID());
+        setCountry(country);
+        moneyHandler = new MoneyHandler(currency, amounts);
         setAddress(address);
     }
 
@@ -93,25 +90,17 @@ public class Atm {
         this.country = country;
     }
 
-    public void PrintRemainingBills() {
-        moneyHandler.PrintRemainingBills();
+    public void printRemainingBills() {
+        moneyHandler.printRemainingBills();
     }
 
+    // Only used for tests
     public int[] getBills() {
         return moneyHandler.getBills();
     }
 
     public BigDecimal deposit(int[] depositAmounts) {
         Tuple<Boolean, BigDecimal> result = moneyHandler.deposit(depositAmounts);
-        try {
-            if (result.x == false) {
-                throw new InsufficientNotesException("Deposit failed!");
-            }
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
         return result.y;
     }
 
@@ -119,18 +108,9 @@ public class Atm {
      * 
      * @param amount
      * @return Pair<Integer>(numOf10DollarsNotes, numOf50DollarsNotes)
-     * @throws IllegalArgumentException
-     * @throws InsufficientNotesException
      */
     public Tuple<BigDecimal, int[]> withdraw(BigDecimal amount)
             throws IllegalArgumentException, InsufficientNotesException {
-
-        Tuple<BigDecimal, int[]> result = moneyHandler.withdraw(amount.intValue());
-
-        if (result.x == BigDecimal.ZERO) {
-            throw new InsufficientNotesException("ATM has insufficient funds!");
-        }
-
-        return result;
+        return moneyHandler.withdraw(amount.intValue());
     }
 }

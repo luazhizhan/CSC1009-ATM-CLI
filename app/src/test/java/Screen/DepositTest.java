@@ -7,6 +7,10 @@ import Account.Account;
 import Account.AccountStatus;
 import Account.CurrentAccount;
 import Atm.Atm;
+import Country.Country;
+import Currency.Currency;
+import DataSource.CountryDataSource;
+import DataSource.CurrencyDataSource;
 import DataSource.DataSource;
 import DataSource.TransactionDataSource;
 import Helper.Tuple;
@@ -28,11 +32,24 @@ public class DepositTest {
     private Atm atm;
     private Account account;
     private static DataSource<Transaction> txnDataSource;
+    private DataSource<Country> countryDataSource = null;
+    private DataSource<Currency> currencyDataSource = null;
+    private Country singapore;
+    private Currency sgd;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        atm = new Atm();
-        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL, "SGP");
+        try {
+            countryDataSource = new CountryDataSource();
+            currencyDataSource = new CurrencyDataSource();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        singapore = countryDataSource.getDataById("SGP");
+        sgd = currencyDataSource.getDataById("SGD");
+        atm = new Atm(singapore, sgd);
+        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL,
+                currencyDataSource.getDataById("SGD"));
         account.setAvailableBalance(new BigDecimal(10000));
         ((CurrentAccount) account).setWithdrawLimit(new BigDecimal(1000));
         ((CurrentAccount) account).setOverDraftLimit(new BigDecimal(100));

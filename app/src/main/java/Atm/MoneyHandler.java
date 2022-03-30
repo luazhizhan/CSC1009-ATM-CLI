@@ -21,6 +21,7 @@ public class MoneyHandler {
     private int[][] dispenserAmounts;
     private int withdrawMinimum;
     private int withdrawMaximum;
+    private String currencyCode;
 
     // Instead of location, give it the currency code imo. Can pass that on ATM
     // init.
@@ -30,6 +31,7 @@ public class MoneyHandler {
 
         withdrawMinimum = currency.getWithdrawMinimum();
         withdrawMaximum = currency.getWithdrawMaximum();
+        currencyCode = currency.getCurrencyAcronym();
 
         for (int i = 0; i < dispenserAmounts[0].length; i++) {
             dispenserAmounts[1][i] = INITIAL_COUNT;
@@ -42,78 +44,66 @@ public class MoneyHandler {
 
         withdrawMinimum = currency.getWithdrawMinimum();
         withdrawMaximum = currency.getWithdrawMaximum();
+        currencyCode = currency.getCurrencyAcronym();
 
-        try {
-            if (dispenserAmounts[0].length != cashAmounts.length) {
-                throw new InputMismatchException("Array size must be " + dispenserAmounts[0].length);
-            }
-            for (int i = 0; i < dispenserAmounts[0].length; i++) {
-                dispenserAmounts[1][i] = cashAmounts[i];
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        if (dispenserAmounts[0].length != cashAmounts.length) {
+            throw new InputMismatchException("Array size must be " + dispenserAmounts[0].length);
+        }
+        for (int i = 0; i < dispenserAmounts[0].length; i++) {
+            dispenserAmounts[1][i] = cashAmounts[i];
         }
     }
 
     // Withdraw this value.
-    public Tuple<BigDecimal, int[]> withdraw(int value) throws IllegalArgumentException {
-        Tuple<Boolean, int[]> dispensed = MakeChange(dispenserAmounts[0], dispenserAmounts[1], value);
-        Tuple<BigDecimal, int[]> returnValue = new Tuple<BigDecimal, int[]>(BigDecimal.ZERO, dispensed.y);
-        try {
-            if (value < withdrawMinimum)
-                throw new IllegalArgumentException("Amount is too low!");
-            else if (value > withdrawMaximum)
-                throw new IllegalArgumentException("Amount is too high!");
+    public Tuple<BigDecimal, int[]> withdraw(int value) throws InsufficientNotesException, IllegalArgumentException {
+        // Throw errors if outside of range.
+        if (value < withdrawMinimum)
+            throw new IllegalArgumentException(
+                    "Amount is too low, minimum withdraw limit is " + withdrawMinimum + " " + currencyCode + ".");
+        else if (value > withdrawMaximum)
+            throw new IllegalArgumentException(
+                    "Amount is too high, maximum withdraw limit is " + withdrawMaximum + " " + currencyCode + ".");
 
-            // Signal that the dispenser cannot dispense the input amount
-            if (dispensed.x == false)
-                return returnValue;
+        int[] dispensed = makeChange(dispenserAmounts[0], dispenserAmounts[1], value);
+        Tuple<BigDecimal, int[]> returnValue = new Tuple<BigDecimal, int[]>(BigDecimal.ZERO, dispensed);
 
-            // Remove notes from dispenser
-            for (int i = 0; i < dispenserAmounts[0].length; i++) {
-                dispenserAmounts[1][i] -= dispensed.y[i];
-            }
-            returnValue = new Tuple<BigDecimal, int[]>(new BigDecimal(getTotalValue(dispensed.y)), dispensed.y);
-
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+        // Remove notes from dispenser
+        for (int i = 0; i < dispenserAmounts[0].length; i++) {
+            dispenserAmounts[1][i] -= dispensed[i];
         }
+        returnValue = new Tuple<BigDecimal, int[]>(new BigDecimal(getTotalValue(dispensed)), dispensed);
         // Dispense successful
         return returnValue;
     }
 
-    // Dispense this value.
+    // Dispense this value. Return Boolean to indicate success and BigDecimal to
+    // reflect the amount deposited.
     public Tuple<Boolean, BigDecimal> deposit(int[] depositAmounts)
             throws InputMismatchException, IllegalArgumentException {
-
         if (depositAmounts.length != dispenserAmounts[0].length) {
-            throw new InputMismatchException("Array size must be " + dispenserAmounts[0].length);
+            throw new InputMismatchException(
+                    "Input array size must be equal to ATM dispenser array size. Expected size: "
+                            + dispenserAmounts[0].length);
         }
-
         int totalValue = 0;
         Tuple<Boolean, BigDecimal> returnTuple = new Tuple<Boolean, BigDecimal>(false, BigDecimal.ZERO);
-        try {
-            int counter = 0;
-            for (int i : depositAmounts) {
-                if (i < 0)
-                    throw new IllegalArgumentException("Number of notes should be >= 0.");
-                counter += i;
-            }
-            if (counter == 0)
-                throw new IllegalArgumentException("Please deposit at least one note.");
-
-            // Add notes to dispenser
-            for (int i = 0; i < dispenserAmounts[0].length; i++) {
-                dispenserAmounts[1][i] += depositAmounts[i];
-                totalValue += depositAmounts[i] * dispenserAmounts[0][i];
-            }
-            totalValue = getTotalValue(depositAmounts);
-
-            returnTuple = new Tuple<Boolean, BigDecimal>(true, new BigDecimal(totalValue));
-
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+        int counter = 0;
+        for (int i : depositAmounts) {
+            if (i < 0)
+                throw new IllegalArgumentException("Number of notes should be >= 0.");
+            counter += i;
         }
+        if (counter == 0)
+            throw new IllegalArgumentException("Please deposit at least one note.");
+
+        // Add notes to dispenser
+        for (int i = 0; i < dispenserAmounts[0].length; i++) {
+            dispenserAmounts[1][i] += depositAmounts[i];
+            totalValue += depositAmounts[i] * dispenserAmounts[0][i];
+        }
+        totalValue = getTotalValue(depositAmounts);
+
+        returnTuple = new Tuple<Boolean, BigDecimal>(true, new BigDecimal(totalValue));
         return returnTuple;
     }
 
@@ -130,13 +120,12 @@ public class MoneyHandler {
 
     // Algorithm for making change, given an array of denominations, limits per each
     // denomination, and a value.
-    public Tuple<Boolean, int[]> MakeChange(int[] denominations, int[] limits, int value) {
+    private int[] makeChange(int[] denominations, int[] limits, int value)
+            throws InputMismatchException, InsufficientNotesException {
 
-        if (limits.length != denominations.length) {
-            // We have an error. Sizes do not match. Print error and exit.
-            System.err.println("Denominations and Limits list must be of the same size.");
-            System.exit(1);
-        }
+        // We have an error. Sizes do not match. Print error and exit.
+        if (limits.length != denominations.length)
+            throw new InputMismatchException("Denominations and Limits list must be of the same size.");
 
         int[] values = new int[denominations.length];
 
@@ -154,16 +143,15 @@ public class MoneyHandler {
             }
         }
 
-        if (value != 0) {
-            return new Tuple<Boolean, int[]>(false, values);
-        }
+        if (value != 0)
+            throw new InsufficientNotesException("Insufficient notes remaining in ATM to dispense this amount.");
 
         // Everything works. Return the values.
-        return new Tuple<Boolean, int[]>(true, values);
+        return values;
 
     }
 
-    public void PrintRemainingBills() {
+    public void printRemainingBills() {
         for (int i = 0; i < dispenserAmounts[0].length; i++) {
             System.out.println(
                     "Number of " + dispenserAmounts[0][i] + " denomination banknotes left: " + dispenserAmounts[1][i]);
@@ -172,6 +160,10 @@ public class MoneyHandler {
 
     public int[] getBills() {
         return dispenserAmounts[1];
+    }
+
+    public String getCurrencyCode() {
+        return currencyCode;
     }
 
 }

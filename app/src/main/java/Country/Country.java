@@ -6,6 +6,13 @@ package Country;
 // an array of banknote values in of that currencies latest series, <-- Presumed to be what ATMs are configured to accept and dispense.
 public class Country {
 
+    // Identifier for the country.
+    private String countryAcronym;
+    // Identifier for a countries currency
+    private String currencyAcronym;
+    // Country name
+    private String countryName;
+
     // CONSTRUCTORS
     public Country(String countryAcronym) {
         this.setCurrencyAcronym(countryAcronym);
@@ -22,9 +29,6 @@ public class Country {
         this.setCountryName(countryName);
     }
 
-    // Identifier for the country.
-    private String countryAcronym;
-
     public String getCountryAcronym() {
         return countryAcronym;
     }
@@ -33,9 +37,6 @@ public class Country {
         this.countryAcronym = countryAcronym;
     }
 
-    // Identifier for a countries currency
-    private String currencyAcronym;
-
     public String getCurrencyAcronym() {
         return currencyAcronym;
     }
@@ -43,9 +44,6 @@ public class Country {
     public void setCurrencyAcronym(String currencyAcronym) {
         this.currencyAcronym = currencyAcronym;
     }
-
-    // Identifier for a countries currency
-    private String countryName;
 
     public String getCountryName() {
         return countryName;

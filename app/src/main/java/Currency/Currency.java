@@ -9,6 +9,21 @@ import java.util.Set;
 // an array of banknote values in of that currencies latest series, <-- Presumed to be what ATMs are configured to accept and dispense.
 public class Currency {
 
+    // Identifier for the banknote series.
+    private String currencyAcronym;
+
+    // Notes used in an ATM for this currency.
+    private int[] banknotes;
+
+    // Cache exchange rates
+    private Set<ExchangeRate> rates = new HashSet<>();
+
+    // Suggested minimum withdraw amount for this currency.
+    private int withdrawMinimum;
+
+    // Suggested maximum withdraw amount for this currency.
+    private int withdrawMaximum;
+
     // CONSTRUCTORS
     public Currency(String currencyAcronym) {
         this.setCurrencyAcronym(currencyAcronym);
@@ -19,9 +34,6 @@ public class Currency {
         this.setBanknotes(banknotes);
     }
 
-    // Identifier for the banknote series.
-    private String currencyAcronym;
-
     public String getCurrencyAcronym() {
         return currencyAcronym;
     }
@@ -29,9 +41,6 @@ public class Currency {
     public void setCurrencyAcronym(String currencyAcronym) {
         this.currencyAcronym = currencyAcronym;
     }
-
-    // Cache exchange rates
-    private Set<ExchangeRate> rates = new HashSet<>();
 
     public Set<ExchangeRate> getRates() {
         return rates;
@@ -56,9 +65,6 @@ public class Currency {
         return rates.remove(rate);
     }
 
-    // Notes used in an ATM for this currency.
-    private int[] banknotes;
-
     public int[] getBanknotes() {
         return banknotes;
     }
@@ -67,9 +73,6 @@ public class Currency {
         this.banknotes = banknotes;
     }
 
-    // Suggested minimum/maximum withdraw amount for this currency.
-    private int withdrawMinimum;
-
     public int getWithdrawMinimum() {
         return withdrawMinimum;
     }
@@ -77,9 +80,6 @@ public class Currency {
     public void setWithdrawMinimum(int withdrawMinimum) {
         this.withdrawMinimum = withdrawMinimum;
     }
-
-    // Suggested minimum/maximum withdraw amount for this currency.
-    private int withdrawMaximum;
 
     public int getWithdrawMaximum() {
         return withdrawMaximum;

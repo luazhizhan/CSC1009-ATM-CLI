@@ -4,7 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import Account.Account;
+import Currency.Currency;
 import DataSource.AccountDataSource;
+import DataSource.CurrencyDataSource;
 import DataSource.DataSource;
 import DataSource.TransactionDataSource;
 import Transaction.Transaction;
@@ -23,6 +25,7 @@ import java.util.Scanner;
 
 public class TransferTest {
     private Account account;
+    private DataSource<Currency> currencyDataSource = null;
     private DataSource<Transaction> txnDataSource;
     private DataSource<Account> accDataSource;
     private String toAccountId;
@@ -30,7 +33,8 @@ public class TransferTest {
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
         txnDataSource = new TransactionDataSource();
-        accDataSource = new AccountDataSource();
+        currencyDataSource = new CurrencyDataSource();
+        accDataSource = new AccountDataSource((CurrencyDataSource) currencyDataSource);
         account = accDataSource.getDataById("6454856238");
         toAccountId = "6458795246";
     }

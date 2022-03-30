@@ -2,15 +2,17 @@ package Account;
 
 import java.math.BigDecimal;
 
+import Currency.Currency;
+
 public class CurrentAccount extends Account {
     private BigDecimal overDraftLimit;
 
-    public CurrentAccount(String id, String customerId, String name, AccountStatus status, String currencyCode) {
-        super(id, customerId, name, status, currencyCode);
+    public CurrentAccount(String id, String customerId, String name, AccountStatus status, Currency currency) {
+        super(id, customerId, name, status, currency);
     }
 
-    public CurrentAccount(String id, String customerId, String name, String currencyCode) {
-        super(id, customerId, name, currencyCode);
+    public CurrentAccount(String id, String customerId, String name, Currency currency) {
+        super(id, customerId, name, currency);
     }
 
     @Override

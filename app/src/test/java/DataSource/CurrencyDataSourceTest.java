@@ -23,7 +23,7 @@ public class CurrencyDataSourceTest {
         assertEquals(currencyCAD.getCurrencyAcronym(), "CAD");
         assertEquals(currencyCAD.getWithdrawMinimum(), 20);
         assertEquals(currencyCAD.getWithdrawMaximum(), 500);
-        assertEquals(currencyCAD.getBanknotes(), new int[] { 20, 50, 100 });
+        // assertEquals(currencyCAD.getBanknotes(), new int[] { 20, 50, 100 });
         assertEquals(ArraysEqual.arraysEqual(currencyCAD.getBanknotes(), new int[] { 20, 50, 100 }), true);
 
         Currency currencyJPY = currencyDataSource.getDataById("JPY");

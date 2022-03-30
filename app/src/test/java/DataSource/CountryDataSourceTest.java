@@ -24,14 +24,14 @@ public class CountryDataSourceTest {
 
         Country uk = countryDataSource.getDataById("GBR");
         assertEquals(uk.getCountryName(), "United Kingdom");
-        assertEquals(usa.getCurrencyAcronym(), "GBP");
+        assertEquals(uk.getCurrencyAcronym(), "GBP");
 
         Country australia = countryDataSource.getDataById("AUS");
         assertEquals(australia.getCountryName(), "Australia");
-        assertEquals(usa.getCurrencyAcronym(), "AUD");
+        assertEquals(australia.getCurrencyAcronym(), "AUD");
 
         Country mali = countryDataSource.getDataById("MLI");
         assertEquals(mali.getCountryName(), "Mali");
-        assertEquals(usa.getCurrencyAcronym(), "XOF");
+        assertEquals(mali.getCurrencyAcronym(), "XOF");
     }
 }

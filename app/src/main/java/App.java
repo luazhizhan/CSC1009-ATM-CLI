@@ -54,12 +54,12 @@ public class App {
             // Get data from CSV files
             txnDataSource = new TransactionDataSource();
             cardDataSource = new CardsDataSource();
-            accountDataSource = new AccountDataSource();
             customerDataSource = new CustomerDataSource();
             countryDataSource = new CountryDataSource();
             currencyDataSource = new CurrencyDataSource();
-            // atmDataSource = new AtmDataSource();
-            atmDataSource = new AtmDataSource((CountryDataSource) countryDataSource);
+            accountDataSource = new AccountDataSource((CurrencyDataSource) currencyDataSource);
+            atmDataSource = new AtmDataSource((CountryDataSource) countryDataSource,
+                    (CurrencyDataSource) currencyDataSource);
 
             ScreenStateContext stateContext = new ScreenStateContext();
 

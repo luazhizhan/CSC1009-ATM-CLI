@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import Account.Account;
 import Account.AccountStatus;
 import Account.CurrentAccount;
+import Currency.Currency;
 import Transaction.CashTransaction;
 import Transaction.Transaction;
 import Transaction.TransferTransaction;
@@ -18,15 +19,18 @@ import Transaction.TransferTransaction;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TransactionDataSourceTest {
-    private DataSource<Transaction> txnDataSource;
     private Account account;
+    private DataSource<Transaction> txnDataSource;
+    private DataSource<Currency> currencyDataSource = null;
 
     // TransferTransaction transactionId of with "toAccountId" = mock accountId
     private static final String TFS_TO_ACCOUNT_ID_TXN_ID = "d72ff38fc005450696fe9f208f3728f7";
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL, "SGP");
+        currencyDataSource = new CurrencyDataSource();
+        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL,
+                currencyDataSource.getDataById("SGD"));
         txnDataSource = new TransactionDataSource();
     }
 

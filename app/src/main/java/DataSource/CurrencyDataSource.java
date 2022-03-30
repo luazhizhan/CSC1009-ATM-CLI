@@ -46,6 +46,8 @@ public class CurrencyDataSource extends DataSource<Currency> {
             usd.setWithdrawMaximum(Integer.parseInt(data[3]));
         currencyDataSource.add(usd);
 
+        // Intitialise currencies other than USD.
+        // USD used to initialise exchange rates to USD.
         for (int i = 1; i < dataList.size(); i++) {
             data = dataList.get(i);
             Currency currency = new Currency(data[0]);
@@ -72,24 +74,28 @@ public class CurrencyDataSource extends DataSource<Currency> {
 
         int[] banknotes = new int[items.length];
 
-        for (int i = 0; i < items.length; i++) {
-            try {
-                banknotes[i] = Integer.parseInt(items[i]);
-            } catch (NumberFormatException nfe) {
-                System.out.println("CSV data may be incorrect. Please check the CSV file!");
-            }
-        }
+        // for (int i = 0; i < items.length; i++) {
+        // try {
+        // banknotes[i] = Integer.parseInt(items[i]);
+        // } catch (NumberFormatException nfe) {
+        // System.out.println("CSV data may be incorrect. Please check the CSV file!");
+        // }
+        // }
+        for (int i = 0; i < items.length; i++)
+            banknotes[i] = Integer.parseInt(items[i]);
         return banknotes;
     }
 
     // Caching all the possible exchange rates is excessive.
     // Better to generate from available data.
+    // Use exchange rates of currencies to USD to generate
+    // all other exchange rates to other currencies.
     private void initialiseExchangeRates(List<Currency> data) {
         // USD always the first element for ease
         Currency usd = data.get(0);
         ExchangeRate dummyRate;
-        // If a currency has an exchange rate at this stage, it is to USD. Give USD the
-        // inverse exchange rate.
+        // If a currency has an exchange rate at this stage, it is to USD.
+        // Give USD the inverse exchange rate.
         for (int i = 1; i < data.size(); i++) {
             dummyRate = data.get(i).findExchangeRate(usd);
             if (dummyRate != null) {
@@ -102,17 +108,19 @@ public class CurrencyDataSource extends DataSource<Currency> {
         Set<ExchangeRate> usdExchangeRates = usd.getRates();
         Iterator<ExchangeRate> usdRatesIterator = usdExchangeRates.iterator();
         while (usdRatesIterator.hasNext()) {
+            // Rate to currency A.
             ExchangeRate rate = usdRatesIterator.next();
-            // For each currency except USD
+            // For each currency except USD (Currency B)
             for (int i = 1; i < data.size(); i++) {
-                // DataSource currency isn't the same as the rate currency
                 Currency curr = data.get(i);
-                // If the current ExchangeRate does not convert into the current currency,
+                // If Currency B isn't the same as currency A,
                 if (rate.getCurrency() != curr) {
-                    // Find the ExchangeRate from USD to the current currency
+                    // Find the ExchangeRate from Currency B to USD
                     ExchangeRate conversionRate = curr.findExchangeRate(usd);
+                    // Not found, can't create the rate. Move on
                     if (conversionRate == null)
                         continue;
+                    // Set and store the exchange rate from currency B to the USD to Currency A.
                     curr.setExchangeRate(
                             new ExchangeRate(rate.getCurrency(), rate.getRate().multiply(conversionRate.getRate())));
                 }

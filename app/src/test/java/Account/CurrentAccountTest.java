@@ -3,8 +3,13 @@ package Account;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import Currency.Currency;
+import DataSource.CurrencyDataSource;
+import DataSource.DataSource;
 import Helper.Id;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,25 +25,28 @@ class CurrentAccountTest {
     private BigDecimal transferLimit; // transfer limit local
     private BigDecimal overseasWithdrawLimit; // withdrawal limit overseas
     private BigDecimal overseasTransferLimit; // transfer limit overseas
+    private final int DEFAULT_WITHDRAW_MAX_LIMIT = 500;
     private final int DEFAULT_LIMIT = 5000;
     private BigDecimal overdraftLimit;
+    private DataSource<Currency> currencyDataSource = null;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws FileNotFoundException, IOException {
         id = "6454856238";
         customerId = "3314572";
         name = "";
         status = AccountStatus.NORMAL;
         availableBalance = new BigDecimal(10000);
-        withdrawLimit = new BigDecimal(DEFAULT_LIMIT);
+        withdrawLimit = new BigDecimal(DEFAULT_WITHDRAW_MAX_LIMIT);
         transferLimit = new BigDecimal(DEFAULT_LIMIT);
         overseasWithdrawLimit = new BigDecimal(DEFAULT_LIMIT);
         overseasTransferLimit = new BigDecimal(DEFAULT_LIMIT);
+        currencyDataSource = new CurrencyDataSource();
     }
 
     @Test
     public void createSuccess() {
-        Account account = new CurrentAccount(id, customerId, name, status, "SGP");
+        Account account = new CurrentAccount(id, customerId, name, status, currencyDataSource.getDataById("SGD"));
         assertEquals(id, account.getId());
         assertEquals(customerId, account.getCustomerId());
         assertEquals(name, account.getName());
@@ -85,14 +93,15 @@ class CurrentAccountTest {
         // DEFAULT overdraft limit is 5000
         overdraftLimit = new BigDecimal(-5001);
         Exception exception2 = assertThrows(IllegalArgumentException.class,
-                () -> new CurrentAccount(id, customerId, name, status, "SGP").setAvailableBalance(overdraftLimit));
+                () -> new CurrentAccount(id, customerId, name, status, currencyDataSource.getDataById("SGD"))
+                        .setAvailableBalance(overdraftLimit));
         assertEquals("Exceeded Overdraft Limit!", exception2.getMessage());
     }
 
     @Test
     public void failureCheckAgainstAvailableBalance() {
         availableBalance = new BigDecimal(1000);
-        Account account = new CurrentAccount(id, customerId, name, status, "SGP");
+        Account account = new CurrentAccount(id, customerId, name, status, currencyDataSource.getDataById("SGD"));
         account.setAvailableBalance(availableBalance);
 
         Exception exception = assertThrows(IllegalArgumentException.class,
@@ -104,14 +113,15 @@ class CurrentAccountTest {
     public void failureIllegalWithdrawLimit() {
         withdrawLimit = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> new CurrentAccount(id, customerId, name, status, "SGP").setWithdrawLimit(withdrawLimit));
+                () -> new CurrentAccount(id, customerId, name, status, currencyDataSource.getDataById("SGD"))
+                        .setWithdrawLimit(withdrawLimit));
         assertEquals("Withdraw limit must be above zero.", exception.getMessage());
     }
 
     @Test
     public void failureCheckAgainstWithdrawLimit() {
         withdrawLimit = new BigDecimal(1000);
-        Account account = new CurrentAccount(id, customerId, name, status, "SGP");
+        Account account = new CurrentAccount(id, customerId, name, status, currencyDataSource.getDataById("SGD"));
         account.setWithdrawLimit(withdrawLimit);
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> account.checkAgainstWithdrawLimit(new BigDecimal(2000)));
@@ -122,7 +132,8 @@ class CurrentAccountTest {
     public void failureIllegalTransferLimit() {
         transferLimit = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> new CurrentAccount(id, customerId, name, status, "SGP").setTransferLimit(transferLimit));
+                () -> new CurrentAccount(id, customerId, name, status, currencyDataSource.getDataById("SGD"))
+                        .setTransferLimit(transferLimit));
         assertEquals("Transfer limit must be above zero.", exception.getMessage());
     }
 
@@ -130,13 +141,15 @@ class CurrentAccountTest {
     public void failureIllegalOverseasWithdrawLimit() {
         transferLimit = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> new CurrentAccount(id, customerId, name, status, "SGP").setOverseasWithdrawLimit(transferLimit));
+                () -> new CurrentAccount(id, customerId, name, status, currencyDataSource.getDataById("SGD"))
+                        .setOverseasWithdrawLimit(transferLimit));
         assertEquals("Oversea withdrawal limit must be above zero.", exception.getMessage());
     }
 
     @Test
     public void successSetOverdraftLimit() {
-        CurrentAccount account = new CurrentAccount(id, customerId, name, status, "SGP");
+        CurrentAccount account = new CurrentAccount(id, customerId, name, status,
+                currencyDataSource.getDataById("SGD"));
         overdraftLimit = new BigDecimal(1000000);
         account.setOverDraftLimit(overdraftLimit);
         assertEquals(overdraftLimit, account.getOverDraftLimit());
@@ -146,7 +159,8 @@ class CurrentAccountTest {
     public void failureIllegalOverdraftLimit() {
         overdraftLimit = new BigDecimal(-1);
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> new CurrentAccount(id, customerId, name, status, "SGP").setOverDraftLimit(overdraftLimit));
+                () -> new CurrentAccount(id, customerId, name, status, currencyDataSource.getDataById("SGD"))
+                        .setOverDraftLimit(overdraftLimit));
         assertEquals("Over draft limit must be above zero.", exception.getMessage());
     }
 }

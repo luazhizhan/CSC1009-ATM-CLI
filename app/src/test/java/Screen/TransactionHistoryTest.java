@@ -7,6 +7,8 @@ import Account.Account;
 import Account.AccountStatus;
 import Account.CurrentAccount;
 import Account.SavingsAccount;
+import Currency.Currency;
+import DataSource.CurrencyDataSource;
 import DataSource.DataSource;
 import DataSource.TransactionDataSource;
 import Transaction.Transaction;
@@ -23,10 +25,13 @@ import java.util.Scanner;
 public class TransactionHistoryTest {
     private Account account;
     private static DataSource<Transaction> txnDataSource;
+    private DataSource<Currency> currencyDataSource = null;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL, "SGP");
+        currencyDataSource = new CurrencyDataSource();
+        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL,
+                currencyDataSource.getDataById("SGD"));
         txnDataSource = new TransactionDataSource();
     }
 
@@ -132,7 +137,8 @@ public class TransactionHistoryTest {
 
     @Test
     public void successNoTxns() {
-        account = new SavingsAccount("6452255402", "3314572", "Tom", AccountStatus.NORMAL, "SGP");
+        account = new SavingsAccount("6452255402", "3314572", "Tom", AccountStatus.NORMAL,
+                currencyDataSource.getDataById("SGD"));
         ScreenState txnHistory = new TransactionHistory();
 
         // Set and read System.out content

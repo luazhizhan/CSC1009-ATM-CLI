@@ -4,7 +4,11 @@ import java.math.BigDecimal;
 
 // Structure for holding exchange rates from one currency to another.
 public class ExchangeRate {
+    // Exchange rate TO this currency.
     private final Currency currency;
+    // Conversion rate to currency,
+    // i.e. if this rate is for SGD, and currency is JPY.
+    // If x is an amount of SGD, x * rate = y JPY yen.
     private final BigDecimal rate;
 
     public ExchangeRate(Currency currency, BigDecimal rate) {
@@ -20,8 +24,7 @@ public class ExchangeRate {
         return rate;
     }
 
-    // Black magic stuff to make Set logic work properly. Look up the hash code
-    // stuff in a bit thnx.
+    // Override hashCode and equals to allow for ExchangeRate ==
     @Override
     public int hashCode() {
         final int prime = 31;

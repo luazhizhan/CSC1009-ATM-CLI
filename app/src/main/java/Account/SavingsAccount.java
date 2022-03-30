@@ -2,16 +2,19 @@ package Account;
 
 import java.math.BigDecimal;
 
+import Currency.Currency;
+
 public class SavingsAccount extends Account {
     private BigDecimal interestRate = new BigDecimal("0.0005");
 
-    public SavingsAccount(String id, String customerId, String name, AccountStatus status, String currencyCode) {
-        super(id, customerId, name, status, currencyCode);
+    public SavingsAccount(String id, String customerId, String name, AccountStatus status, Currency currency) {
+        super(id, customerId, name, status, currency);
+        System.out.println(currency.getWithdrawMaximum());
         setInterestRate(interestRate);
     }
 
-    public SavingsAccount(String id, String customerId, String name, String currencyCode) {
-        super(id, customerId, name, currencyCode);
+    public SavingsAccount(String id, String customerId, String name, Currency currency) {
+        super(id, customerId, name, currency);
         setInterestRate(interestRate);
     }
 

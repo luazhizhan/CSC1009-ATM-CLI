@@ -2,7 +2,6 @@ package Account;
 
 import java.math.BigDecimal;
 
-import DataSource.CurrencyDataSource;
 import Currency.Currency;
 
 public abstract class Account {
@@ -21,39 +20,29 @@ public abstract class Account {
     private BigDecimal overseasTransferLimit; // transfer limit overseas
     protected final int DEFAULT_LIMIT = 5000;
 
-    public Account(String id, String customerId, String name, String currencyCode) {
+    public Account(String id, String customerId, String name, Currency currency) {
         /* create account according to most important attributes */
         setId(id);
         setCustomerId(customerId);
         setName(name);
         setStatus(AccountStatus.NORMAL);
+        setCurrency(currency);
         setDefaultLimits();
-
-        try {
-            this.currency = new CurrencyDataSource().getDataById(currencyCode);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 
-    public Account(String id, String customerId, String name, AccountStatus status, String currencyCode) {
+    public Account(String id, String customerId, String name, AccountStatus status, Currency currency) {
         /* create account according to most important attributes */
         setId(id);
         setCustomerId(customerId);
         setName(name);
         setStatus(status);
+        setCurrency(currency);
         setDefaultLimits();
-
-        try {
-            this.currency = new CurrencyDataSource().getDataById(currencyCode);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     protected void setDefaultLimits() {
         BigDecimal limit = new BigDecimal(DEFAULT_LIMIT);
-        setWithdrawLimit(new BigDecimal(currency.getWithdrawMaximum()));
+        setWithdrawLimit(new BigDecimal(getCurrency().getWithdrawMaximum()));
         setTransferLimit(limit);
         setOverseasWithdrawLimit(limit);
         setOverseasTransferLimit(limit);
@@ -81,6 +70,10 @@ public abstract class Account {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     public Currency getCurrency() {

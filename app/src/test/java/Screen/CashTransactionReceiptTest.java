@@ -7,6 +7,11 @@ import Account.Account;
 import Account.AccountStatus;
 import Account.CurrentAccount;
 import Atm.Atm;
+import Country.Country;
+import Currency.Currency;
+import DataSource.CountryDataSource;
+import DataSource.CurrencyDataSource;
+import DataSource.DataSource;
 import Transaction.CashTransaction;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -14,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
@@ -25,12 +31,24 @@ public class CashTransactionReceiptTest {
     private int[] notes;
     private BigDecimal amt;
 
+    private DataSource<Country> countryDataSource = null;
+    private DataSource<Currency> currencyDataSource = null;
+    private Country singapore;
+    private Currency sgd;
+
     @BeforeEach
-    public void setUp() {
-        atm = new Atm();
-        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL, "SGP");
+    public void setUp() throws FileNotFoundException, IOException {
+        countryDataSource = new CountryDataSource();
+        currencyDataSource = new CurrencyDataSource();
+        account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL,
+                currencyDataSource.getDataById("SGD"));
         account.setAvailableBalance(new BigDecimal(30000));
-        // setNotesPairAndAmt(2, 2); // 120
+        singapore = countryDataSource.getDataById("SGP");
+        sgd = currencyDataSource.getDataById("SGD");
+        notes = new int[] { 0, 0 };
+        atm = new Atm(singapore, sgd);
+        notes = new int[] { 2, 2 };
+        amt = atm.deposit(notes);
     }
 
     // private void setNotesPairAndAmt(int numOf10DollarNotes, int
@@ -62,7 +80,7 @@ public class CashTransactionReceiptTest {
         contentString = outContent.toString();
         assertTrue(result);
         assertTrue(contentString.contains("$10 dollars note(s):"));
-        assertTrue(contentString.contains("$50 dollars note(s):"));
+        assertFalse(contentString.contains("$50 dollars note(s):"));
         assertTrue(contentString.contains("Amount withdrawn:"));
         assertTrue(contentString.contains("Available balance:"));
         assertTrue(contentString.contains("Thank You For Banking With Us!"));
@@ -111,7 +129,7 @@ public class CashTransactionReceiptTest {
         contentString = outContent.toString();
         assertTrue(result);
         assertTrue(contentString.contains("$10 dollars note(s):"));
-        assertTrue(contentString.contains("$50 dollars note(s):"));
+        assertFalse(contentString.contains("$50 dollars note(s):"));
         assertTrue(contentString.contains("Amount deposited:"));
         assertTrue(contentString.contains("Available balance:"));
         assertTrue(contentString.contains("Thank You For Banking With Us!"));

@@ -14,13 +14,20 @@ import Account.SavingsAccount;
 public class AccountDataSource extends DataSource<Account> {
     private static final String ACCOUNT_CSV_PATH = "Account/accounts.csv";
 
-    public AccountDataSource() throws FileNotFoundException, IOException {
+    public AccountDataSource(CurrencyDataSource currencyDataSource)
+            throws FileNotFoundException, IOException {
         super();
-        setData(parseCSVDataList(readDataFromCSV(ACCOUNT_CSV_PATH)));
+
+        System.out.println("151226737e5yuwhrfhg");
+        setData(parseCSVDataList(readDataFromCSV(ACCOUNT_CSV_PATH), currencyDataSource));
     }
 
     @Override
     protected List<Account> parseCSVDataList(List<String[]> dataList) {
+        return null;
+    }
+
+    protected List<Account> parseCSVDataList(List<String[]> dataList, CurrencyDataSource currencyDataSource) {
         List<Account> accountDataSource = new ArrayList<Account>();
         String[] data;
         for (int i = 0; i < dataList.size(); i++) {
@@ -38,6 +45,7 @@ public class AccountDataSource extends DataSource<Account> {
              * Account_Type - 10
              * Overdraft_Limit - 11
              * Interest_Rate - 12
+             * Currency_Code - 13
              */
             data = dataList.get(i);
             AccountStatus status;
@@ -50,10 +58,11 @@ public class AccountDataSource extends DataSource<Account> {
             }
             Account acc;
             if (data[10].equals("Current")) {
-                acc = new CurrentAccount(data[0], data[1], data[2], status, "SGP");
+                System.out.println("data[11]: " + currencyDataSource.getDataById(data[11]));
+                acc = new CurrentAccount(data[0], data[1], data[2], status, currencyDataSource.getDataById(data[13]));
                 ((CurrentAccount) acc).setOverDraftLimit(new BigDecimal(data[11]));
             } else {
-                acc = new SavingsAccount(data[0], data[1], data[2], status, "SGP");
+                acc = new SavingsAccount(data[0], data[1], data[2], status, currencyDataSource.getDataById(data[13]));
                 ((SavingsAccount) acc).setInterestRate(new BigDecimal(data[12]));
             }
             acc.setAvailableBalance(new BigDecimal(data[4]));

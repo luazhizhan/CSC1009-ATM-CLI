@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Test;
 import Account.Account;
 import Account.Card;
 import Account.CurrentAccount;
+import Currency.Currency;
 import DataSource.AccountDataSource;
+import DataSource.CurrencyDataSource;
 import DataSource.DataSource;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,13 +26,15 @@ public class PinPromptTest {
     private static final int PIN = 123456;
     private static final String ACCOUNT_ID = "6454856238";
     private DataSource<Account> accountDataSource;
+    private DataSource<Currency> currencyDataSource = null;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
         card = new Card();
         card.setPinNumber(PIN);
         card.setAccountId(ACCOUNT_ID);
-        accountDataSource = new AccountDataSource();
+        currencyDataSource = new CurrencyDataSource();
+        accountDataSource = new AccountDataSource((CurrencyDataSource) currencyDataSource);
     }
 
     @Test
