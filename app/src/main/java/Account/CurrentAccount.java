@@ -22,7 +22,7 @@ public class CurrentAccount extends Account {
     @Override
     protected void setDefaultLimits() {
         super.setDefaultLimits();
-        setOverDraftLimit(new BigDecimal(super.DEFAULT_LIMIT));
+        setOverDraftLimit(new BigDecimal(DEFAULT_LIMIT));
     }
 
     public BigDecimal getOverDraftLimit() {
