@@ -4,12 +4,23 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Generic Abstract DataSource class to DRY code for other DataSource classes
+ */
 public abstract class DataSource<T> {
     private List<T> data;
 
     public DataSource() throws FileNotFoundException, IOException {
     }
 
+    /**
+     * Read csv file from file path provided
+     * 
+     * @param filePath
+     * @return An arraylist of array of csv data (2D array)
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     protected List<String[]> readDataFromCSV(String filePath) throws FileNotFoundException, IOException {
         List<String[]> dataList = new ArrayList<String[]>();
 
@@ -27,6 +38,12 @@ public abstract class DataSource<T> {
         return dataList;
     }
 
+    /**
+     * For subclass to override this method according to their data
+     * 
+     * @param dataList
+     * @return
+     */
     abstract protected List<T> parseCSVDataList(List<String[]> dataList);
 
     protected List<T> getData() {

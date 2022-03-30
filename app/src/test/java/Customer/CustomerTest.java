@@ -29,6 +29,7 @@ public class CustomerTest {
         assertEquals(email, customer.getEmail());
         assertEquals(phone, customer.getPhone());
 
+        // Update customer
         email = "tom@test.com";
         phone = "92351234";
         name = "tom";

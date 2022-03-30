@@ -2,8 +2,11 @@ package Account;
 
 import java.time.YearMonth;
 
+/**
+ * Credit/Debit Card
+ */
 public class Card {
-    private String cardNumber; // Primary id
+    private String cardNumber; // Primary Id
     private String name;
     private YearMonth expiryDate;
     private int cvv;
@@ -17,6 +20,9 @@ public class Card {
         EXPIRED
     }
 
+    /**
+     * Default constructor for reading CSV data
+     */
     public Card() {
 
     }
@@ -58,6 +64,11 @@ public class Card {
         return expiryDate;
     }
 
+    /**
+     * Date must not be earlier than now
+     * 
+     * @param expiryDate
+     */
     public void setExpiryDate(YearMonth expiryDate) {
         if (expiryDate.isBefore(YearMonth.now())) {
             throw new IllegalArgumentException("Card has expired.");
@@ -119,6 +130,7 @@ public class Card {
         }
 
         // Regex to check valid pin
+        // Characters must be 0 to 9. Only 6 characters allowed
         String regex = "^[0-9]{6}$";
 
         // Return if the pin code
@@ -130,6 +142,8 @@ public class Card {
     /**
      * Validate credit/debit card using Luhn algorithm
      * https://www.geeksforgeeks.org/luhn-algorithm/
+     * 
+     * Static method so no instantiation required to use this method
      * 
      * @param cardNo credit/debit card number without space
      * @return boolean
@@ -167,6 +181,7 @@ public class Card {
         }
 
         // Regex to check valid pin
+        // Characters must be 0 to 9. Only 3 characters allowed
         String regex = "^[0-9]{3}$";
 
         // Return if the pin code

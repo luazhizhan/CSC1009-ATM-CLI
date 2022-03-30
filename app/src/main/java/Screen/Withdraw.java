@@ -12,6 +12,9 @@ import Helper.Tuple;
 import Transaction.CashTransaction;
 import Transaction.Transaction;
 
+/**
+ * Cash withdraw screen class
+ */
 public class Withdraw implements ScreenState {
     private String prompt;
 
@@ -31,6 +34,8 @@ public class Withdraw implements ScreenState {
             System.out.println("\n" + line + "\nPlease Enter Amount to Withdraw in Multiples of 10."
                     + "\nEnter 0 to go back to option screen.\n" + line);
             int amtInt = in.nextInt();
+
+            // Return to main options
             if (amtInt == 0) {
                 return new Tuple<BigDecimal, int[]>(BigDecimal.ZERO, new int[0]);
             }

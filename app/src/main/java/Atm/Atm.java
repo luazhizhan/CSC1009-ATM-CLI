@@ -8,6 +8,9 @@ import Address.Address;
 import Country.Country;
 import Currency.Currency;
 
+/**
+ * ATM
+ */
 public class Atm {
     private String id;
     private Address address;
@@ -105,8 +108,11 @@ public class Atm {
     }
 
     /**
+     * Validate amount to be withdraw against number of 10 and 50 dollars notes
+     * in the ATM.
+     * Set new balance of 10 and 50 dollars notes in the ATM
      * 
-     * @param amount
+     * @param amount Amount to withdraw
      * @return Pair<Integer>(numOf10DollarsNotes, numOf50DollarsNotes)
      */
     public Tuple<BigDecimal, int[]> withdraw(BigDecimal amount)

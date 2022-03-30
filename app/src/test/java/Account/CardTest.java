@@ -10,7 +10,7 @@ import Helper.Id;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CardTest {
-    private String cardNumber; // Primary id
+    private String cardNumber;
     private String name;
     private YearMonth expiryDate;
     private int cvv;
@@ -43,6 +43,7 @@ public class CardTest {
         assertEquals(cvv, card.getCvv());
         assertTrue(card.checkPinNumber(pinNumber));
 
+        // Update card info
         cardNumber = "8285061751052789";
         accountId = Id.generateUUID();
         name = "Jerry";
@@ -50,7 +51,6 @@ public class CardTest {
         cvv = 321;
         status = Card.CardStatus.CANCELLED;
         pinNumber = 654321;
-
         card.setCardNumber(cardNumber);
         card.setAccountId(accountId);
         card.setName(name);

@@ -1,5 +1,8 @@
 package Address;
 
+/**
+ * Map address
+ */
 public class Address {
     private String blkNum;
     private String streetAddress;
@@ -62,12 +65,11 @@ public class Address {
     }
 
     public void setPostalCode(String postalCode) {
-        String phoneValid = "\\d{6}";
-        if (postalCode.matches(phoneValid)) {
-            this.postalCode = postalCode;
-        } else {
+        String phoneValid = "\\d{6}"; // Must have 6 digits
+        if (postalCode.matches(phoneValid) == false)
             throw new IllegalArgumentException("Invalid Postal Code.");
-        }
+        this.postalCode = postalCode;
+
     }
 
     public String getCity() {
@@ -94,10 +96,20 @@ public class Address {
         this.country = country;
     }
 
+    /**
+     * Address without city, state and country
+     * 
+     * @return short address
+     */
     public String getShortAddress() {
         return (blkNum + " " + streetAddress + " " + unitNumber + " S" + postalCode);
     }
 
+    /**
+     * Address with city, state and country
+     * 
+     * @return full address
+     */
     public String getAddress() {
         return (blkNum + " " + streetAddress + ", " + unitNumber + ", "
                 + city + ", " + state + ", " + country);

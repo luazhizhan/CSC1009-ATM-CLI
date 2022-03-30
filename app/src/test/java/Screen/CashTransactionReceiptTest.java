@@ -70,6 +70,7 @@ public class CashTransactionReceiptTest {
         assertTrue(contentString.contains("Cash Withdraw Receipt"));
         outContent.close();
 
+        // Read output
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
@@ -87,6 +88,7 @@ public class CashTransactionReceiptTest {
         in.close();
         outContent.close();
 
+        // Clear and read output
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
@@ -136,6 +138,7 @@ public class CashTransactionReceiptTest {
         in.close();
         outContent.close();
 
+        // Clear and read output
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 

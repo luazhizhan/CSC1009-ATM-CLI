@@ -11,6 +11,9 @@ import Account.AccountStatus;
 import Account.CurrentAccount;
 import Account.SavingsAccount;
 
+/**
+ * Account data source from CSV file
+ */
 public class AccountDataSource extends DataSource<Account> {
     private static final String ACCOUNT_CSV_PATH = "Account/accounts.csv";
 
@@ -48,6 +51,8 @@ public class AccountDataSource extends DataSource<Account> {
              * Currency_Code - 13
              */
             data = dataList.get(i);
+
+            // Parse string status to AccountStatusEnum
             AccountStatus status;
             if (data[3].equals("NORMAL")) {
                 status = AccountStatus.NORMAL;
@@ -56,15 +61,16 @@ public class AccountDataSource extends DataSource<Account> {
             } else {
                 status = AccountStatus.CLOSED;
             }
+
             Account acc;
             if (data[10].equals("Current")) {
-                System.out.println("data[11]: " + currencyDataSource.getDataById(data[11]));
                 acc = new CurrentAccount(data[0], data[1], data[2], status, currencyDataSource.getDataById(data[13]));
                 ((CurrentAccount) acc).setOverDraftLimit(new BigDecimal(data[11]));
             } else {
                 acc = new SavingsAccount(data[0], data[1], data[2], status, currencyDataSource.getDataById(data[13]));
                 ((SavingsAccount) acc).setInterestRate(new BigDecimal(data[12]));
             }
+
             acc.setAvailableBalance(new BigDecimal(data[4]));
             acc.setHoldBalance(new BigDecimal(data[5]));
             acc.setWithdrawLimit(new BigDecimal(data[6]));
@@ -77,8 +83,15 @@ public class AccountDataSource extends DataSource<Account> {
         return accountDataSource;
     }
 
+    /**
+     * Get Account by Account Id
+     */
+    @Override
     public Account getDataById(String id) {
-        return this.getData().stream().filter(data -> data.getId().equals(id)).findFirst().orElse(null);
+        return this.getData()
+                .stream()
+                .filter(data -> data.getId().equals(id))
+                .findFirst().orElse(null);
     }
 
 }

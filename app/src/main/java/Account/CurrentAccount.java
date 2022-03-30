@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 
 import Currency.Currency;
 
+/**
+ * Current Bank Account
+ */
 public class CurrentAccount extends Account {
     private BigDecimal overDraftLimit;
 
@@ -15,10 +18,13 @@ public class CurrentAccount extends Account {
         super(id, customerId, name, currency);
     }
 
+    /**
+     * Include overdraft limit
+     */
     @Override
     protected void setDefaultLimits() {
         super.setDefaultLimits();
-        setOverDraftLimit(new BigDecimal(super.DEFAULT_LIMIT));
+        setOverDraftLimit(new BigDecimal(DEFAULT_LIMIT));
     }
 
     public BigDecimal getOverDraftLimit() {
@@ -32,6 +38,10 @@ public class CurrentAccount extends Account {
         this.overDraftLimit = overDraftLimit;
     }
 
+    /**
+     * Override setAvailableBalance method in Account class
+     * as Current Account can have negative value due to overdraft limit
+     */
     @Override
     public void setAvailableBalance(BigDecimal availableBalance) {
         // available balance < negative over draft limit
@@ -41,6 +51,10 @@ public class CurrentAccount extends Account {
         super.availableBalance = availableBalance;
     }
 
+    /**
+     * Override checkAgainstAvailableBalance method in Account class
+     * as Current Account takes overdraft limits into consideration
+     */
     @Override
     public void checkAgainstAvailableBalance(BigDecimal amount) {
         if (amount.compareTo(getAvailableBalance().add(getOverDraftLimit())) > 0) {
@@ -48,9 +62,4 @@ public class CurrentAccount extends Account {
         }
     }
 
-    @Override
-    public void printAccountInfo() {
-        super.printAccountInfo();
-        System.out.println("Overdraft Limit:            " + getOverDraftLimit());
-    }
 }

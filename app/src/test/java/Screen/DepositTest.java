@@ -70,12 +70,16 @@ public class DepositTest {
         Tuple<BigDecimal, int[]> withdrawResult = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
         List<Transaction> txns = ((TransactionDataSource) txnDataSource).getDataByAccountId(account.getId());
 
+        // Deposit 110
         Transaction txn = txns.get(0);
         assertEquals(new BigDecimal(110), txn.getAmount());
         assertEquals(CashTransaction.TransactionType.DEPOSIT, ((CashTransaction) txn).getType());
         assertEquals(1, withdrawResult.y[0]);
         assertEquals(2, withdrawResult.y[1]);
         assertEquals(new BigDecimal(10110), account.getAvailableBalance());
+        // validate new balance of notes in the ATM
+        assertEquals(301, atm.getBills()[0]);
+        assertEquals(302, atm.getBills()[1]);
         in.close();
     }
 
@@ -94,7 +98,11 @@ public class DepositTest {
         Scanner in = new Scanner(System.in);
         Tuple<BigDecimal, int[]> notes = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Please deposit at least one note"));
-        assertNull(notes);
+        assertNull(notes); // nothing to be dispense
+
+        // validate new balance of notes in the ATM
+        assertEquals(300, atm.getBills()[0]);
+        assertEquals(300, atm.getBills()[1]);
         in.close();
     }
 

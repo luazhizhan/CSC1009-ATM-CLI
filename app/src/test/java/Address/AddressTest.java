@@ -34,6 +34,7 @@ public class AddressTest {
         assertEquals(SINGAPORE, address.getCountry());
         assertEquals("2021 Bukit Batok Street 23, 02-178, Singapore, Singapore, Singapore", address.getAddress());
 
+        // Update address
         blkNum = "10";
         streetAddress = "Glasgow Terrace,9B Glasgow Road";
         unitNumber = "01-525";

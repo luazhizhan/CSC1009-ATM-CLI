@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class CashTransaction extends Transaction {
 
-    private String atmId;
+    private String atmId; // From which ATM
     private TransactionType type;
 
     public static enum TransactionType {

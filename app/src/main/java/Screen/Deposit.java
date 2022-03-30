@@ -11,6 +11,9 @@ import Helper.Tuple;
 import Transaction.CashTransaction;
 import Transaction.Transaction;
 
+/**
+ * Get deposit amount and process it screen class
+ */
 public class Deposit implements ScreenState {
 
     private String prompt;
@@ -24,6 +27,15 @@ public class Deposit implements ScreenState {
         System.out.println(prompt);
     }
 
+    /**
+     * Get deposit amount from user and process it
+     * 
+     * @param in
+     * @param atm
+     * @param account
+     * @param ds
+     * @return Tuple<BigDecimal, int[]>(total, depositedBillsArray)
+     */
     public Tuple<BigDecimal, int[]> getDepositAmt(Scanner in, Atm atm, Account account, DataSource<Transaction> ds) {
         try {
 

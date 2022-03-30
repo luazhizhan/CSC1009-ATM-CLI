@@ -44,6 +44,11 @@ public class TransferTransaction extends Transaction {
         return toAccountId;
     }
 
+    /**
+     * Must not be same account id
+     * 
+     * @param toAccountId
+     */
     public void setToAccountId(String toAccountId) {
         if (this.getAccountId() == toAccountId) {
             throw new IllegalArgumentException("Account number must be different.");

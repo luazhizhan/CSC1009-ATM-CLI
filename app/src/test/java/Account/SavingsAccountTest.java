@@ -25,9 +25,6 @@ class SavingsAccountTest {
     private BigDecimal transferLimit; // transfer limit local
     private BigDecimal overseasWithdrawLimit; // withdrawal limit overseas
     private BigDecimal overseasTransferLimit; // transfer limit overseas
-    // private final static int DEFAULT_WITHDRAW_MIN_LIMIT = 20;
-    private final int DEFAULT_WITHDRAW_MAX_LIMIT = 500;
-    private final int DEFAULT_LIMIT = 5000;
     private BigDecimal interestRate;
     private DataSource<Currency> currencyDataSource = null;
 
@@ -38,10 +35,10 @@ class SavingsAccountTest {
         name = "";
         status = AccountStatus.NORMAL;
         availableBalance = new BigDecimal(10000);
-        withdrawLimit = new BigDecimal(DEFAULT_WITHDRAW_MAX_LIMIT);
-        transferLimit = new BigDecimal(DEFAULT_LIMIT);
-        overseasWithdrawLimit = new BigDecimal(DEFAULT_LIMIT);
-        overseasTransferLimit = new BigDecimal(DEFAULT_LIMIT);
+        withdrawLimit = new BigDecimal(Account.DEFAULT_LIMIT);
+        transferLimit = new BigDecimal(Account.DEFAULT_LIMIT);
+        overseasWithdrawLimit = new BigDecimal(Account.DEFAULT_LIMIT);
+        overseasTransferLimit = new BigDecimal(Account.DEFAULT_LIMIT);
         interestRate = new BigDecimal("0.0005");
         currencyDataSource = new CurrencyDataSource();
     }
@@ -59,6 +56,7 @@ class SavingsAccountTest {
         assertEquals(overseasTransferLimit, account.getOverseasTransferLimit());
         assertEquals(interestRate, ((SavingsAccount) account).getInterestRate());
 
+        // Update account
         id = Id.generateUUID();
         customerId = "3376259";
         name = "test";
@@ -68,7 +66,6 @@ class SavingsAccountTest {
         overseasWithdrawLimit = new BigDecimal(1000);
         overseasTransferLimit = new BigDecimal(1000);
         interestRate = new BigDecimal("0.0010");
-
         account.setId(id);
         account.setCustomerId(customerId);
         account.setName(name);

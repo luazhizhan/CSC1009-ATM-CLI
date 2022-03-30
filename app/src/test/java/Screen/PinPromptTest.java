@@ -47,11 +47,12 @@ public class PinPromptTest {
         // Set scanner input value
         System.setIn(new ByteArrayInputStream(String.valueOf(PIN).getBytes()));
         Scanner in = new Scanner(System.in);
+        Account account = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
 
-        Account acc = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
-        assertEquals(ACCOUNT_ID, acc.getId());
-        assertEquals(new BigDecimal(33000), acc.getAvailableBalance());
-        assertTrue(acc instanceof CurrentAccount);
+        // Validate account returned
+        assertEquals(ACCOUNT_ID, account.getId());
+        assertEquals(new BigDecimal(33000), account.getAvailableBalance());
+        assertTrue(account instanceof CurrentAccount);
         in.close();
     }
 

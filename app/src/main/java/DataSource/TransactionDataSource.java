@@ -11,11 +11,21 @@ import Transaction.CashTransaction;
 import Transaction.Transaction;
 import Transaction.TransferTransaction;
 
+/**
+ * Transaction data source from CSV file
+ */
 public class TransactionDataSource extends DataSource<Transaction> {
     private static final String CASH_CSV_PATH = "Transaction/cash_transactions.csv";
     private static final String TRANSFER_CSV_PATH = "Transaction/transfer_transactions.csv";
     private static final int CONVERT_TO_MILLISECONDS = 1000;
 
+    /**
+     * Override default constructor
+     * Parse two files - cash_transactions and transfer_transactions csv
+     * 
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public TransactionDataSource() throws FileNotFoundException, IOException {
         super();
         List<Transaction> transactions = parseCSVDataList(readDataFromCSV(CASH_CSV_PATH));
@@ -24,28 +34,33 @@ public class TransactionDataSource extends DataSource<Transaction> {
 
     }
 
+    /**
+     * Parse two types of file - cash_transactions and transfer_transactions csv
+     */
     @Override
     protected List<Transaction> parseCSVDataList(List<String[]> dataList) {
         List<Transaction> txnDataSource = new ArrayList<Transaction>();
         String[] first = dataList.get(0);
 
-        // Is transfer transaction if no dateCompleted field found
+        // Cash transaction as no dateCompleted field found
         if (first.length < 7) {
+            /**
+             * id - 0
+             * accountId - 1
+             * amount - 2
+             * dateCreated - 3
+             * atmId - 4
+             * type - 5
+             */
             for (String[] data : dataList) {
-                /**
-                 * id - 0
-                 * accountId - 1
-                 * amount - 2
-                 * dateCreated - 3
-                 * atmId - 4
-                 * type - 5
-                 */
+                // Parse TransactionType string to TransactionType enum
                 CashTransaction.TransactionType type;
                 if (data[5].compareTo("DEPOSIT") == 0) {
                     type = CashTransaction.TransactionType.DEPOSIT;
                 } else {
                     type = CashTransaction.TransactionType.WITHDRAW;
                 }
+
                 Transaction txn = new CashTransaction(data[1], new BigDecimal(data[2]), data[4], type);
                 txn.setId(data[0]);
                 txn.setDateCreated(new Date(Long.parseLong(data[3]) * CONVERT_TO_MILLISECONDS));
@@ -54,6 +69,7 @@ public class TransactionDataSource extends DataSource<Transaction> {
             return txnDataSource;
         }
 
+        // Transfer transaction
         for (String[] data : dataList) {
             /**
              * id - 0

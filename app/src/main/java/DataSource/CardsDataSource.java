@@ -8,6 +8,9 @@ import java.util.List;
 
 import Account.Card;
 
+/**
+ * Cards data source from CSV file
+ */
 public class CardsDataSource extends DataSource<Card> {
     private static final String CARDS_CSV_PATH = "Account/cards.csv";
 
@@ -32,6 +35,8 @@ public class CardsDataSource extends DataSource<Card> {
              * PIN_Number - 7
              */
             data = dataList.get(i);
+
+            // Parse string status to CardStatus Enum
             Card.CardStatus status;
             if (data[6].compareTo("VALID") == 0) {
                 status = Card.CardStatus.VALID;
@@ -40,6 +45,7 @@ public class CardsDataSource extends DataSource<Card> {
             } else {
                 status = Card.CardStatus.EXPIRED;
             }
+
             Card card = new Card(data[1], data[2], data[5], status);
             card.setExpiryDateWithoutCheck(YearMonth.parse(data[3]));
             card.setCvv(Integer.parseInt(data[4]));
@@ -51,8 +57,14 @@ public class CardsDataSource extends DataSource<Card> {
 
     }
 
+    /**
+     * Get card by card number
+     */
     public Card getDataById(String cardNumber) {
-        return this.getData().stream().filter(data -> data.getCardNumber().equals(cardNumber)).findFirst().orElse(null);
+        return this.getData()
+                .stream()
+                .filter(data -> data.getCardNumber().equals(cardNumber))
+                .findFirst().orElse(null);
     }
 
 }

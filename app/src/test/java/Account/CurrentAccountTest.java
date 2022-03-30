@@ -25,8 +25,6 @@ class CurrentAccountTest {
     private BigDecimal transferLimit; // transfer limit local
     private BigDecimal overseasWithdrawLimit; // withdrawal limit overseas
     private BigDecimal overseasTransferLimit; // transfer limit overseas
-    private final int DEFAULT_WITHDRAW_MAX_LIMIT = 500;
-    private final int DEFAULT_LIMIT = 5000;
     private BigDecimal overdraftLimit;
     private DataSource<Currency> currencyDataSource = null;
 
@@ -37,10 +35,10 @@ class CurrentAccountTest {
         name = "";
         status = AccountStatus.NORMAL;
         availableBalance = new BigDecimal(10000);
-        withdrawLimit = new BigDecimal(DEFAULT_WITHDRAW_MAX_LIMIT);
-        transferLimit = new BigDecimal(DEFAULT_LIMIT);
-        overseasWithdrawLimit = new BigDecimal(DEFAULT_LIMIT);
-        overseasTransferLimit = new BigDecimal(DEFAULT_LIMIT);
+        withdrawLimit = new BigDecimal(Account.DEFAULT_LIMIT);
+        transferLimit = new BigDecimal(Account.DEFAULT_LIMIT);
+        overseasWithdrawLimit = new BigDecimal(Account.DEFAULT_LIMIT);
+        overseasTransferLimit = new BigDecimal(Account.DEFAULT_LIMIT);
         currencyDataSource = new CurrencyDataSource();
     }
 
@@ -56,6 +54,7 @@ class CurrentAccountTest {
         assertEquals(overseasWithdrawLimit, account.getOverseasWithdrawLimit());
         assertEquals(overseasTransferLimit, account.getOverseasTransferLimit());
 
+        // Update account
         id = Id.generateUUID();
         customerId = "3376259";
         name = "test";
@@ -65,7 +64,6 @@ class CurrentAccountTest {
         transferLimit = new BigDecimal(1000);
         overseasWithdrawLimit = new BigDecimal(1000);
         overseasTransferLimit = new BigDecimal(1000);
-
         account.setId(id);
         account.setAvailableBalance(availableBalance);
         account.setCustomerId(customerId);
@@ -105,7 +103,7 @@ class CurrentAccountTest {
         account.setAvailableBalance(availableBalance);
 
         Exception exception = assertThrows(IllegalArgumentException.class,
-                () -> account.checkAgainstAvailableBalance(new BigDecimal(DEFAULT_LIMIT + 1000 + 1)));
+                () -> account.checkAgainstAvailableBalance(new BigDecimal(Account.DEFAULT_LIMIT + 1000 + 1)));
         assertEquals("Amount exceeded available balance!", exception.getMessage());
     }
 

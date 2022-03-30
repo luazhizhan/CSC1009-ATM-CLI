@@ -18,7 +18,7 @@ import DataSource.CustomerDataSource;
 import DataSource.DataSource;
 import DataSource.TransactionDataSource;
 import Helper.Tuple;
-import Screen.AccountScreen;
+import Screen.ManageAccount;
 import Screen.AtmList;
 import Screen.CardPrompt;
 import Screen.CashTransactionReceipt;
@@ -35,6 +35,10 @@ import Screen.Withdraw;
 import Transaction.CashTransaction;
 import Transaction.Transaction;
 
+/**
+ * Main program.
+ * Controls which screen to be printed on the terminal
+ */
 public class App {
     private static DataSource<Transaction> txnDataSource = null;
     private static DataSource<Card> cardDataSource = null;
@@ -88,6 +92,7 @@ public class App {
                 in.nextLine(); // Clear scanner int buffer
             }
 
+            // Main options screen
             optionScreens(stateContext, in);
 
         } catch (FileNotFoundException e) {
@@ -100,7 +105,7 @@ public class App {
     }
 
     /**
-     * ATM's options screens will be place here
+     * ATM's main option screens will be place here
      * 
      * @param stateContext
      * @param in
@@ -199,19 +204,14 @@ public class App {
                 optionScreens(stateContext, in);
             case 5: // Manage Account
                 customer = customerDataSource.getDataById(account.getCustomerId());
-                AccountScreen accountScreen = new AccountScreen(customer, account);
+                ManageAccount accountScreen = new ManageAccount();
                 stateContext.setAndPrintScreen(accountScreen);
-                try {
-                    switch (in.nextInt()) {
-                        case 1:
-                            accountScreen.changeLimits(in, account);
-                            optionScreens(stateContext, in);
-                        default:
-                            optionScreens(stateContext, in);
-                    }
-                } finally {
-                    optionScreens(stateContext, in);
+                boolean vaildChoice = false;
+                while (vaildChoice == false) {
+                    vaildChoice = accountScreen.getUserChoice(in, customer, account);
+                    in.nextLine(); // Clear scanner int buffer
                 }
+                optionScreens(stateContext, in);
             case 6: // Exit
                 System.out.println("Exit");
                 System.exit(0);
