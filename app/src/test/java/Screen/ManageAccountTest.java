@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AccountScreenTest {
+public class ManageAccountTest {
     Customer customer;
     Account account;
 
@@ -36,7 +36,7 @@ public class AccountScreenTest {
     @Test
     public void success() {
         // Instantiate screen and print it out
-        AccountScreen accountScreen = new AccountScreen();
+        ManageAccount accountScreen = new ManageAccount();
         ScreenStateContext stateContext = new ScreenStateContext();
         stateContext.setAndPrintScreen(accountScreen);
 
@@ -71,7 +71,7 @@ public class AccountScreenTest {
     @Test
     public void successBackToMain() {
         // Instantiate screen
-        AccountScreen accountScreen = new AccountScreen();
+        ManageAccount accountScreen = new ManageAccount();
 
         // Set scanner input value
         String input = "1" + System.getProperty("line.separator") + "5";
@@ -86,7 +86,7 @@ public class AccountScreenTest {
     @Test
     public void successChangeLocalWithdrawLimit() {
         // Instantiate screen
-        AccountScreen accountScreen = new AccountScreen();
+        ManageAccount accountScreen = new ManageAccount();
 
         // Set scanner input value
         String input = "1" + System.getProperty("line.separator") + "1";
@@ -103,7 +103,7 @@ public class AccountScreenTest {
     @Test
     public void successChangeLocalTransferLimit() {
         // Instantiate screen
-        AccountScreen accountScreen = new AccountScreen();
+        ManageAccount accountScreen = new ManageAccount();
 
         // Set scanner input value
         String input = "1" + System.getProperty("line.separator") + "2";
@@ -120,7 +120,7 @@ public class AccountScreenTest {
     @Test
     public void successChangeOverseasWithdrawLimit() {
         // Instantiate screen
-        AccountScreen accountScreen = new AccountScreen();
+        ManageAccount accountScreen = new ManageAccount();
 
         // Set scanner input value
         String input = "1" + System.getProperty("line.separator") + "3";
@@ -137,7 +137,7 @@ public class AccountScreenTest {
     @Test
     public void successChangeOverseasTransferLimit() {
         // Instantiate screen
-        AccountScreen accountScreen = new AccountScreen();
+        ManageAccount accountScreen = new ManageAccount();
 
         // Set scanner input value
         String input = "1" + System.getProperty("line.separator") + "4";
@@ -154,7 +154,7 @@ public class AccountScreenTest {
     @Test
     public void failureAccountInvalidOption() {
         // Instantiate screen and print it out
-        AccountScreen accountScreen = new AccountScreen();
+        ManageAccount accountScreen = new ManageAccount();
 
         // Set scanner input value
         System.setIn(new ByteArrayInputStream("3".getBytes()));
@@ -175,7 +175,7 @@ public class AccountScreenTest {
     @Test
     public void failureLimitsInvalidOption() {
         // Instantiate screen and print it out
-        AccountScreen accountScreen = new AccountScreen();
+        ManageAccount accountScreen = new ManageAccount();
 
         // Set scanner input value
         String input = "1" + System.getProperty("line.separator") + "0";

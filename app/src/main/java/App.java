@@ -14,7 +14,7 @@ import DataSource.DataSource;
 import DataSource.TransactionDataSource;
 import DataSource.CustomerDataSource;
 import Helper.Pair;
-import Screen.AccountScreen;
+import Screen.ManageAccount;
 import Screen.AtmList;
 import Screen.CardPrompt;
 import Screen.Deposit;
@@ -192,7 +192,7 @@ public class App {
                 optionScreens(stateContext, in);
             case 5: // Manage Account
                 customer = customerDataSource.getDataById(account.getCustomerId());
-                AccountScreen accountScreen = new AccountScreen();
+                ManageAccount accountScreen = new ManageAccount();
                 stateContext.setAndPrintScreen(accountScreen);
                 boolean vaildChoice = false;
                 while (vaildChoice == false) {

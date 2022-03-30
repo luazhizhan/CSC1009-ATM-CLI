@@ -7,10 +7,10 @@ import java.text.NumberFormat;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class AccountScreen implements ScreenState {
+public class ManageAccount implements ScreenState {
     private String prompt;
 
-    public AccountScreen() {
+    public ManageAccount() {
         prompt = "\n" + line + "\nYour Personal Information\n" + line;
     }
 
