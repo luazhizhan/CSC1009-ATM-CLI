@@ -192,9 +192,14 @@ public class App {
                 optionScreens(stateContext, in);
             case 5: // Manage Account
                 customer = customerDataSource.getDataById(account.getCustomerId());
-                AccountScreen accountScreen = new AccountScreen(customer, account);
+                AccountScreen accountScreen = new AccountScreen();
                 stateContext.setAndPrintScreen(accountScreen);
-                accountScreen.getUserChoice(in,account);
+                boolean vaildChoice = false;
+                while (vaildChoice == false) {
+                    vaildChoice = accountScreen.getUserChoice(in, customer, account);
+                    in.nextLine(); // Clear scanner int buffer
+                }
+
                 optionScreens(stateContext, in);
             case 6: // Exit
                 System.out.println("Exit");
