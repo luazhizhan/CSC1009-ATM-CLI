@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CardTest {
-    private String cardNumber; // Primary id
+    private String cardNumber;
     private String name;
     private YearMonth expiryDate;
     private int cvv;
@@ -27,9 +27,10 @@ public class CardTest {
         status = Card.CardStatus.VALID;
         pinNumber = 123456;
     }
+
     @Test
-    public void createSuccess(){
-        //create card and check attributes
+    public void createSuccess() {
+        // create card and check attributes
         Card card = new Card(cardNumber, name, expiryDate, accountId, status);
         card.setCvv(cvv);
         card.setPinNumber(pinNumber);
@@ -41,6 +42,7 @@ public class CardTest {
         assertEquals(cvv, card.getCvv());
         assertTrue(card.checkPinNumber(pinNumber));
 
+        // Update card info
         cardNumber = "8285061751052789";
         accountId = Id.generateUUID();
         name = "Jerry";
@@ -48,7 +50,6 @@ public class CardTest {
         cvv = 321;
         status = Card.CardStatus.CANCELLED;
         pinNumber = 654321;
-
         card.setCardNumber(cardNumber);
         card.setAccountId(accountId);
         card.setName(name);
@@ -57,7 +58,7 @@ public class CardTest {
         card.setStatus(status);
         card.setPinNumber(pinNumber);
 
-        //Test if attributes were changed
+        // Test if attributes were changed
         assertEquals(cardNumber, card.getCardNumber());
         assertEquals(name, card.getName());
         assertEquals(expiryDate, card.getExpiryDate());
@@ -68,7 +69,7 @@ public class CardTest {
     }
 
     @Test
-    public void failureIllegalCardNumber(){
+    public void failureIllegalCardNumber() {
         cardNumber = "9999111122223333";
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> new Card(cardNumber, name, expiryDate, accountId, status).setCardNumber(cardNumber));
@@ -76,15 +77,15 @@ public class CardTest {
     }
 
     @Test
-    public void failureIllegalExpiryDate(){
-        expiryDate = YearMonth.of(2020,12);
+    public void failureIllegalExpiryDate() {
+        expiryDate = YearMonth.of(2020, 12);
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> new Card(cardNumber, name, expiryDate, accountId, status).setExpiryDate(expiryDate));
         assertEquals("Card has expired.", exception.getMessage());
     }
 
     @Test
-    public void failureIllegalCVV(){
+    public void failureIllegalCVV() {
         cvv = 9099;
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> new Card(cardNumber, name, expiryDate, accountId, status).setCvv(cvv));
@@ -92,13 +93,14 @@ public class CardTest {
     }
 
     @Test
-    public void failureMismatchPinNumber(){
+    public void failureMismatchPinNumber() {
         Card card = new Card(cardNumber, name, expiryDate, accountId, status);
         pinNumber = 111222;
         assertFalse(card.checkPinNumber(pinNumber));
     }
+
     @Test
-    public void failureIllegalPinNumber(){
+    public void failureIllegalPinNumber() {
         pinNumber = 111;
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> new Card(cardNumber, name, expiryDate, accountId, status).setPinNumber(pinNumber));

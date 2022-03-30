@@ -8,6 +8,9 @@ import java.util.List;
 import Address.Address;
 import Customer.Customer;
 
+/**
+ * Customer data source from CSV file
+ */
 public class CustomerDataSource extends DataSource<Customer> {
     private static final String CUSTOMER_CSV_PATH = "Customer/customer_details.csv";
 
@@ -44,8 +47,14 @@ public class CustomerDataSource extends DataSource<Customer> {
 
     }
 
+    /**
+     * Get customer by customer id
+     */
     @Override
     public Customer getDataById(String id) {
-        return this.getData().stream().filter(data -> data.getId().equals(id)).findFirst().orElse(null);
+        return this.getData()
+                .stream()
+                .filter(data -> data.getId().equals(id))
+                .findFirst().orElse(null);
     }
 }

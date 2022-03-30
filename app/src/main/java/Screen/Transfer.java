@@ -10,12 +10,15 @@ import DataSource.DataSource;
 import Transaction.Transaction;
 import Transaction.TransferTransaction;
 
+/**
+ * Bank transfer screen class
+ */
 public class Transfer implements ScreenState {
 
     private String prompt;
 
     public Transfer() {
-        prompt = "\n" + line + "\nCash Deposit\n" + line;
+        prompt = "\n" + line + "\nBank Transfer\n" + line;
     }
 
     @Override
@@ -23,6 +26,15 @@ public class Transfer implements ScreenState {
         System.out.println(prompt);
     }
 
+    /**
+     * Get and validate input amount and perform bank transfer
+     * 
+     * @param in
+     * @param account
+     * @param accDataSource
+     * @param txnDataSource
+     * @return amount transferred
+     */
     public BigDecimal getTransferAmt(Scanner in, Account account, DataSource<Account> accDataSource,
             DataSource<Transaction> txnDataSource) {
         try {
@@ -59,6 +71,7 @@ public class Transfer implements ScreenState {
 
             BigDecimal amt = new BigDecimal(amtStr);
 
+            // Must be above 0
             if (amt.compareTo(BigDecimal.ZERO) < 0) {
                 System.out.println("\n" + line + "\n"
                         + "Amount must be > 0!\n" + line);

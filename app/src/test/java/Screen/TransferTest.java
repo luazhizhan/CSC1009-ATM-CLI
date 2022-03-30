@@ -55,9 +55,12 @@ public class TransferTest {
         TransferTransaction tfsTxn = ((TransferTransaction) txn);
         Account toAccount = accDataSource.getDataById(toAccountId);
 
+        // Validate amount transffered, received and new balance of both acocunts
         assertEquals(amt, txn.getAmount());
         assertEquals(new BigDecimal("444575"), toAccount.getAvailableBalance());
         assertEquals(new BigDecimal("32865"), account.getAvailableBalance());
+
+        // Validate from and to account id
         assertEquals(TransferTransaction.Type.SENT, tfsTxn.isReceivedOrSent(account.getId()));
         assertEquals(TransferTransaction.Type.RECEIVED, tfsTxn.isReceivedOrSent(toAccount.getId()));
         assertEquals("Hello World.", tfsTxn.getMessage());
@@ -157,17 +160,19 @@ public class TransferTest {
         String input = account.getId(); // same account id
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
+
+        // transfer to same account
         BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accDataSource, txnDataSource);
         txns = ((TransactionDataSource) txnDataSource).getDataByAccountId(account.getId());
         assertNull(amt);
-        assertEquals(txns.size(), initialSize);
-        assertEquals(new BigDecimal(33000), account.getAvailableBalance());
+        assertEquals(txns.size(), initialSize); // number of transactions remains the same
+        assertEquals(new BigDecimal(33000), account.getAvailableBalance()); // balance should be the same
         assertTrue(outContent.toString().contains("Cannot transfer to own account!"));
         in.close();
     }
 
     @Test
-    public void failureNegativeAmout() {
+    public void failureNegativeAmount() {
         ScreenState transfer = new Transfer();
         ScreenStateContext stateContext = new ScreenStateContext();
         stateContext.setAndPrintScreen(transfer);

@@ -26,8 +26,7 @@ public class ManageAccountTest {
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        DataSource<Account> accountDataSource = new AccountDataSource(); // Create Datasource objects to read from CSV
-                                                                         // and get customer and account object
+        DataSource<Account> accountDataSource = new AccountDataSource();
         DataSource<Customer> customerDataSource = new CustomerDataSource();
         customer = customerDataSource.getDataById("4000100");
         account = accountDataSource.getDataById("6457319546");
@@ -58,6 +57,7 @@ public class ManageAccountTest {
         assertTrue(information.contains(customer.getEmail()));
         assertTrue(information.contains(customer.getPhone()));
         assertTrue(information.contains(customer.getAddress().getAddress()));
+
         // Check account information: balances and limits
         assertTrue(information.contains(account.getId()));
         assertTrue(information.contains(account.getAvailableBalance().toString()));
@@ -161,14 +161,14 @@ public class ManageAccountTest {
         Scanner in = new Scanner(System.in);
         boolean vaildChoice = accountScreen.getUserChoice(in, customer, account);
         in.close();
-        // inValid choice
+        // invalid choice
         assertFalse(vaildChoice);
 
         System.setIn(new ByteArrayInputStream("hhh".getBytes()));
         in = new Scanner(System.in);
         vaildChoice = accountScreen.getUserChoice(in, customer, account);
         in.close();
-        // inValid choice
+        // invalid choice
         assertFalse(vaildChoice);
     }
 
@@ -183,14 +183,14 @@ public class ManageAccountTest {
         Scanner in = new Scanner(System.in);
         boolean vaildChoice = accountScreen.getUserChoice(in, customer, account);
         in.close();
-        // inValid choice
+        // invalid choice
         assertFalse(vaildChoice);
 
         input = "1" + System.getProperty("line.separator") + "fgfe";
         in = new Scanner(System.in);
         vaildChoice = accountScreen.getUserChoice(in, customer, account);
         in.close();
-        // inValid choice
+        // invalid choice
         assertFalse(vaildChoice);
     }
 }

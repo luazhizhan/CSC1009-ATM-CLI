@@ -11,6 +11,9 @@ import DataSource.TransactionDataSource;
 import Transaction.Transaction;
 import Transaction.TransferTransaction;
 
+/**
+ * Print Transfer Transaction Receipt screen class
+ */
 public class TransferTransactionReceipt implements ScreenState {
     private String prompt;
 
@@ -25,17 +28,31 @@ public class TransferTransactionReceipt implements ScreenState {
         System.out.println(prompt);
     }
 
+    /**
+     * User input whether they need a receipt or not
+     * Print available balance if they don't need one.
+     * 
+     * @param in
+     * @param account
+     * @param ds
+     * @param amt
+     * @return
+     */
     public boolean getSelectedOption(Scanner in, Account account, DataSource<Transaction> ds, BigDecimal amt) {
         try {
             // Get latest transaction, which is the transfer transaction
             Transaction txn = ((TransactionDataSource) ds)
                     .getDataByAccountId(account.getId()).get(0);
             int option = in.nextInt();
+
+            // Invalid options
             if (option < 1 || option > 2) {
                 System.out.println("\n" + line + "\nNo such option available! Please try again.\n"
                         + line + "\n" + prompt);
                 return false;
             }
+
+            // Format currency
             NumberFormat formatter = NumberFormat.getCurrencyInstance();
             String balanceStr = formatter.format(account.getAvailableBalance());
             System.out.println(line + "\nTransfer Receipt\n");

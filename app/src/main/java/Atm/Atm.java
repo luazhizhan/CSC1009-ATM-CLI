@@ -6,11 +6,14 @@ import Address.Address;
 import Helper.Id;
 import Helper.Pair;
 
+/**
+ * ATM
+ */
 public class Atm {
     private String id;
     private Address address;
-    private int numOf10DollarsNotes;
-    private int numOf50DollarsNotes;
+    private int numOf10DollarsNotes; // Amount of 10 dollars notes in the ATM
+    private int numOf50DollarsNotes; // Amount of 10 dollars notes in the ATM
     protected static final int DEFAULT_NUM_10_NOTES = 300;
     protected static final int DEFAULT_NUM_50_NOTES = 300;
 
@@ -49,7 +52,7 @@ public class Atm {
     }
 
     private void setDefaultNumOfNotes() {
-        // $18,000
+        // Total $18,000
         setNumOf10DollarsNotes(DEFAULT_NUM_10_NOTES);
         setNumOf50DollarsNotes(DEFAULT_NUM_50_NOTES);
     }
@@ -74,6 +77,12 @@ public class Atm {
         return numOf10DollarsNotes;
     }
 
+    /**
+     * Number of 10 dollars notes must be >= 0. Protected so that it can be access
+     * by test cases
+     * 
+     * @param numOf10DollarsNotes
+     */
     protected void setNumOf10DollarsNotes(int numOf10DollarsNotes) {
         if (numOf10DollarsNotes < 0) {
             throw new IllegalArgumentException("Number of notes should be >= 0.");
@@ -85,6 +94,12 @@ public class Atm {
         return numOf50DollarsNotes;
     }
 
+    /**
+     * Number of 50 dollars notes must be >= 0
+     * Protected so that it can be access by test cases
+     * 
+     * @param numOf50DollarsNotes
+     */
     protected void setNumOf50DollarsNotes(int numOf50DollarsNotes) {
         if (numOf50DollarsNotes < 0) {
             throw new IllegalArgumentException("Number of notes should be >= 0.");
@@ -92,6 +107,14 @@ public class Atm {
         this.numOf50DollarsNotes = numOf50DollarsNotes;
     }
 
+    /**
+     * Validate number of 10 and 50 dollars notes deposited and set the new number
+     * of 10 and 50 dollars notes in the ATM
+     * 
+     * @param numOf10DollarsNotes
+     * @param numOf50DollarsNotes
+     * @return Total amount deposited
+     */
     public BigDecimal deposit(int numOf10DollarsNotes, int numOf50DollarsNotes) {
         if (numOf10DollarsNotes < 0 || numOf50DollarsNotes < 0) {
             throw new IllegalArgumentException("Number of notes should be >= 0.");
@@ -112,6 +135,11 @@ public class Atm {
         return totalTenAmt.add(totalFiftyAmt);
     }
 
+    /**
+     * Withdraw amount must be > 0 and be multiplier of 10
+     * 
+     * @param amount
+     */
     public void checkWithdrawAmount(BigDecimal amount) {
         // Amount must be > 0
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
@@ -126,9 +154,10 @@ public class Atm {
 
     /**
      * Calculate total value of 10 and 50 dollars notes.
+     * static method so that it can be access without Atm class instantiation
      * 
      * @param notes Pair(Number of 10 dollars notes, Number of 50 dollars notes)
-     * @return
+     * @return Total amount
      */
     public static BigDecimal calculateNotesAmount(Pair<Integer> notes) {
         // Calculate total amount based on number of 10 and 50 dollars note
@@ -139,8 +168,11 @@ public class Atm {
     }
 
     /**
+     * Validate amount to be withdraw against number of 10 and 50 dollars notes
+     * in the ATM.
+     * Set new balance of 10 and 50 dollars notes in the ATM
      * 
-     * @param amount
+     * @param amount Amount to withdraw
      * @return Pair<Integer>(numOf10DollarsNotes, numOf50DollarsNotes)
      * @throws InsufficientNotesException
      */

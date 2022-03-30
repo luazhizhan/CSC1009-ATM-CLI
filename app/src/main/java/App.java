@@ -31,6 +31,10 @@ import Screen.Withdraw;
 import Transaction.Transaction;
 import Transaction.CashTransaction;
 
+/**
+ * Main program.
+ * Controls which screen to be printed on the terminal
+ */
 public class App {
     private static DataSource<Transaction> txnDataSource = null;
     private static DataSource<Card> cardDataSource = null;
@@ -79,6 +83,7 @@ public class App {
                 in.nextLine(); // Clear scanner int buffer
             }
 
+            // Main options screen
             optionScreens(stateContext, in);
 
         } catch (FileNotFoundException e) {
@@ -91,7 +96,7 @@ public class App {
     }
 
     /**
-     * ATM's options screens will be place here
+     * ATM's main option screens will be place here
      * 
      * @param stateContext
      * @param in
@@ -199,7 +204,6 @@ public class App {
                     vaildChoice = accountScreen.getUserChoice(in, customer, account);
                     in.nextLine(); // Clear scanner int buffer
                 }
-
                 optionScreens(stateContext, in);
             case 6: // Exit
                 System.out.println("Exit");

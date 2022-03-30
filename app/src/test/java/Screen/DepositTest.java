@@ -53,12 +53,19 @@ public class DepositTest {
         Pair<Integer> notes = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
         List<Transaction> txns = ((TransactionDataSource) txnDataSource).getDataByAccountId(account.getId());
 
+        // Deposit 110
         Transaction txn = txns.get(0);
         assertEquals(new BigDecimal(110), txn.getAmount());
         assertEquals(CashTransaction.TransactionType.DEPOSIT, ((CashTransaction) txn).getType());
-        assertEquals(1, notes.first());
-        assertEquals(2, notes.second());
+
+        // Validate dispense notes
+        assertEquals(1, notes.first()); // 10 dollars notes
+        assertEquals(2, notes.second()); // 50 dollars notes
+
+        // validate new balance of account
         assertEquals(new BigDecimal(10110), account.getAvailableBalance());
+
+        // validate new balance of notes in the ATM
         assertEquals(301, atm.getNumOf10DollarsNotes());
         assertEquals(302, atm.getNumOf50DollarsNotes());
         in.close();
@@ -79,7 +86,9 @@ public class DepositTest {
         Scanner in = new Scanner(System.in);
         Pair<Integer> notes = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
         assertTrue(outContent.toString().contains("Please deposit at least one note"));
-        assertNull(notes);
+        assertNull(notes); // nothing to be dispense
+
+        // validate new balance of notes in the ATM
         assertEquals(300, atm.getNumOf10DollarsNotes());
         assertEquals(300, atm.getNumOf50DollarsNotes());
         in.close();

@@ -8,6 +8,9 @@ import Atm.Atm;
 import DataSource.AtmDataSource;
 import DataSource.DataSource;
 
+/**
+ * List avaliable ATM screen class
+ */
 public class AtmList implements ScreenState {
     private String prompt;
 
@@ -20,9 +23,16 @@ public class AtmList implements ScreenState {
         System.out.println(prompt);
     }
 
+    /**
+     * User selects ATM he/she like to use
+     * 
+     * @param in
+     * @param ds
+     * @return Atm object
+     */
     public Atm selectAtm(Scanner in, DataSource<Atm> ds) {
         try {
-            // Print all atms
+            // Print all ATMs
             List<Atm> atms = ((AtmDataSource) ds).getAtmList();
             int index = 1;
             for (Atm atm : atms) {
@@ -37,7 +47,7 @@ public class AtmList implements ScreenState {
 
             if (atmNo == 0) {
                 System.out.println("Exit");
-                System.exit(0); // Terminal program
+                System.exit(0); // Terminate program
             }
 
             // Index given exceeded the number of atms
@@ -46,13 +56,15 @@ public class AtmList implements ScreenState {
                 return null;
             }
 
+            // Invalid input if negative value is given
             if (atmNo < 1) {
                 System.out.println(ScreenState.invalidInput);
                 return null;
             }
 
-            return atms.get(atmNo - 1); // minus 1 as index starts from 0
-        } catch (NoSuchElementException e) {
+            return atms.get(atmNo - 1); // Minus 1 as index starts from 0
+
+        } catch (NoSuchElementException e) { // Non integer value is given
             System.out.println(ScreenState.invalidInput);
             return null;
         }

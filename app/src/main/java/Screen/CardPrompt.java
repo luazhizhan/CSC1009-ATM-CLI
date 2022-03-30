@@ -6,6 +6,9 @@ import java.util.Scanner;
 import Account.Card;
 import DataSource.DataSource;
 
+/**
+ * Prompt card number input screen class
+ */
 public class CardPrompt implements ScreenState {
     private String prompt;
 
@@ -19,6 +22,13 @@ public class CardPrompt implements ScreenState {
         System.out.println(prompt);
     }
 
+    /**
+     * Get user's card number
+     * 
+     * @param in
+     * @param ds
+     * @return Card object
+     */
     public Card getCardNumber(Scanner in, DataSource<Card> ds) {
         try {
             String cardNum = in.nextLine();
@@ -26,7 +36,7 @@ public class CardPrompt implements ScreenState {
             // Exit program if 0
             if (cardNum.compareToIgnoreCase("0") == 0) {
                 System.out.println("Exit");
-                System.exit(0);
+                System.exit(0); // Terminate program
             }
 
             // Validate card number

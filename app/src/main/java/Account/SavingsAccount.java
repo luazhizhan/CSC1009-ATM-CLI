@@ -2,8 +2,11 @@ package Account;
 
 import java.math.BigDecimal;
 
+/**
+ * Saving bank account
+ */
 public class SavingsAccount extends Account {
-    private BigDecimal interestRate = new BigDecimal("0.0005");
+    private BigDecimal interestRate = new BigDecimal("0.0005"); // 0.5%
 
     public SavingsAccount(String id, String customerId, String name, AccountStatus status) {
         super(id, customerId, name, status);
@@ -19,6 +22,11 @@ public class SavingsAccount extends Account {
         return interestRate;
     }
 
+    /**
+     * Interest rate must be > 0
+     * 
+     * @param interestRate
+     */
     public void setInterestRate(BigDecimal interestRate) {
         if (interestRate.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Interest Rate cannot be below or equal to zero.");

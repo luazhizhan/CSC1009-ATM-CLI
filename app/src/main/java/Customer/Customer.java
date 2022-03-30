@@ -3,6 +3,9 @@ package Customer;
 import Address.Address;
 import Helper.Id;
 
+/**
+ * Bank Customer
+ */
 public class Customer {
 
     private String id;
@@ -16,6 +19,7 @@ public class Customer {
         setId(id);
         setAddress(address);
     }
+
     public Customer(String name, String email, String phone) {
         this.name = name;
         setEmail(email);
@@ -48,13 +52,9 @@ public class Customer {
         String emailValid = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 
-        if (email.matches(emailValid)) {
-            this.email = email;
-
-        } else {
+        if (email.matches(emailValid) == false)
             throw new IllegalArgumentException("Invalid Email.");
-        }
-
+        this.email = email;
     }
 
     public String getPhone() {
@@ -64,11 +64,9 @@ public class Customer {
     public void setPhone(String phone) {
         // +65 optional, first digit 8/9, 7 digits between 0 - 9
         String phoneValid = "(\\+?65)?(6|8|9)[0-9]{7}";
-        if (phone.matches(phoneValid)) {
-            this.phone = phone;
-        } else {
+        if (phone.matches(phoneValid) == false)
             throw new IllegalArgumentException("Invalid Phone Number.");
-        }
+        this.phone = phone;
     }
 
     public Address getAddress() {

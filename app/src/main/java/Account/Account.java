@@ -2,22 +2,28 @@ package Account;
 
 import java.math.BigDecimal;
 
+/**
+ * Abstract bank account class inherited by Current and Savings bank account
+ * classes
+ */
 public abstract class Account {
     private String id; // Account ID
-    private String customerId; // Customer ID
-    private String name; // name of Account, not customer's name
-    private AccountStatus status; // status of Account: Enum
+    private String customerId;
+    private String name; // Account nmae
+    private AccountStatus status;
 
-    protected BigDecimal availableBalance; // available balance
+    // Protected attribute as setAvailableBalance method
+    // is overridden by CurrentAccount subclass
+    protected BigDecimal availableBalance;
+
     private BigDecimal holdBalance; // balance on hold
-    private BigDecimal withdrawLimit; // withdrawal limit local
-    private BigDecimal transferLimit; // transfer limit local
-    private BigDecimal overseasWithdrawLimit; // withdrawal limit overseas
-    private BigDecimal overseasTransferLimit; // transfer limit overseas
-    protected final int DEFAULT_LIMIT = 5000;
+    private BigDecimal withdrawLimit;
+    private BigDecimal transferLimit;
+    private BigDecimal overseasWithdrawLimit;
+    private BigDecimal overseasTransferLimit;
+    protected static final int DEFAULT_LIMIT = 5000; // for accessibility in sub classes
 
     public Account(String id, String customerId, String name) {
-        /* create account according to most important attributes */
         setId(id);
         setCustomerId(customerId);
         setName(name);
@@ -26,7 +32,6 @@ public abstract class Account {
     }
 
     public Account(String id, String customerId, String name, AccountStatus status) {
-        /* create account according to most important attributes */
         setId(id);
         setCustomerId(customerId);
         setName(name);
@@ -70,6 +75,11 @@ public abstract class Account {
         return availableBalance;
     }
 
+    /**
+     * Available balance must be above 0
+     * 
+     * @param availableBalance
+     */
     public void setAvailableBalance(BigDecimal availableBalance) {
         if (availableBalance.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Available Balance must be above zero.");
@@ -77,6 +87,11 @@ public abstract class Account {
         this.availableBalance = availableBalance;
     }
 
+    /**
+     * Check amount argument against account's avaliable balance
+     * 
+     * @param amount
+     */
     public void checkAgainstAvailableBalance(BigDecimal amount) {
         if (amount.compareTo(getAvailableBalance()) > 0) {
             throw new IllegalArgumentException("Amount exceeded available balance!");
@@ -96,12 +111,22 @@ public abstract class Account {
         return withdrawLimit;
     }
 
+    /**
+     * Check amount argument against account's local withdraw limit
+     * 
+     * @param amount
+     */
     public void checkAgainstWithdrawLimit(BigDecimal amount) {
         if (amount.compareTo(getWithdrawLimit()) > 0) {
             throw new IllegalArgumentException("Withdraw amount exceeded withdraw limit!");
         }
     }
 
+    /**
+     * Account's local withdraw limit must be >= 0
+     * 
+     * @param amount
+     */
     public void setWithdrawLimit(BigDecimal withdrawLimit) {
         if (withdrawLimit.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Withdraw limit must be above zero.");
@@ -113,6 +138,11 @@ public abstract class Account {
         return transferLimit;
     }
 
+    /**
+     * Account's local transfer limit must be >= 0
+     * 
+     * @param transferLimit
+     */
     public void setTransferLimit(BigDecimal transferLimit) {
         if (transferLimit.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Transfer limit must be above zero.");
@@ -120,6 +150,11 @@ public abstract class Account {
         this.transferLimit = transferLimit;
     }
 
+    /**
+     * Account's local transfer limit must be > 0
+     * 
+     * @param amount
+     */
     public void checkAgainstTransferLimit(BigDecimal amount) {
         if (amount.compareTo(getTransferLimit()) > 0) {
             throw new IllegalArgumentException("Transfer amount exceeded transfer limit!");
@@ -130,6 +165,11 @@ public abstract class Account {
         return overseasWithdrawLimit;
     }
 
+    /**
+     * Account's overseas transfer limit must be >= 0
+     * 
+     * @param transferLimit
+     */
     public void setOverseasWithdrawLimit(BigDecimal overseasWithdrawLimit) {
         if (overseasWithdrawLimit.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Oversea withdrawal limit must be above zero.");
@@ -141,6 +181,11 @@ public abstract class Account {
         return overseasTransferLimit;
     }
 
+    /**
+     * Account's overseas transfer limit must be > 0
+     * 
+     * @param amount
+     */
     public void setOverseasTransferLimit(BigDecimal overseasTransferLimit) {
         if (overseasTransferLimit.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Oversea transfer limit must be above zero.");
@@ -169,12 +214,22 @@ public abstract class Account {
         setAvailableBalance(getAvailableBalance().add(amount));
     }
 
+    /**
+     * Validate amount to withdraw and set account's available balance
+     * 
+     * @param amount
+     */
     public void withdrawAvailableBalance(BigDecimal amount) {
         checkAgainstWithdrawLimit(amount);
         checkAgainstAvailableBalance(amount);
         setAvailableBalance(getAvailableBalance().subtract(amount));
     }
 
+    /**
+     * Validate amount to transfer and set account's available balance
+     * 
+     * @param amount
+     */
     public void transferAvailableBalance(BigDecimal amount) {
         checkAgainstTransferLimit(amount);
         checkAgainstAvailableBalance(amount);

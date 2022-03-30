@@ -11,6 +11,9 @@ import Account.CurrentAccount;
 import Account.SavingsAccount;
 import Account.AccountStatus;
 
+/**
+ * Account data source from CSV file
+ */
 public class AccountDataSource extends DataSource<Account> {
     private static final String ACCOUNT_CSV_PATH = "Account/accounts.csv";
 
@@ -40,6 +43,8 @@ public class AccountDataSource extends DataSource<Account> {
              * Interest_Rate - 12
              */
             data = dataList.get(i);
+
+            // Parse string status to AccountStatusEnum
             AccountStatus status;
             if (data[3].equals("NORMAL")) {
                 status = AccountStatus.NORMAL;
@@ -48,14 +53,16 @@ public class AccountDataSource extends DataSource<Account> {
             } else {
                 status = AccountStatus.CLOSED;
             }
+
             Account acc;
-            if (data[10].equals("Current")) {
+            if (data[10].equals("Current")) { // Set overdraft limit if its current account
                 acc = new CurrentAccount(data[0], data[1], data[2], status);
                 ((CurrentAccount) acc).setOverDraftLimit(new BigDecimal(data[11]));
-            } else {
+            } else { // Set interest rate if its savings account
                 acc = new SavingsAccount(data[0], data[1], data[2], status);
                 ((SavingsAccount) acc).setInterestRate(new BigDecimal(data[12]));
             }
+
             acc.setAvailableBalance(new BigDecimal(data[4]));
             acc.setHoldBalance(new BigDecimal(data[5]));
             acc.setWithdrawLimit(new BigDecimal(data[6]));
@@ -68,8 +75,15 @@ public class AccountDataSource extends DataSource<Account> {
         return accountDataSource;
     }
 
+    /**
+     * Get Account by Account Id
+     */
+    @Override
     public Account getDataById(String id) {
-        return this.getData().stream().filter(data -> data.getId().equals(id)).findFirst().orElse(null);
+        return this.getData()
+                .stream()
+                .filter(data -> data.getId().equals(id))
+                .findFirst().orElse(null);
     }
 
 }

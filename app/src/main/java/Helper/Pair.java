@@ -1,5 +1,8 @@
 package Helper;
 
+/**
+ * Helper custom Data Type class consumed mainly by Atm
+ */
 public class Pair<T> {
     private final T m_first;
     private final T m_second;

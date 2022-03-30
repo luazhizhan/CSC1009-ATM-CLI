@@ -7,6 +7,9 @@ import java.text.NumberFormat;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * Manage account limits screen class
+ */
 public class ManageAccount implements ScreenState {
     private String prompt;
 
@@ -19,6 +22,15 @@ public class ManageAccount implements ScreenState {
         System.out.println(prompt);
     }
 
+    /**
+     * Print account info and get user inputs
+     * Update account limits if the user wants to
+     * 
+     * @param in
+     * @param customer
+     * @param account
+     * @return valid or invalid inputs given
+     */
     public boolean getUserChoice(Scanner in, Customer customer, Account account) {
         try {
             // Print user and account information

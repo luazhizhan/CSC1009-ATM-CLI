@@ -8,6 +8,9 @@ import java.util.List;
 import Address.Address;
 import Atm.Atm;
 
+/**
+ * Atm data source from CSV file
+ */
 public class AtmDataSource extends DataSource<Atm> {
     private static final String ATM_CSV_PATH = "Atm/atm.csv";
 
@@ -44,8 +47,14 @@ public class AtmDataSource extends DataSource<Atm> {
         return this.getData();
     }
 
+    /**
+     * Get Atm by Atm id
+     */
     @Override
     public Atm getDataById(String id) {
-        return this.getData().stream().filter(data -> data.getId().equals(id)).findFirst().orElse(null);
+        return this.getData()
+                .stream()
+                .filter(data -> data.getId().equals(id))
+                .findFirst().orElse(null);
     }
 }

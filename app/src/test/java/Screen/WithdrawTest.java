@@ -54,8 +54,11 @@ public class WithdrawTest {
         Transaction txn = txns.get(0);
         assertEquals(new BigDecimal(120), txn.getAmount());
         assertEquals(CashTransaction.TransactionType.WITHDRAW, ((CashTransaction) txn).getType());
-        assertEquals(2, notes.first());
-        assertEquals(2, notes.second());
+
+        // Ensure notes dispense are correct
+        assertEquals(2, notes.first()); // 10 dollars note
+        assertEquals(2, notes.second()); // 50 dollars note
+
         assertEquals(new BigDecimal(9880), account.getAvailableBalance());
         assertEquals(298, atm.getNumOf10DollarsNotes());
         assertEquals(298, atm.getNumOf50DollarsNotes());
