@@ -12,7 +12,6 @@ public class SavingsAccount extends Account {
 
     public SavingsAccount(String id, String customerId, String name, AccountStatus status, Currency currency) {
         super(id, customerId, name, status, currency);
-        System.out.println(currency.getWithdrawMaximum());
         setInterestRate(interestRate);
     }
 
