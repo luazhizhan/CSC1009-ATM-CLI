@@ -3,50 +3,50 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
-import Account.Account;
-import Account.Card;
-import Atm.Atm;
-import Country.Country;
-import Currency.Currency;
-import Customer.Customer;
-import DataSource.AccountDataSource;
-import DataSource.AtmDataSource;
-import DataSource.CardsDataSource;
-import DataSource.CountryDataSource;
-import DataSource.CurrencyDataSource;
-import DataSource.CustomerDataSource;
-import DataSource.DataSource;
-import DataSource.TransactionDataSource;
+import Data.AccountData;
+import Data.AtmData;
+import Data.CardsData;
+import Data.CountryData;
+import Data.CurrencyData;
+import Data.CustomerData;
+import Data.Data;
+import Data.TransactionData;
 import Helper.Tuple;
-import Screen.ManageAccount;
-import Screen.AtmList;
-import Screen.CardPrompt;
-import Screen.CashTransactionReceipt;
-import Screen.Deposit;
-import Screen.Greeting;
-import Screen.MainOption;
-import Screen.PinPrompt;
-import Screen.ScreenState;
-import Screen.ScreenStateContext;
-import Screen.TransactionHistory;
-import Screen.Transfer;
-import Screen.TransferTransactionReceipt;
-import Screen.Withdraw;
-import Transaction.CashTransaction;
-import Transaction.Transaction;
+import Model.Account.Account;
+import Model.Account.Card;
+import Model.Atm.Atm;
+import Model.Country.Country;
+import Model.Currency.Currency;
+import Model.Customer.Customer;
+import Model.Transaction.CashTransaction;
+import Model.Transaction.Transaction;
+import View.AtmList;
+import View.CardPrompt;
+import View.CashTransactionReceipt;
+import View.Deposit;
+import View.Greeting;
+import View.MainOption;
+import View.ManageAccount;
+import View.PinPrompt;
+import View.ViewState;
+import View.ViewStateContext;
+import View.TransactionHistory;
+import View.Transfer;
+import View.TransferTransactionReceipt;
+import View.Withdraw;
 
 /**
  * Main program.
  * Controls which screen to be printed on the terminal
  */
 public class App {
-    private static DataSource<Transaction> txnDataSource = null;
-    private static DataSource<Card> cardDataSource = null;
-    private static DataSource<Customer> customerDataSource = null;
-    private static DataSource<Account> accountDataSource = null;
-    private static DataSource<Atm> atmDataSource = null;
-    private static DataSource<Country> countryDataSource = null;
-    private static DataSource<Currency> currencyDataSource = null;
+    private static Data<Transaction> txnDataSource = null;
+    private static Data<Card> cardDataSource = null;
+    private static Data<Customer> customerDataSource = null;
+    private static Data<Account> accountDataSource = null;
+    private static Data<Atm> atmDataSource = null;
+    private static Data<Country> countryDataSource = null;
+    private static Data<Currency> currencyDataSource = null;
     private static Atm atm = null;
     private static Card card = null;
     private static Account account = null;
@@ -56,22 +56,22 @@ public class App {
         try (Scanner in = new Scanner(System.in)) {
 
             // Get data from CSV files
-            txnDataSource = new TransactionDataSource();
-            cardDataSource = new CardsDataSource();
-            customerDataSource = new CustomerDataSource();
-            countryDataSource = new CountryDataSource();
-            currencyDataSource = new CurrencyDataSource();
-            accountDataSource = new AccountDataSource((CurrencyDataSource) currencyDataSource);
-            atmDataSource = new AtmDataSource((CountryDataSource) countryDataSource,
-                    (CurrencyDataSource) currencyDataSource);
+            txnDataSource = new TransactionData();
+            cardDataSource = new CardsData();
+            customerDataSource = new CustomerData();
+            countryDataSource = new CountryData();
+            currencyDataSource = new CurrencyData();
+            accountDataSource = new AccountData((CurrencyData) currencyDataSource);
+            atmDataSource = new AtmData((CountryData) countryDataSource,
+                    (CurrencyData) currencyDataSource);
 
-            ScreenStateContext stateContext = new ScreenStateContext();
+            ViewStateContext stateContext = new ViewStateContext();
 
             // Greetings
             stateContext.setAndPrintScreen(new Greeting());
 
             // Select ATM
-            ScreenState atmList = new AtmList();
+            ViewState atmList = new AtmList();
             stateContext.setAndPrintScreen(atmList);
             while (atm == null) {
                 atm = ((AtmList) atmList).selectAtm(in, atmDataSource);
@@ -79,13 +79,13 @@ public class App {
             }
 
             // Enter credit/debit card
-            ScreenState cardPrompt = new CardPrompt();
+            ViewState cardPrompt = new CardPrompt();
             stateContext.setAndPrintScreen(cardPrompt);
             while (card == null)
                 card = ((CardPrompt) cardPrompt).getCardNumber(in, cardDataSource);
 
             // Enter card pin
-            ScreenState pinPrompt = new PinPrompt();
+            ViewState pinPrompt = new PinPrompt();
             stateContext.setAndPrintScreen(pinPrompt);
             while (account == null) {
                 account = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
@@ -110,8 +110,8 @@ public class App {
      * @param stateContext
      * @param in
      */
-    public static void optionScreens(ScreenStateContext stateContext, Scanner in) {
-        ScreenState mainOption = new MainOption();
+    public static void optionScreens(ViewStateContext stateContext, Scanner in) {
+        ViewState mainOption = new MainOption();
         stateContext.setAndPrintScreen(mainOption);
         int optionNum = -1;
         while (optionNum == -1) {
@@ -122,7 +122,7 @@ public class App {
         switch (optionNum) {
             case 1: // Withdraw cash
                 // Enter withdrawal amount
-                ScreenState withdraw = new Withdraw();
+                ViewState withdraw = new Withdraw();
                 stateContext.setAndPrintScreen(withdraw);
                 Tuple<BigDecimal, int[]> withdrawResult = null;
                 while (withdrawResult == null) {
@@ -136,7 +136,7 @@ public class App {
                 }
 
                 // Print receipt or just available balance
-                ScreenState withdrawReceipt = new CashTransactionReceipt(CashTransaction.TransactionType.WITHDRAW);
+                ViewState withdrawReceipt = new CashTransactionReceipt(CashTransaction.TransactionType.WITHDRAW);
                 stateContext.setAndPrintScreen(withdrawReceipt);
                 boolean vaildWithdrawOutput = false;
                 while (vaildWithdrawOutput == false) {
@@ -147,7 +147,7 @@ public class App {
                 optionScreens(stateContext, in);
             case 2: // Deposit cash
                 // Enter deposit amount
-                ScreenState deposit = new Deposit();
+                ViewState deposit = new Deposit();
                 stateContext.setAndPrintScreen(deposit);
                 Tuple<BigDecimal, int[]> depositResult = null;
                 while (depositResult == null) {
@@ -161,7 +161,7 @@ public class App {
                 }
 
                 // Print receipt or just available balance
-                ScreenState depositReceipt = new CashTransactionReceipt(CashTransaction.TransactionType.DEPOSIT);
+                ViewState depositReceipt = new CashTransactionReceipt(CashTransaction.TransactionType.DEPOSIT);
                 stateContext.setAndPrintScreen(depositReceipt);
                 boolean vaildDepositOutput = false;
                 while (vaildDepositOutput == false) {
@@ -173,7 +173,7 @@ public class App {
             case 3: // Bank Transfer
 
                 // Enter transfer amount
-                ScreenState transfer = new Transfer();
+                ViewState transfer = new Transfer();
                 stateContext.setAndPrintScreen(transfer);
                 BigDecimal transferAmt = null;
                 while (transferAmt == null) {
@@ -187,7 +187,7 @@ public class App {
                 }
 
                 // Print receipt or just available balance
-                ScreenState transferReceipt = new TransferTransactionReceipt();
+                ViewState transferReceipt = new TransferTransactionReceipt();
                 stateContext.setAndPrintScreen(transferReceipt);
                 boolean vaildTransferOutput = false;
                 while (vaildTransferOutput == false) {
@@ -198,7 +198,7 @@ public class App {
 
                 optionScreens(stateContext, in);
             case 4: // Transaction History
-                ScreenState txnHistory = new TransactionHistory();
+                ViewState txnHistory = new TransactionHistory();
                 stateContext.setAndPrintScreen(txnHistory);
                 ((TransactionHistory) txnHistory).printTxnHistory(in, account.getId(), txnDataSource);
                 optionScreens(stateContext, in);
