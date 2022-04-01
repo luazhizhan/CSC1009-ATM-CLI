@@ -18,13 +18,9 @@ public class AtmDataTest {
     private Data<Currency> currencyData = null;
 
     @BeforeEach
-    public void setUp() {
-        try {
-            countryData = new CountryData();
-            currencyData = new CurrencyData();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setUp() throws FileNotFoundException, IOException {
+        countryData = new CountryData();
+        currencyData = new CurrencyData();
     }
 
     @Test

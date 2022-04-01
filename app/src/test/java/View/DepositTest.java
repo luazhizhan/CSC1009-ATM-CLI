@@ -41,12 +41,8 @@ public class DepositTest {
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        try {
-            countryData = new CountryData();
-            currencyData = new CurrencyData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        countryData = new CountryData();
+        currencyData = new CurrencyData();
         singapore = countryData.getDataById("SGP");
         sgd = currencyData.getDataById("SGD");
         atm = new Atm(singapore, sgd);
