@@ -42,11 +42,11 @@ public class CashTransactionReceipt implements ScreenState {
      * 
      * @param in
      * @param account
-     * @param notesPair
+     * @param notesArray
      * @param amt
      * @return
      */
-    public boolean getSelectedOption(Scanner in, Account account, int[] notesPair, BigDecimal amt) {
+    public boolean getSelectedOption(Scanner in, Account account, int[] notesArray, BigDecimal amt) {
         try {
             int option = in.nextInt();
 
@@ -66,9 +66,9 @@ public class CashTransactionReceipt implements ScreenState {
                 System.out.println("\n" + line + "\n" + header + "\n");
                 int[] denominations = account.getCurrency().getBanknotes();
                 String currencyAcronym = account.getCurrency().getCurrencyAcronym();
-                for (int i = 0; i < notesPair.length; i++) {
+                for (int i = 0; i < notesArray.length; i++) {
                     System.out.println(
-                            String.format("%d %s note(s): %d", denominations[i], currencyAcronym, notesPair[i]));
+                            String.format("%d %s note(s): %d", denominations[i], currencyAcronym, notesArray[i]));
                 }
 
                 // Print according to cash transaction type

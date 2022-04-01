@@ -110,7 +110,6 @@ public abstract class Account {
      * @param amount
      */
     public void checkAgainstAvailableBalance(BigDecimal amount) {
-        System.out.println("checkAgainstATMWithdrawLimit ok or not " + (amount.compareTo(getAvailableBalance()) > 0));
         if (amount.compareTo(getAvailableBalance()) > 0) {
             throw new IllegalArgumentException("Amount exceeded available balance!");
         }

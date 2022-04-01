@@ -11,7 +11,7 @@ public class MoneyHandler {
 
     // Depending on ATM location, load appropriate bill values. Location infers
     // currency used, and thus which configuration of banknotes to handle.
-    // Pair currency to country.
+    // Match currency to country.
 
     // the default initial number of bills in the cash dispenser. An arbitary value.
     private static final int INITIAL_COUNT = 300;
@@ -146,7 +146,6 @@ public class MoneyHandler {
         }
 
         if (value != 0) {
-            System.out.println("value? " + value);
             throw new InsufficientNotesException("Insufficient notes remaining in ATM to dispense this amount.");
         }
 

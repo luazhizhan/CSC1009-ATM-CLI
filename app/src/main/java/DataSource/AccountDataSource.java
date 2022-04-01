@@ -20,8 +20,6 @@ public class AccountDataSource extends DataSource<Account> {
     public AccountDataSource(CurrencyDataSource currencyDataSource)
             throws FileNotFoundException, IOException {
         super();
-
-        System.out.println("151226737e5yuwhrfhg");
         setData(parseCSVDataList(readDataFromCSV(ACCOUNT_CSV_PATH), currencyDataSource));
     }
 

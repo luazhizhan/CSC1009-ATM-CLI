@@ -141,7 +141,7 @@ public class Atm {
      * Set new balance of 10 and 50 dollars notes in the ATM
      * 
      * @param amount Amount to withdraw
-     * @return Pair<Integer>(numOf10DollarsNotes, numOf50DollarsNotes)
+     * @return Tuple<Withdrawn amount, int[] of bills>
      */
     public Tuple<BigDecimal, int[]> withdraw(BigDecimal amount)
             throws IllegalArgumentException, InsufficientNotesException {

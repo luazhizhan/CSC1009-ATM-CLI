@@ -55,15 +55,24 @@ public class Deposit implements ScreenState {
             }
 
             // Deposit to ATM and account
-            BigDecimal amt = atm.deposit(depositAmounts);
-            account.addAvailableBalance(amt);
+            BigDecimal depositedAmount = atm.deposit(depositAmounts);
+            BigDecimal convertedDepositedAmount = BigDecimal.ZERO;
+            // Currency mismatch. For withdrawal purposes,
+            // convert from atm currency to account, and respect atm limits.
+            if (atm.getCurrency() != account.getCurrency()) {
+                convertedDepositedAmount = depositedAmount
+                        .multiply(atm.getCurrency().findExchangeRate(account.getCurrency()).getRate());
+            }
+            account.addAvailableBalance(
+                    convertedDepositedAmount.compareTo(BigDecimal.ZERO) == 0 ? depositedAmount
+                            : convertedDepositedAmount);
 
             // Create record of transaction
-            Transaction txn = new CashTransaction(account.getId(), amt, atm.getId(),
+            Transaction txn = new CashTransaction(account.getId(), depositedAmount, atm.getId(),
                     CashTransaction.TransactionType.DEPOSIT);
             ds.add(txn);
 
-            return new Tuple<BigDecimal, int[]>(amt, depositAmounts);
+            return new Tuple<BigDecimal, int[]>(depositedAmount, depositAmounts);
 
         } catch (IllegalArgumentException e) {
             System.out.println("\n" + line + "\n" + e.getMessage() + "\n" + line);

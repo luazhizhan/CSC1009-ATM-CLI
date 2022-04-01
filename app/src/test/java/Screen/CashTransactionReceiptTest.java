@@ -51,12 +51,6 @@ public class CashTransactionReceiptTest {
         amt = atm.deposit(notes);
     }
 
-    // private void setNotesPairAndAmt(int numOf10DollarNotes, int
-    // numOf50DollarsNotes) {
-    // notes = new int[] { numOf10DollarNotes, numOf50DollarsNotes };
-    // amt = atm.calculateNotesAmount(notes);
-    // }
-
     @Test
     public void successDeposit() throws IOException {
         ScreenState receipt = new CashTransactionReceipt(CashTransaction.TransactionType.WITHDRAW);

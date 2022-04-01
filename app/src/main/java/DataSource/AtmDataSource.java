@@ -42,8 +42,6 @@ public class AtmDataSource extends DataSource<Atm> {
 
         for (int i = 0; i < dataList.size(); i++) {
             data = dataList.get(i);
-            // System.out.print(currencyDataSource.getDataById(countryDataSource.getDataById(data[1]).getCurrencyAcronym())
-            // .getBanknotes().length);
             Atm atm = new Atm(data[0], countryDataSource.getDataById(data[1]),
                     currencyDataSource.getDataById(countryDataSource.getDataById(data[1]).getCurrencyAcronym()),
                     new Address(data[2], data[3], data[4], data[5], data[6], data[7],
