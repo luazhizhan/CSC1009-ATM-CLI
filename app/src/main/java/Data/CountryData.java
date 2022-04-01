@@ -8,7 +8,7 @@ import java.util.List;
 import Model.Country.Country;
 
 public class CountryData extends Data<Country> {
-    private static final String Country_CSV_PATH = "Country/Country.csv";
+    private static final String Country_CSV_PATH = "Country/country.csv";
 
     public CountryData() throws FileNotFoundException, IOException {
         super();
@@ -17,7 +17,7 @@ public class CountryData extends Data<Country> {
 
     @Override
     protected List<Country> parseCSVDataList(List<String[]> dataList) {
-        List<Country> countryDataSource = new ArrayList<Country>();
+        List<Country> countryData = new ArrayList<Country>();
         String[] data;
         /**
          * countryID 0
@@ -27,10 +27,10 @@ public class CountryData extends Data<Country> {
         for (int i = 0; i < dataList.size(); i++) {
             data = dataList.get(i);
             Country country = new Country(data[0], data[1], data[2]);
-            countryDataSource.add(country);
+            countryData.add(country);
         }
 
-        return countryDataSource;
+        return countryData;
     }
 
     @Override

@@ -37,16 +37,16 @@ import View.Withdraw;
 
 /**
  * Main program.
- * Controls which screen to be printed on the terminal
+ * Controls which view to be printed on the terminal
  */
 public class App {
-    private static Data<Transaction> txnDataSource = null;
-    private static Data<Card> cardDataSource = null;
-    private static Data<Customer> customerDataSource = null;
-    private static Data<Account> accountDataSource = null;
-    private static Data<Atm> atmDataSource = null;
-    private static Data<Country> countryDataSource = null;
-    private static Data<Currency> currencyDataSource = null;
+    private static Data<Transaction> txnData = null;
+    private static Data<Card> cardData = null;
+    private static Data<Customer> customerData = null;
+    private static Data<Account> accountData = null;
+    private static Data<Atm> atmData = null;
+    private static Data<Country> countryData = null;
+    private static Data<Currency> currencyData = null;
     private static Atm atm = null;
     private static Card card = null;
     private static Account account = null;
@@ -56,44 +56,44 @@ public class App {
         try (Scanner in = new Scanner(System.in)) {
 
             // Get data from CSV files
-            txnDataSource = new TransactionData();
-            cardDataSource = new CardsData();
-            customerDataSource = new CustomerData();
-            countryDataSource = new CountryData();
-            currencyDataSource = new CurrencyData();
-            accountDataSource = new AccountData((CurrencyData) currencyDataSource);
-            atmDataSource = new AtmData((CountryData) countryDataSource,
-                    (CurrencyData) currencyDataSource);
+            txnData = new TransactionData();
+            cardData = new CardsData();
+            customerData = new CustomerData();
+            countryData = new CountryData();
+            currencyData = new CurrencyData();
+            accountData = new AccountData((CurrencyData) currencyData);
+            atmData = new AtmData((CountryData) countryData,
+                    (CurrencyData) currencyData);
 
             ViewStateContext stateContext = new ViewStateContext();
 
             // Greetings
-            stateContext.setAndPrintScreen(new Greeting());
+            stateContext.setAndPrint(new Greeting());
 
             // Select ATM
             ViewState atmList = new AtmList();
-            stateContext.setAndPrintScreen(atmList);
+            stateContext.setAndPrint(atmList);
             while (atm == null) {
-                atm = ((AtmList) atmList).selectAtm(in, atmDataSource);
+                atm = ((AtmList) atmList).selectAtm(in, atmData);
                 in.nextLine(); // Clear scanner int buffer
             }
 
             // Enter credit/debit card
             ViewState cardPrompt = new CardPrompt();
-            stateContext.setAndPrintScreen(cardPrompt);
+            stateContext.setAndPrint(cardPrompt);
             while (card == null)
-                card = ((CardPrompt) cardPrompt).getCardNumber(in, cardDataSource);
+                card = ((CardPrompt) cardPrompt).getCardNumber(in, cardData);
 
             // Enter card pin
             ViewState pinPrompt = new PinPrompt();
-            stateContext.setAndPrintScreen(pinPrompt);
+            stateContext.setAndPrint(pinPrompt);
             while (account == null) {
-                account = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
+                account = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountData);
                 in.nextLine(); // Clear scanner int buffer
             }
 
-            // Main options screen
-            optionScreens(stateContext, in);
+            // Main options view
+            optionViews(stateContext, in);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -105,14 +105,14 @@ public class App {
     }
 
     /**
-     * ATM's main option screens will be place here
+     * ATM's main option views will be place here
      * 
      * @param stateContext
      * @param in
      */
-    public static void optionScreens(ViewStateContext stateContext, Scanner in) {
+    public static void optionViews(ViewStateContext stateContext, Scanner in) {
         ViewState mainOption = new MainOption();
-        stateContext.setAndPrintScreen(mainOption);
+        stateContext.setAndPrint(mainOption);
         int optionNum = -1;
         while (optionNum == -1) {
             optionNum = ((MainOption) mainOption).getSelectedOption(in);
@@ -123,101 +123,101 @@ public class App {
             case 1: // Withdraw cash
                 // Enter withdrawal amount
                 ViewState withdraw = new Withdraw();
-                stateContext.setAndPrintScreen(withdraw);
+                stateContext.setAndPrint(withdraw);
                 Tuple<BigDecimal, int[]> withdrawResult = null;
                 while (withdrawResult == null) {
-                    withdrawResult = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnDataSource);
+                    withdrawResult = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account, txnData);
                     in.nextLine(); // Clear scanner int buffer
                 }
 
-                // Return to main option screen if it's zero
+                // Return to main option view if it's zero
                 if (withdrawResult.x.compareTo(BigDecimal.ZERO) == 0) {
-                    optionScreens(stateContext, in);
+                    optionViews(stateContext, in);
                 }
 
                 // Print receipt or just available balance
                 ViewState withdrawReceipt = new CashTransactionReceipt(CashTransaction.TransactionType.WITHDRAW);
-                stateContext.setAndPrintScreen(withdrawReceipt);
+                stateContext.setAndPrint(withdrawReceipt);
                 boolean vaildWithdrawOutput = false;
                 while (vaildWithdrawOutput == false) {
                     vaildWithdrawOutput = ((CashTransactionReceipt) withdrawReceipt).getSelectedOption(in, account,
                             withdrawResult.y, withdrawResult.x);
                     in.nextLine(); // Clear scanner int buffer
                 }
-                optionScreens(stateContext, in);
+                optionViews(stateContext, in);
             case 2: // Deposit cash
                 // Enter deposit amount
                 ViewState deposit = new Deposit();
-                stateContext.setAndPrintScreen(deposit);
+                stateContext.setAndPrint(deposit);
                 Tuple<BigDecimal, int[]> depositResult = null;
                 while (depositResult == null) {
-                    depositResult = ((Deposit) deposit).getDepositAmt(in, atm, account, txnDataSource);
+                    depositResult = ((Deposit) deposit).getDepositAmt(in, atm, account, txnData);
                     in.nextLine(); // Clear scanner int buffer
                 }
 
-                // Return to main option screen if it's zero
+                // Return to main option view if it's zero
                 if (depositResult.x.compareTo(BigDecimal.ZERO) == 0) {
-                    optionScreens(stateContext, in);
+                    optionViews(stateContext, in);
                 }
 
                 // Print receipt or just available balance
                 ViewState depositReceipt = new CashTransactionReceipt(CashTransaction.TransactionType.DEPOSIT);
-                stateContext.setAndPrintScreen(depositReceipt);
+                stateContext.setAndPrint(depositReceipt);
                 boolean vaildDepositOutput = false;
                 while (vaildDepositOutput == false) {
                     vaildDepositOutput = ((CashTransactionReceipt) depositReceipt).getSelectedOption(in, account,
                             depositResult.y, depositResult.x);
                     in.nextLine(); // Clear scanner int buffer
                 }
-                optionScreens(stateContext, in);
+                optionViews(stateContext, in);
             case 3: // Bank Transfer
 
                 // Enter transfer amount
                 ViewState transfer = new Transfer();
-                stateContext.setAndPrintScreen(transfer);
+                stateContext.setAndPrint(transfer);
                 BigDecimal transferAmt = null;
                 while (transferAmt == null) {
-                    transferAmt = ((Transfer) transfer).getTransferAmt(in, account, accountDataSource,
-                            txnDataSource);
+                    transferAmt = ((Transfer) transfer).getTransferAmt(in, account, accountData,
+                            txnData);
                 }
 
-                // Return to main option screen if it's zero
+                // Return to main option view if it's zero
                 if (transferAmt.compareTo(BigDecimal.ZERO) == 0) {
-                    optionScreens(stateContext, in);
+                    optionViews(stateContext, in);
                 }
 
                 // Print receipt or just available balance
                 ViewState transferReceipt = new TransferTransactionReceipt();
-                stateContext.setAndPrintScreen(transferReceipt);
+                stateContext.setAndPrint(transferReceipt);
                 boolean vaildTransferOutput = false;
                 while (vaildTransferOutput == false) {
                     vaildTransferOutput = ((TransferTransactionReceipt) transferReceipt).getSelectedOption(in, account,
-                            txnDataSource, transferAmt);
+                            txnData, transferAmt);
                     in.nextLine(); // Clear scanner int buffer
                 }
 
-                optionScreens(stateContext, in);
+                optionViews(stateContext, in);
             case 4: // Transaction History
                 ViewState txnHistory = new TransactionHistory();
-                stateContext.setAndPrintScreen(txnHistory);
-                ((TransactionHistory) txnHistory).printTxnHistory(in, account.getId(), txnDataSource);
-                optionScreens(stateContext, in);
+                stateContext.setAndPrint(txnHistory);
+                ((TransactionHistory) txnHistory).printTxnHistory(in, account.getId(), txnData);
+                optionViews(stateContext, in);
             case 5: // Manage Account
-                customer = customerDataSource.getDataById(account.getCustomerId());
-                ManageAccount accountScreen = new ManageAccount();
-                stateContext.setAndPrintScreen(accountScreen);
+                customer = customerData.getDataById(account.getCustomerId());
+                ManageAccount accountView = new ManageAccount();
+                stateContext.setAndPrint(accountView);
                 boolean vaildChoice = false;
                 while (vaildChoice == false) {
-                    vaildChoice = accountScreen.getUserChoice(in, customer, account);
+                    vaildChoice = accountView.getUserChoice(in, customer, account);
                     in.nextLine(); // Clear scanner int buffer
                 }
-                optionScreens(stateContext, in);
+                optionViews(stateContext, in);
             case 6: // Exit
                 System.out.println("Exit");
                 System.exit(0);
             default:
                 System.out.println("Not a valid option.");
-                optionScreens(stateContext, in);
+                optionViews(stateContext, in);
         }
 
     }

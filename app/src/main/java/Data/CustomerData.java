@@ -9,7 +9,7 @@ import Model.Address.Address;
 import Model.Customer.Customer;
 
 /**
- * Customer data source from CSV file
+ * Customer data from CSV file
  */
 public class CustomerData extends Data<Customer> {
     private static final String CUSTOMER_CSV_PATH = "Customer/customer_details.csv";
@@ -21,7 +21,7 @@ public class CustomerData extends Data<Customer> {
 
     @Override
     protected List<Customer> parseCSVDataList(List<String[]> dataList) {
-        List<Customer> customerDataSource = new ArrayList<Customer>();
+        List<Customer> customerData = new ArrayList<Customer>();
         String[] data;
         /**
          * customerID 0
@@ -40,10 +40,10 @@ public class CustomerData extends Data<Customer> {
             data = dataList.get(i);
             Customer customer = new Customer(data[0], data[1], data[2], data[3],
                     new Address(data[4], data[5], data[6], data[7], data[8], data[9], data[10]));
-            customerDataSource.add(customer);
+            customerData.add(customer);
         }
 
-        return customerDataSource;
+        return customerData;
 
     }
 

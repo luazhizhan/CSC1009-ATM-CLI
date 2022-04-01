@@ -11,7 +11,7 @@ import Model.Transaction.Transaction;
 import Model.Transaction.TransferTransaction;
 
 /**
- * Bank transfer screen class
+ * Bank transfer view class
  */
 public class Transfer implements ViewState {
 
@@ -22,7 +22,7 @@ public class Transfer implements ViewState {
     }
 
     @Override
-    public void printScreen(ViewStateContext stateContext) {
+    public void print(ViewStateContext stateContext) {
         System.out.println(prompt);
     }
 
@@ -31,18 +31,18 @@ public class Transfer implements ViewState {
      * 
      * @param in
      * @param account
-     * @param accDataSource
-     * @param txnDataSource
+     * @param accData
+     * @param txnData
      * @return amount transferred
      */
-    public BigDecimal getTransferAmt(Scanner in, Account account, Data<Account> accDataSource,
-            Data<Transaction> txnDataSource) {
+    public BigDecimal getTransferAmt(Scanner in, Account account, Data<Account> accData,
+            Data<Transaction> txnData) {
         try {
             System.out.println("\n" + line + "\nPlease enter beneficary account number." +
-                    "\nEnter 0 to go back to options screen.\n" + line);
+                    "\nEnter 0 to go back to options view.\n" + line);
             String toAccountId = in.nextLine();
 
-            // Return to option screen if 0
+            // Return to option view if 0
             if (toAccountId.compareToIgnoreCase("0") == 0)
                 return BigDecimal.ZERO;
 
@@ -54,7 +54,7 @@ public class Transfer implements ViewState {
             }
 
             // Restart if account not found
-            Account toAccount = accDataSource.getDataById(toAccountId);
+            Account toAccount = accData.getDataById(toAccountId);
             if (toAccount == null) {
                 System.out.println("\n" + line + "\n"
                         + "Account not found!\n" + line);
@@ -62,10 +62,10 @@ public class Transfer implements ViewState {
             }
 
             System.out.println("\n" + line + "\nPlease enter amount to transfer." +
-                    "\nEnter 0 to go back to options screen.\n" + line);
+                    "\nEnter 0 to go back to options view.\n" + line);
             String amtStr = in.nextLine();
 
-            // Return to option screen if 0
+            // Return to option view if 0
             if (amtStr.compareToIgnoreCase("0") == 0)
                 return BigDecimal.ZERO;
 
@@ -79,10 +79,10 @@ public class Transfer implements ViewState {
             }
 
             System.out.println("\n" + line + "\nPlease enter your message." +
-                    "\nEnter 0 to go back to options screen.\n" + line);
+                    "\nEnter 0 to go back to options view.\n" + line);
             String message = in.nextLine();
 
-            // Return to option screen if 0
+            // Return to option view if 0
             if (message.compareToIgnoreCase("0") == 0)
                 return BigDecimal.ZERO;
 
@@ -95,7 +95,7 @@ public class Transfer implements ViewState {
             // Create record of transaction
             Transaction txn = new TransferTransaction(account.getId(), toAccount.getId(), amt);
             ((TransferTransaction) txn).setMessage(message);
-            txnDataSource.add(txn);
+            txnData.add(txn);
 
             return amt;
         } catch (IllegalArgumentException | InvalidAccountException e) {

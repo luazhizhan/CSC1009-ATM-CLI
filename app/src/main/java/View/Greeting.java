@@ -8,7 +8,7 @@ public class Greeting implements ViewState {
     }
 
     @Override
-    public void printScreen(ViewStateContext stateContext) {
+    public void print(ViewStateContext stateContext) {
         System.out.println(Greeting);
     }
 }

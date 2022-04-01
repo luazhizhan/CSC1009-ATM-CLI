@@ -77,7 +77,7 @@ public class Card {
     }
 
     /**
-     * This method is for DataSource class only!!
+     * This method is for Data class only!!
      * 
      * @param expiryDate
      */

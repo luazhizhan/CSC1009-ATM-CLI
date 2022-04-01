@@ -12,7 +12,7 @@ import Model.Transaction.Transaction;
 import Model.Transaction.TransferTransaction;
 
 /**
- * Print Transfer Transaction Receipt screen class
+ * Print Transfer Transaction Receipt view class
  */
 public class TransferTransactionReceipt implements ViewState {
     private String prompt;
@@ -24,7 +24,7 @@ public class TransferTransactionReceipt implements ViewState {
     }
 
     @Override
-    public void printScreen(ViewStateContext stateContext) {
+    public void print(ViewStateContext stateContext) {
         System.out.println(prompt);
     }
 

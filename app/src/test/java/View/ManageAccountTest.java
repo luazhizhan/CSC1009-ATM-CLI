@@ -29,19 +29,19 @@ public class ManageAccountTest {
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        Data<Currency> currencyDataSource = new CurrencyData();
-        Data<Account> accountDataSource = new AccountData((CurrencyData) currencyDataSource);
-        Data<Customer> customerDataSource = new CustomerData();
-        customer = customerDataSource.getDataById("4000100");
-        account = accountDataSource.getDataById("6457319546");
+        Data<Currency> currencyData = new CurrencyData();
+        Data<Account> accountData = new AccountData((CurrencyData) currencyData);
+        Data<Customer> customerData = new CustomerData();
+        customer = customerData.getDataById("4000100");
+        account = accountData.getDataById("6457319546");
     }
 
     @Test
     public void success() {
-        // Instantiate screen and print it out
-        ManageAccount accountScreen = new ManageAccount();
+        // Instantiate view and print it out
+        ManageAccount accountView = new ManageAccount();
         ViewStateContext stateContext = new ViewStateContext();
-        stateContext.setAndPrintScreen(accountScreen);
+        stateContext.setAndPrint(accountView);
 
         // Pipe System.Out content into outContent
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -50,7 +50,7 @@ public class ManageAccountTest {
         // Set scanner input value
         System.setIn(new ByteArrayInputStream("2".getBytes()));
         Scanner in = new Scanner(System.in);
-        boolean vaildChoice = accountScreen.getUserChoice(in, customer, account);
+        boolean vaildChoice = accountView.getUserChoice(in, customer, account);
         String information = outContent.toString();
 
         // valid choice
@@ -74,14 +74,14 @@ public class ManageAccountTest {
 
     @Test
     public void successBackToMain() {
-        // Instantiate screen
-        ManageAccount accountScreen = new ManageAccount();
+        // Instantiate view
+        ManageAccount accountView = new ManageAccount();
 
         // Set scanner input value
         String input = "1" + System.getProperty("line.separator") + "5";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        boolean vaildChoice = accountScreen.getUserChoice(in, customer, account);
+        boolean vaildChoice = accountView.getUserChoice(in, customer, account);
 
         // valid choice
         assertTrue(vaildChoice);
@@ -89,15 +89,15 @@ public class ManageAccountTest {
 
     @Test
     public void successChangeLocalWithdrawLimit() {
-        // Instantiate screen
-        ManageAccount accountScreen = new ManageAccount();
+        // Instantiate view
+        ManageAccount accountView = new ManageAccount();
 
         // Set scanner input value
         String input = "1" + System.getProperty("line.separator") + "1";
         input += System.getProperty("line.separator") + "123";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        boolean vaildChoice = accountScreen.getUserChoice(in, customer, account);
+        boolean vaildChoice = accountView.getUserChoice(in, customer, account);
 
         // valid choice
         assertTrue(vaildChoice);
@@ -106,15 +106,15 @@ public class ManageAccountTest {
 
     @Test
     public void successChangeLocalTransferLimit() {
-        // Instantiate screen
-        ManageAccount accountScreen = new ManageAccount();
+        // Instantiate view
+        ManageAccount accountView = new ManageAccount();
 
         // Set scanner input value
         String input = "1" + System.getProperty("line.separator") + "2";
         input += System.getProperty("line.separator") + "456.22";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        boolean vaildChoice = accountScreen.getUserChoice(in, customer, account);
+        boolean vaildChoice = accountView.getUserChoice(in, customer, account);
 
         // valid choice
         assertTrue(vaildChoice);
@@ -123,15 +123,15 @@ public class ManageAccountTest {
 
     @Test
     public void successChangeOverseasWithdrawLimit() {
-        // Instantiate screen
-        ManageAccount accountScreen = new ManageAccount();
+        // Instantiate view
+        ManageAccount accountView = new ManageAccount();
 
         // Set scanner input value
         String input = "1" + System.getProperty("line.separator") + "3";
         input += System.getProperty("line.separator") + "10.55";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        boolean vaildChoice = accountScreen.getUserChoice(in, customer, account);
+        boolean vaildChoice = accountView.getUserChoice(in, customer, account);
 
         // valid choice
         assertTrue(vaildChoice);
@@ -140,15 +140,15 @@ public class ManageAccountTest {
 
     @Test
     public void successChangeOverseasTransferLimit() {
-        // Instantiate screen
-        ManageAccount accountScreen = new ManageAccount();
+        // Instantiate view
+        ManageAccount accountView = new ManageAccount();
 
         // Set scanner input value
         String input = "1" + System.getProperty("line.separator") + "4";
         input += System.getProperty("line.separator") + "500";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        boolean vaildChoice = accountScreen.getUserChoice(in, customer, account);
+        boolean vaildChoice = accountView.getUserChoice(in, customer, account);
 
         // valid choice
         assertTrue(vaildChoice);
@@ -157,20 +157,20 @@ public class ManageAccountTest {
 
     @Test
     public void failureAccountInvalidOption() {
-        // Instantiate screen and print it out
-        ManageAccount accountScreen = new ManageAccount();
+        // Instantiate view and print it out
+        ManageAccount accountView = new ManageAccount();
 
         // Set scanner input value
         System.setIn(new ByteArrayInputStream("3".getBytes()));
         Scanner in = new Scanner(System.in);
-        boolean vaildChoice = accountScreen.getUserChoice(in, customer, account);
+        boolean vaildChoice = accountView.getUserChoice(in, customer, account);
         in.close();
         // invalid choice
         assertFalse(vaildChoice);
 
         System.setIn(new ByteArrayInputStream("hhh".getBytes()));
         in = new Scanner(System.in);
-        vaildChoice = accountScreen.getUserChoice(in, customer, account);
+        vaildChoice = accountView.getUserChoice(in, customer, account);
         in.close();
         // invalid choice
         assertFalse(vaildChoice);
@@ -178,21 +178,21 @@ public class ManageAccountTest {
 
     @Test
     public void failureLimitsInvalidOption() {
-        // Instantiate screen and print it out
-        ManageAccount accountScreen = new ManageAccount();
+        // Instantiate view and print it out
+        ManageAccount accountView = new ManageAccount();
 
         // Set scanner input value
         String input = "1" + System.getProperty("line.separator") + "0";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        boolean vaildChoice = accountScreen.getUserChoice(in, customer, account);
+        boolean vaildChoice = accountView.getUserChoice(in, customer, account);
         in.close();
         // invalid choice
         assertFalse(vaildChoice);
 
         input = "1" + System.getProperty("line.separator") + "fgfe";
         in = new Scanner(System.in);
-        vaildChoice = accountScreen.getUserChoice(in, customer, account);
+        vaildChoice = accountView.getUserChoice(in, customer, account);
         in.close();
         // invalid choice
         assertFalse(vaildChoice);

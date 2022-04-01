@@ -27,16 +27,16 @@ public class PinPromptTest {
     private Card card;
     private static final int PIN = 123456;
     private static final String ACCOUNT_ID = "6454856238";
-    private Data<Account> accountDataSource;
-    private Data<Currency> currencyDataSource = null;
+    private Data<Account> accountData;
+    private Data<Currency> currencyData = null;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
         card = new Card();
         card.setPinNumber(PIN);
         card.setAccountId(ACCOUNT_ID);
-        currencyDataSource = new CurrencyData();
-        accountDataSource = new AccountData((CurrencyData) currencyDataSource);
+        currencyData = new CurrencyData();
+        accountData = new AccountData((CurrencyData) currencyData);
     }
 
     @Test
@@ -44,12 +44,12 @@ public class PinPromptTest {
 
         ViewState pinPrompt = new PinPrompt();
         ViewStateContext stateContext = new ViewStateContext();
-        stateContext.setAndPrintScreen(pinPrompt);
+        stateContext.setAndPrint(pinPrompt);
 
         // Set scanner input value
         System.setIn(new ByteArrayInputStream(String.valueOf(PIN).getBytes()));
         Scanner in = new Scanner(System.in);
-        Account account = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
+        Account account = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountData);
 
         // Validate account returned
         assertEquals(ACCOUNT_ID, account.getId());
@@ -68,14 +68,14 @@ public class PinPromptTest {
 
         System.setIn(new ByteArrayInputStream("234567".getBytes()));
         Scanner in = new Scanner(System.in);
-        ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
+        ((PinPrompt) pinPrompt).getPinNumber(in, card, accountData);
         assertTrue(outContent.toString().contains("Incorrect PIN!"));
         assertEquals(1, ((PinPrompt) pinPrompt).getTries());
         in.close();
 
         System.setIn(new ByteArrayInputStream("234567".getBytes()));
         in = new Scanner(System.in);
-        ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
+        ((PinPrompt) pinPrompt).getPinNumber(in, card, accountData);
         assertTrue(outContent.toString().contains("Incorrect PIN!"));
         assertEquals(2, ((PinPrompt) pinPrompt).getTries());
         in.close();
@@ -93,21 +93,21 @@ public class PinPromptTest {
         System.setIn(new ByteArrayInputStream("abc".getBytes()));
 
         Scanner in = new Scanner(System.in);
-        Account acc = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
+        Account acc = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountData);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         assertNull(acc);
         in.close();
 
         System.setIn(new ByteArrayInputStream("5g6".getBytes()));
         in = new Scanner(System.in);
-        acc = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
+        acc = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountData);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         assertNull(acc);
         in.close();
 
         System.setIn(new ByteArrayInputStream("74343g".getBytes()));
         in = new Scanner(System.in);
-        acc = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountDataSource);
+        acc = ((PinPrompt) pinPrompt).getPinNumber(in, card, accountData);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         assertNull(acc);
         in.close();

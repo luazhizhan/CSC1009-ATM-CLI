@@ -25,22 +25,22 @@ import Model.Transaction.Transaction;
 
 public class TransactionHistoryTest {
     private Account account;
-    private static Data<Transaction> txnDataSource;
-    private Data<Currency> currencyDataSource = null;
+    private static Data<Transaction> txnData;
+    private Data<Currency> currencyData = null;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        currencyDataSource = new CurrencyData();
+        currencyData = new CurrencyData();
         account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL,
-                currencyDataSource.getDataById("SGD"));
-        txnDataSource = new TransactionData();
+                currencyData.getDataById("SGD"));
+        txnData = new TransactionData();
     }
 
     @Test
     public void success() {
         ViewState txnHistory = new TransactionHistory();
         ViewStateContext stateContext = new ViewStateContext();
-        stateContext.setAndPrintScreen(txnHistory);
+        stateContext.setAndPrint(txnHistory);
 
         // Set and read System.out content
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -50,7 +50,7 @@ public class TransactionHistoryTest {
         String input = "0";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        ((TransactionHistory) txnHistory).printTxnHistory(in, account.getId(), txnDataSource);
+        ((TransactionHistory) txnHistory).printTxnHistory(in, account.getId(), txnData);
         String out = outContent.toString();
         in.close();
 
@@ -83,7 +83,7 @@ public class TransactionHistoryTest {
     public void successPrintAllTxns() {
         ViewState txnHistory = new TransactionHistory();
         ViewStateContext stateContext = new ViewStateContext();
-        stateContext.setAndPrintScreen(txnHistory);
+        stateContext.setAndPrint(txnHistory);
 
         // Set and read System.out content
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -96,7 +96,7 @@ public class TransactionHistoryTest {
 
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        ((TransactionHistory) txnHistory).printTxnHistory(in, account.getId(), txnDataSource);
+        ((TransactionHistory) txnHistory).printTxnHistory(in, account.getId(), txnData);
         String out = outContent.toString();
         in.close();
 
@@ -139,7 +139,7 @@ public class TransactionHistoryTest {
     @Test
     public void successNoTxns() {
         account = new SavingsAccount("6452255402", "3314572", "Tom", AccountStatus.NORMAL,
-                currencyDataSource.getDataById("SGD"));
+                currencyData.getDataById("SGD"));
         ViewState txnHistory = new TransactionHistory();
 
         // Set and read System.out content
@@ -147,7 +147,7 @@ public class TransactionHistoryTest {
         System.setOut(new PrintStream(outContent));
 
         Scanner in = new Scanner(System.in);
-        ((TransactionHistory) txnHistory).printTxnHistory(in, account.getId(), txnDataSource);
+        ((TransactionHistory) txnHistory).printTxnHistory(in, account.getId(), txnData);
         in.close();
 
         String out = outContent.toString();

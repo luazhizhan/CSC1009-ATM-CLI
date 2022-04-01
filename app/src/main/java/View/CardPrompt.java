@@ -7,7 +7,7 @@ import Data.Data;
 import Model.Account.Card;
 
 /**
- * Prompt card number input screen class
+ * Prompt card number input view class
  */
 public class CardPrompt implements ViewState {
     private String prompt;
@@ -18,7 +18,7 @@ public class CardPrompt implements ViewState {
     }
 
     @Override
-    public void printScreen(ViewStateContext stateContext) {
+    public void print(ViewStateContext stateContext) {
         System.out.println(prompt);
     }
 

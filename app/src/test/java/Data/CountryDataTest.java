@@ -12,25 +12,25 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CountryDataTest {
     @Test
     public void success() throws FileNotFoundException, IOException {
-        Data<Country> countryDataSource = new CountryData();
+        Data<Country> countryData = new CountryData();
 
-        Country singapore = countryDataSource.getDataById("SGP");
+        Country singapore = countryData.getDataById("SGP");
         assertEquals(singapore.getCountryName(), "Singapore");
         assertEquals(singapore.getCurrencyAcronym(), "SGD");
 
-        Country usa = countryDataSource.getDataById("USA");
+        Country usa = countryData.getDataById("USA");
         assertEquals(usa.getCountryName(), "United States");
         assertEquals(usa.getCurrencyAcronym(), "USD");
 
-        Country uk = countryDataSource.getDataById("GBR");
+        Country uk = countryData.getDataById("GBR");
         assertEquals(uk.getCountryName(), "United Kingdom");
         assertEquals(uk.getCurrencyAcronym(), "GBP");
 
-        Country australia = countryDataSource.getDataById("AUS");
+        Country australia = countryData.getDataById("AUS");
         assertEquals(australia.getCountryName(), "Australia");
         assertEquals(australia.getCurrencyAcronym(), "AUD");
 
-        Country mali = countryDataSource.getDataById("MLI");
+        Country mali = countryData.getDataById("MLI");
         assertEquals(mali.getCountryName(), "Mali");
         assertEquals(mali.getCurrencyAcronym(), "XOF");
     }

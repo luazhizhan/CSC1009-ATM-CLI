@@ -12,7 +12,7 @@ import Model.Transaction.Transaction;
 import Model.Transaction.TransferTransaction;
 
 /**
- * Transaction data source from CSV file
+ * Transaction data from CSV file
  */
 public class TransactionData extends Data<Transaction> {
     private static final String CASH_CSV_PATH = "Transaction/cash_transactions.csv";
@@ -39,7 +39,7 @@ public class TransactionData extends Data<Transaction> {
      */
     @Override
     protected List<Transaction> parseCSVDataList(List<String[]> dataList) {
-        List<Transaction> txnDataSource = new ArrayList<Transaction>();
+        List<Transaction> txnData = new ArrayList<Transaction>();
         String[] first = dataList.get(0);
 
         // Cash transaction as no dateCompleted field found
@@ -64,9 +64,9 @@ public class TransactionData extends Data<Transaction> {
                 Transaction txn = new CashTransaction(data[1], new BigDecimal(data[2]), data[4], type);
                 txn.setId(data[0]);
                 txn.setDateCreated(new Date(Long.parseLong(data[3]) * CONVERT_TO_MILLISECONDS));
-                txnDataSource.add(txn);
+                txnData.add(txn);
             }
-            return txnDataSource;
+            return txnData;
         }
 
         // Transfer transaction
@@ -85,9 +85,9 @@ public class TransactionData extends Data<Transaction> {
             txn.setDateCreated(new Date(Long.parseLong(data[3]) * CONVERT_TO_MILLISECONDS));
             ((TransferTransaction) txn).setMessage(data[5]);
             ((TransferTransaction) txn).setDateCompleted(new Date(Long.parseLong(data[6]) * CONVERT_TO_MILLISECONDS));
-            txnDataSource.add(txn);
+            txnData.add(txn);
         }
-        return txnDataSource;
+        return txnData;
     }
 
     /**

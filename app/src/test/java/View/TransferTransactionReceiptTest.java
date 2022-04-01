@@ -36,16 +36,16 @@ public class TransferTransactionReceiptTest {
     private Data<Transaction> ds;
     private BigDecimal amt;
     private NumberFormat formatter = NumberFormat.getCurrencyInstance();
-    private Data<Currency> currencyDataSource = null;
+    private Data<Currency> currencyData = null;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        currencyDataSource = new CurrencyData();
+        currencyData = new CurrencyData();
         account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL,
-                currencyDataSource.getDataById("SGD"));
+                currencyData.getDataById("SGD"));
         account.setAvailableBalance(new BigDecimal(30000));
         toAccount = new SavingsAccount("6458795246", "3314575", "Tim", AccountStatus.NORMAL,
-                currencyDataSource.getDataById("SGD"));
+                currencyData.getDataById("SGD"));
         toAccount.setAvailableBalance(new BigDecimal(20000));
 
         amt = new BigDecimal("500");
@@ -59,7 +59,7 @@ public class TransferTransactionReceiptTest {
     public void success() throws IOException {
         ViewState receipt = new TransferTransactionReceipt();
         ViewStateContext stateContext = new ViewStateContext();
-        stateContext.setAndPrintScreen(receipt);
+        stateContext.setAndPrint(receipt);
 
         // Set and read System.out content
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();

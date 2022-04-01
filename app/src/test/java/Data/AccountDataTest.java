@@ -14,18 +14,18 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AccountDataTest {
-    private Data<Currency> currencyDataSource = null;
-    private Data<Account> accountDataSource = null;
+    private Data<Currency> currencyData = null;
+    private Data<Account> accountData = null;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        currencyDataSource = new CurrencyData();
-        accountDataSource = new AccountData((CurrencyData) currencyDataSource);
+        currencyData = new CurrencyData();
+        accountData = new AccountData((CurrencyData) currencyData);
     }
 
     @Test
     public void success() {
-        Account account = accountDataSource.getDataById("6454856238");
+        Account account = accountData.getDataById("6454856238");
         assertEquals(account.getCustomerId(), "3314572");
         assertEquals(account.getName(), "None");
         assertEquals(account.getStatus(), AccountStatus.NORMAL);

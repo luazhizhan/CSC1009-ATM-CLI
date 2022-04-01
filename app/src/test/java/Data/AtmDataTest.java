@@ -14,14 +14,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AtmDataTest {
     Atm atm;
-    private Data<Country> countryDataSource = null;
-    private Data<Currency> currencyDataSource = null;
+    private Data<Country> countryData = null;
+    private Data<Currency> currencyData = null;
 
     @BeforeEach
     public void setUp() {
         try {
-            countryDataSource = new CountryData();
-            currencyDataSource = new CurrencyData();
+            countryData = new CountryData();
+            currencyData = new CurrencyData();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -29,10 +29,10 @@ public class AtmDataTest {
 
     @Test
     public void success() throws FileNotFoundException, IOException {
-        Data<Atm> atmDataSource = new AtmData((CountryData) countryDataSource,
-                (CurrencyData) currencyDataSource);
+        Data<Atm> atmData = new AtmData((CountryData) countryData,
+                (CurrencyData) currencyData);
 
-        atm = atmDataSource.getDataById("6a8145ec3be544879331c0c592e510b6");
+        atm = atmData.getDataById("6a8145ec3be544879331c0c592e510b6");
         assertEquals(atm.getAddress().getBlkNum(), "4");
         assertEquals(atm.getAddress().getStreetAddress(), "Delta Road");
         assertEquals(atm.getAddress().getPostalCode(), "443738");
@@ -40,7 +40,7 @@ public class AtmDataTest {
         assertEquals(atm.getAddress().getState(), "SINGAPORE");
         assertEquals(atm.getAddress().getCountry(), "SINGAPORE");
 
-        atm = atmDataSource.getDataById("27c215af35dd4c7dbe704b77360e4888");
+        atm = atmData.getDataById("27c215af35dd4c7dbe704b77360e4888");
         assertEquals(atm.getAddress().getBlkNum(), "3");
         assertEquals(atm.getAddress().getStreetAddress(), "Charlie Walk");
         assertEquals(atm.getAddress().getPostalCode(), "389728");

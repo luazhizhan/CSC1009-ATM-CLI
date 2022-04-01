@@ -27,17 +27,17 @@ import Model.Transaction.TransferTransaction;
 
 public class TransferTest {
     private Account account;
-    private Data<Currency> currencyDataSource = null;
-    private Data<Transaction> txnDataSource;
-    private Data<Account> accDataSource;
+    private Data<Currency> currencyData = null;
+    private Data<Transaction> txnData;
+    private Data<Account> accData;
     private String toAccountId;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        txnDataSource = new TransactionData();
-        currencyDataSource = new CurrencyData();
-        accDataSource = new AccountData((CurrencyData) currencyDataSource);
-        account = accDataSource.getDataById("6454856238");
+        txnData = new TransactionData();
+        currencyData = new CurrencyData();
+        accData = new AccountData((CurrencyData) currencyData);
+        account = accData.getDataById("6454856238");
         toAccountId = "6458795246";
     }
 
@@ -45,7 +45,7 @@ public class TransferTest {
     public void success() {
         ViewState transfer = new Transfer();
         ViewStateContext stateContext = new ViewStateContext();
-        stateContext.setAndPrintScreen(transfer);
+        stateContext.setAndPrint(transfer);
 
         // To accountId, amount
         String input = toAccountId + System.getProperty("line.separator") + "135";
@@ -55,11 +55,11 @@ public class TransferTest {
         // Set scanner input value
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accDataSource, txnDataSource);
-        List<Transaction> txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
+        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accData, txnData);
+        List<Transaction> txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
         Transaction txn = txns.get(0);
         TransferTransaction tfsTxn = ((TransferTransaction) txn);
-        Account toAccount = accDataSource.getDataById(toAccountId);
+        Account toAccount = accData.getDataById(toAccountId);
 
         // Validate amount transffered, received and new balance of both acocunts
         assertEquals(amt, txn.getAmount());
@@ -77,7 +77,7 @@ public class TransferTest {
     public void successDecimalAmount() {
         ViewState transfer = new Transfer();
         ViewStateContext stateContext = new ViewStateContext();
-        stateContext.setAndPrintScreen(transfer);
+        stateContext.setAndPrint(transfer);
 
         // To accountId, amount
         String input = toAccountId + System.getProperty("line.separator") + "51.44";
@@ -87,11 +87,11 @@ public class TransferTest {
         // Set scanner input value
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accDataSource, txnDataSource);
-        List<Transaction> txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
+        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accData, txnData);
+        List<Transaction> txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
         Transaction txn = txns.get(0);
         TransferTransaction tfsTxn = ((TransferTransaction) txn);
-        Account toAccount = accDataSource.getDataById(toAccountId);
+        Account toAccount = accData.getDataById(toAccountId);
 
         assertEquals(amt, txn.getAmount());
         assertEquals(new BigDecimal("444491.44"), toAccount.getAvailableBalance());
@@ -106,17 +106,17 @@ public class TransferTest {
     public void successQuit() {
         ViewState transfer = new Transfer();
         ViewStateContext stateContext = new ViewStateContext();
-        stateContext.setAndPrintScreen(transfer);
+        stateContext.setAndPrint(transfer);
 
-        List<Transaction> txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
+        List<Transaction> txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
         int initialSize = txns.size();
 
         // "quit"
         String input = "0";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accDataSource, txnDataSource);
-        txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
+        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accData, txnData);
+        txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
         assertEquals(BigDecimal.ZERO, amt);
         assertEquals(txns.size(), initialSize);
         assertEquals(new BigDecimal(33000), account.getAvailableBalance());
@@ -126,9 +126,9 @@ public class TransferTest {
         input = toAccountId + System.getProperty("line.separator") + "0";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         in = new Scanner(System.in);
-        amt = ((Transfer) transfer).getTransferAmt(in, account, accDataSource, txnDataSource);
-        txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
-        Account toAccount = accDataSource.getDataById(toAccountId);
+        amt = ((Transfer) transfer).getTransferAmt(in, account, accData, txnData);
+        txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
+        Account toAccount = accData.getDataById(toAccountId);
         assertEquals(BigDecimal.ZERO, amt);
         assertEquals(txns.size(), initialSize);
         assertEquals(new BigDecimal(33000), account.getAvailableBalance());
@@ -140,9 +140,9 @@ public class TransferTest {
         input += System.getProperty("line.separator") + "0";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         in = new Scanner(System.in);
-        amt = ((Transfer) transfer).getTransferAmt(in, account, accDataSource, txnDataSource);
-        txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
-        toAccount = accDataSource.getDataById(toAccountId);
+        amt = ((Transfer) transfer).getTransferAmt(in, account, accData, txnData);
+        txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
+        toAccount = accData.getDataById(toAccountId);
         assertEquals(BigDecimal.ZERO, amt);
         assertEquals(txns.size(), initialSize);
         assertEquals(new BigDecimal(33000), account.getAvailableBalance());
@@ -154,9 +154,9 @@ public class TransferTest {
     public void failureSameAccountNumber() {
         ViewState transfer = new Transfer();
         ViewStateContext stateContext = new ViewStateContext();
-        stateContext.setAndPrintScreen(transfer);
+        stateContext.setAndPrint(transfer);
 
-        List<Transaction> txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
+        List<Transaction> txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
         int initialSize = txns.size();
 
         // Set and read System.out content
@@ -168,8 +168,8 @@ public class TransferTest {
         Scanner in = new Scanner(System.in);
 
         // transfer to same account
-        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accDataSource, txnDataSource);
-        txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
+        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accData, txnData);
+        txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
         assertNull(amt);
         assertEquals(txns.size(), initialSize); // number of transactions remains the same
         assertEquals(new BigDecimal(33000), account.getAvailableBalance()); // balance should be the same
@@ -181,9 +181,9 @@ public class TransferTest {
     public void failureNegativeAmount() {
         ViewState transfer = new Transfer();
         ViewStateContext stateContext = new ViewStateContext();
-        stateContext.setAndPrintScreen(transfer);
+        stateContext.setAndPrint(transfer);
 
-        List<Transaction> txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
+        List<Transaction> txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
         int initialSize = txns.size();
 
         // Set and read System.out content
@@ -194,8 +194,8 @@ public class TransferTest {
         input += System.getProperty("line.separator") + System.getProperty("line.separator");
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accDataSource, txnDataSource);
-        txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
+        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accData, txnData);
+        txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
         assertNull(amt);
         assertEquals(txns.size(), initialSize);
         assertEquals(new BigDecimal(33000), account.getAvailableBalance());
@@ -207,11 +207,11 @@ public class TransferTest {
     public void failureInvalidAccountStatus() throws IOException {
         ViewState transfer = new Transfer();
         ViewStateContext stateContext = new ViewStateContext();
-        stateContext.setAndPrintScreen(transfer);
+        stateContext.setAndPrint(transfer);
 
         String frozenAccoutId = "6453388410";
         String closedAccountId = "6459568547";
-        List<Transaction> txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
+        List<Transaction> txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
         int initialSize = txns.size();
 
         // Set and read System.out content
@@ -223,8 +223,8 @@ public class TransferTest {
 
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accDataSource, txnDataSource);
-        txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
+        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accData, txnData);
+        txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
         assertNull(amt);
         assertEquals(txns.size(), initialSize);
         assertEquals(new BigDecimal(33000), account.getAvailableBalance());
@@ -237,8 +237,8 @@ public class TransferTest {
         input += System.getProperty("line.separator") + System.getProperty("line.separator");
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         in = new Scanner(System.in);
-        amt = ((Transfer) transfer).getTransferAmt(in, account, accDataSource, txnDataSource);
-        txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
+        amt = ((Transfer) transfer).getTransferAmt(in, account, accData, txnData);
+        txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
         assertNull(amt);
         assertEquals(txns.size(), initialSize);
         assertEquals(new BigDecimal(33000), account.getAvailableBalance());
@@ -252,9 +252,9 @@ public class TransferTest {
     public void failureExceedTransferLimit() {
         ViewState transfer = new Transfer();
         ViewStateContext stateContext = new ViewStateContext();
-        stateContext.setAndPrintScreen(transfer);
+        stateContext.setAndPrint(transfer);
 
-        List<Transaction> txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
+        List<Transaction> txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
         int initialSize = txns.size();
 
         // Set and read System.out content
@@ -265,8 +265,8 @@ public class TransferTest {
         input += System.getProperty("line.separator") + System.getProperty("line.separator");
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accDataSource, txnDataSource);
-        txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
+        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accData, txnData);
+        txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
         assertNull(amt);
         assertEquals(txns.size(), initialSize);
         assertEquals(new BigDecimal(33000), account.getAvailableBalance());
@@ -278,9 +278,9 @@ public class TransferTest {
     public void failureExceedAvailableBalance() {
         ViewState transfer = new Transfer();
         ViewStateContext stateContext = new ViewStateContext();
-        stateContext.setAndPrintScreen(transfer);
+        stateContext.setAndPrint(transfer);
 
-        List<Transaction> txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
+        List<Transaction> txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
         int initialSize = txns.size();
 
         // Set and read System.out content
@@ -292,8 +292,8 @@ public class TransferTest {
         input += System.getProperty("line.separator") + System.getProperty("line.separator");
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         Scanner in = new Scanner(System.in);
-        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accDataSource, txnDataSource);
-        txns = ((TransactionData) txnDataSource).getDataByAccountId(account.getId());
+        BigDecimal amt = ((Transfer) transfer).getTransferAmt(in, account, accData, txnData);
+        txns = ((TransactionData) txnData).getDataByAccountId(account.getId());
         assertNull(amt);
         assertEquals(txns.size(), initialSize);
         assertEquals(new BigDecimal(33000), account.getAvailableBalance());

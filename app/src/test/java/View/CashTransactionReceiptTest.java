@@ -31,20 +31,20 @@ public class CashTransactionReceiptTest {
     private int[] notes;
     private BigDecimal amt;
 
-    private Data<Country> countryDataSource = null;
-    private Data<Currency> currencyDataSource = null;
+    private Data<Country> countryData = null;
+    private Data<Currency> currencyData = null;
     private Country singapore;
     private Currency sgd;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        countryDataSource = new CountryData();
-        currencyDataSource = new CurrencyData();
+        countryData = new CountryData();
+        currencyData = new CurrencyData();
         account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL,
-                currencyDataSource.getDataById("SGD"));
+                currencyData.getDataById("SGD"));
         account.setAvailableBalance(new BigDecimal(30000));
-        singapore = countryDataSource.getDataById("SGP");
-        sgd = currencyDataSource.getDataById("SGD");
+        singapore = countryData.getDataById("SGP");
+        sgd = currencyData.getDataById("SGD");
         notes = new int[] { 0, 0 };
         atm = new Atm(singapore, sgd);
         notes = new int[] { 2, 2 };
@@ -59,7 +59,7 @@ public class CashTransactionReceiptTest {
         // Set and read System.out content
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
-        stateContext.setAndPrintScreen(receipt);
+        stateContext.setAndPrint(receipt);
         String contentString = outContent.toString();
         assertTrue(contentString.contains("Cash Withdraw Receipt"));
         outContent.close();
@@ -106,7 +106,7 @@ public class CashTransactionReceiptTest {
         // Set and read System.out content
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
-        stateContext.setAndPrintScreen(receipt);
+        stateContext.setAndPrint(receipt);
         String contentString = outContent.toString();
         assertTrue(contentString.contains("Cash Deposit Receipt"));
         outContent.close();

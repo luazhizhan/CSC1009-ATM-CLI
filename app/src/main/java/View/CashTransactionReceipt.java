@@ -10,7 +10,7 @@ import Model.Transaction.CashTransaction;
 import Model.Transaction.CashTransaction.TransactionType;
 
 /**
- * Print Cash Transaction Receipt screen class
+ * Print Cash Transaction Receipt view class
  */
 public class CashTransactionReceipt implements ViewState {
     private String prompt;
@@ -32,7 +32,7 @@ public class CashTransactionReceipt implements ViewState {
     }
 
     @Override
-    public void printScreen(ViewStateContext stateContext) {
+    public void print(ViewStateContext stateContext) {
         System.out.println(prompt);
     }
 

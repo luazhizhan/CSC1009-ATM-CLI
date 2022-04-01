@@ -9,15 +9,15 @@ import Model.Address.Address;
 import Model.Atm.Atm;
 
 /**
- * Atm data source from CSV file
+ * Atm data from CSV file
  */
 public class AtmData extends Data<Atm> {
     private static final String ATM_CSV_PATH = "Atm/atm.csv";
 
-    public AtmData(CountryData countryDataSource, CurrencyData currencyDataSource)
+    public AtmData(CountryData countryData, CurrencyData currencyData)
             throws FileNotFoundException, IOException {
         super();
-        setData(parseCSVDataList(readDataFromCSV(ATM_CSV_PATH), countryDataSource, currencyDataSource));
+        setData(parseCSVDataList(readDataFromCSV(ATM_CSV_PATH), countryData, currencyData));
     }
 
     @Override
@@ -25,9 +25,9 @@ public class AtmData extends Data<Atm> {
         return null;
     }
 
-    private List<Atm> parseCSVDataList(List<String[]> dataList, CountryData countryDataSource,
-            CurrencyData currencyDataSource) {
-        List<Atm> atmDataSource = new ArrayList<Atm>();
+    private List<Atm> parseCSVDataList(List<String[]> dataList, CountryData countryData,
+            CurrencyData currencyData) {
+        List<Atm> atmData = new ArrayList<Atm>();
         String[] data;
         /**
          * AtmID 0
@@ -42,14 +42,14 @@ public class AtmData extends Data<Atm> {
 
         for (int i = 0; i < dataList.size(); i++) {
             data = dataList.get(i);
-            Atm atm = new Atm(data[0], countryDataSource.getDataById(data[1]),
-                    currencyDataSource.getDataById(countryDataSource.getDataById(data[1]).getCurrencyAcronym()),
+            Atm atm = new Atm(data[0], countryData.getDataById(data[1]),
+                    currencyData.getDataById(countryData.getDataById(data[1]).getCurrencyAcronym()),
                     new Address(data[2], data[3], data[4], data[5], data[6], data[7],
-                            countryDataSource.getDataById(data[1]).getCountryName().toUpperCase()));
-            atmDataSource.add(atm);
+                            countryData.getDataById(data[1]).getCountryName().toUpperCase()));
+            atmData.add(atm);
         }
 
-        return atmDataSource;
+        return atmData;
     }
 
     public List<Atm> getAtmList() {

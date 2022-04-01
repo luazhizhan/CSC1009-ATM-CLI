@@ -21,8 +21,8 @@ import org.junit.jupiter.api.BeforeEach;
 public class AtmTest {
         Atm atm;
         private Address address;
-        private Data<Country> countryDataSource = null;
-        private Data<Currency> currencyDataSource = null;
+        private Data<Country> countryData = null;
+        private Data<Currency> currencyData = null;
         private Country singapore;
         private Currency sgd;
         private int[] amounts;
@@ -30,10 +30,10 @@ public class AtmTest {
         @BeforeEach
         public void setUp() throws FileNotFoundException, IOException {
                 address = new Address("2021", "Bukit Batok Street 23", "02-178", "659526");
-                countryDataSource = new CountryData();
-                currencyDataSource = new CurrencyData();
-                singapore = countryDataSource.getDataById("SGP");
-                sgd = currencyDataSource.getDataById("SGD");
+                countryData = new CountryData();
+                currencyData = new CurrencyData();
+                singapore = countryData.getDataById("SGP");
+                sgd = currencyData.getDataById("SGD");
                 amounts = new int[] { 50, 3 };
         }
 

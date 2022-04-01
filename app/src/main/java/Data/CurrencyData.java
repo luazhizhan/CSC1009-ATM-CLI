@@ -25,7 +25,7 @@ public class CurrencyData extends Data<Currency> {
 
     @Override
     protected List<Currency> parseCSVDataList(List<String[]> dataList) {
-        List<Currency> currencyDataSource = new ArrayList<Currency>();
+        List<Currency> currencyData = new ArrayList<Currency>();
         String[] data;
         /**
          * currencyCode 0
@@ -44,7 +44,7 @@ public class CurrencyData extends Data<Currency> {
             usd.setWithdrawMinimum(Integer.parseInt(data[2]));
         if (data[3] != "" || data[3] != null)
             usd.setWithdrawMaximum(Integer.parseInt(data[3]));
-        currencyDataSource.add(usd);
+        currencyData.add(usd);
 
         // Intitialise currencies other than USD.
         // USD used to initialise exchange rates to USD.
@@ -58,10 +58,10 @@ public class CurrencyData extends Data<Currency> {
             if (data[3] != "" || data[3] != null)
                 currency.setWithdrawMaximum(Integer.parseInt(data[3]));
             if (data[4] != "")
-                currency.setExchangeRate(new ExchangeRate(currencyDataSource.get(0), new BigDecimal(data[4])));
-            currencyDataSource.add(currency);
+                currency.setExchangeRate(new ExchangeRate(currencyData.get(0), new BigDecimal(data[4])));
+            currencyData.add(currency);
         }
-        return currencyDataSource;
+        return currencyData;
     }
 
     @Override

@@ -13,7 +13,7 @@ import Model.Transaction.CashTransaction;
 import Model.Transaction.Transaction;
 
 /**
- * Cash withdraw screen class
+ * Cash withdraw view class
  */
 public class Withdraw implements ViewState {
     private String prompt;
@@ -23,7 +23,7 @@ public class Withdraw implements ViewState {
     }
 
     @Override
-    public void printScreen(ViewStateContext stateContext) {
+    public void print(ViewStateContext stateContext) {
         System.out.println(prompt);
     }
 
@@ -32,7 +32,7 @@ public class Withdraw implements ViewState {
         try {
 
             System.out.println("\n" + line + "\nPlease Enter Amount to Withdraw in Multiples of 10."
-                    + "\nEnter 0 to go back to option screen.\n" + line);
+                    + "\nEnter 0 to go back to option view.\n" + line);
             int amtInt = in.nextInt();
 
             // Return to main options

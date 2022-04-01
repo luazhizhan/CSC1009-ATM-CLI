@@ -17,21 +17,21 @@ public class CurrencyDataTest {
 
     @Test
     public void success() throws FileNotFoundException, IOException {
-        Data<Currency> currencyDataSource = new CurrencyData();
-        Currency currencyUSD = currencyDataSource.getDataById("USD");
+        Data<Currency> currencyData = new CurrencyData();
+        Currency currencyUSD = currencyData.getDataById("USD");
         assertEquals(currencyUSD.getCurrencyAcronym(), "USD");
         assertEquals(currencyUSD.getWithdrawMinimum(), 20);
         assertEquals(currencyUSD.getWithdrawMaximum(), 1000);
         assertEquals(arraysEqual(currencyUSD.getBanknotes(), new int[] { 1, 5, 10, 20, 50, 100 }), true);
 
-        Currency currencyCAD = currencyDataSource.getDataById("CAD");
+        Currency currencyCAD = currencyData.getDataById("CAD");
         assertEquals(currencyCAD.getCurrencyAcronym(), "CAD");
         assertEquals(currencyCAD.getWithdrawMinimum(), 20);
         assertEquals(currencyCAD.getWithdrawMaximum(), 500);
         // assertEquals(currencyCAD.getBanknotes(), new int[] { 20, 50, 100 });
         assertEquals(arraysEqual(currencyCAD.getBanknotes(), new int[] { 20, 50, 100 }), true);
 
-        Currency currencyJPY = currencyDataSource.getDataById("JPY");
+        Currency currencyJPY = currencyData.getDataById("JPY");
         assertEquals(currencyJPY.getCurrencyAcronym(), "JPY");
         assertEquals(currencyJPY.getWithdrawMinimum(), 1000);
         assertEquals(currencyJPY.getWithdrawMaximum(), 100000);
@@ -40,14 +40,14 @@ public class CurrencyDataTest {
         assertEquals(currencyJPY.findExchangeRate(currencyCAD).getRate().doubleValue(), 0.0101677871818068);
 
         // Check if all currencies have rates to all other currencies
-        for (int i = 0; i < currencyDataSource.getData().size(); i++) {
+        for (int i = 0; i < currencyData.getData().size(); i++) {
 
-            Currency currencyA = currencyDataSource.getData().get(i);
-            Set<ExchangeRate> currencyARates = currencyDataSource.getData().get(i).getRates();
+            Currency currencyA = currencyData.getData().get(i);
+            Set<ExchangeRate> currencyARates = currencyData.getData().get(i).getRates();
 
-            // Check against all other currencies in the datasource
-            for (int j = 0; j < currencyDataSource.getData().size(); j++) {
-                Currency currencyB = currencyDataSource.getData().get(i);
+            // Check against all other currencies in the data
+            for (int j = 0; j < currencyData.getData().size(); j++) {
+                Currency currencyB = currencyData.getData().get(i);
                 if (currencyA == currencyB)
                     continue;
 

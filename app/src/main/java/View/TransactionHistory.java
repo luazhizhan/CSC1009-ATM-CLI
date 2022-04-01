@@ -14,7 +14,7 @@ import Model.Transaction.Transaction;
 import Model.Transaction.TransferTransaction;
 
 /**
- * Print account transaction history screen class
+ * Print account transaction history view class
  */
 public class TransactionHistory implements ViewState {
     private String prompt;
@@ -24,7 +24,7 @@ public class TransactionHistory implements ViewState {
     }
 
     @Override
-    public void printScreen(ViewStateContext stateContext) {
+    public void print(ViewStateContext stateContext) {
         System.out.println(prompt);
     }
 

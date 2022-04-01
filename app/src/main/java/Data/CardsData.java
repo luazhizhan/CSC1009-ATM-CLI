@@ -9,7 +9,7 @@ import java.util.List;
 import Model.Account.Card;
 
 /**
- * Cards data source from CSV file
+ * Cards data from CSV file
  */
 public class CardsData extends Data<Card> {
     private static final String CARDS_CSV_PATH = "Account/cards.csv";
@@ -21,7 +21,7 @@ public class CardsData extends Data<Card> {
 
     @Override
     protected List<Card> parseCSVDataList(List<String[]> dataList) {
-        List<Card> cardDataSource = new ArrayList<Card>();
+        List<Card> cardData = new ArrayList<Card>();
         String[] data;
         for (int i = 0; i < dataList.size(); i++) {
             /**
@@ -50,10 +50,10 @@ public class CardsData extends Data<Card> {
             card.setExpiryDateWithoutCheck(YearMonth.parse(data[3]));
             card.setCvv(Integer.parseInt(data[4]));
             card.setPinNumber(Integer.parseInt(data[7]));
-            cardDataSource.add(card);
+            cardData.add(card);
         }
 
-        return cardDataSource;
+        return cardData;
 
     }
 

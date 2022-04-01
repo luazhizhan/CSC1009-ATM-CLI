@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CustomerDataTest {
     @Test
     public void success() throws FileNotFoundException, IOException {
-        Data<Customer> customerDataSource = new CustomerData();
-        Customer customer = customerDataSource.getDataById("4099532");
+        Data<Customer> customerData = new CustomerData();
+        Customer customer = customerData.getDataById("4099532");
         assertEquals(customer.getName(), "Tala Osborn");
         assertEquals(customer.getEmail(), "TalaOsborn@fakemal.com");
         assertEquals(customer.getPhone(), "62530167");

@@ -21,23 +21,23 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 public class AtmListTest {
-    private Data<Atm> atmDataSource;
-    private Data<Country> countryDataSource = null;
-    private Data<Currency> currencyDataSource = null;
+    private Data<Atm> atmData;
+    private Data<Country> countryData = null;
+    private Data<Currency> currencyData = null;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        countryDataSource = new CountryData();
-        currencyDataSource = new CurrencyData();
-        atmDataSource = new AtmData((CountryData) countryDataSource,
-                (CurrencyData) currencyDataSource);
+        countryData = new CountryData();
+        currencyData = new CurrencyData();
+        atmData = new AtmData((CountryData) countryData,
+                (CurrencyData) currencyData);
     }
 
     @Test
     public void success() {
         ViewState atmList = new AtmList();
         ViewStateContext stateContext = new ViewStateContext();
-        stateContext.setAndPrintScreen(atmList);
+        stateContext.setAndPrint(atmList);
 
         // Set and read System.out content
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -46,7 +46,7 @@ public class AtmListTest {
         // Set scanner input value
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         Scanner in = new Scanner(System.in);
-        Atm atm = ((AtmList) atmList).selectAtm(in, atmDataSource);
+        Atm atm = ((AtmList) atmList).selectAtm(in, atmData);
         String out = outContent.toString();
         assertEquals(300, atm.getBills()[0]);
         assertEquals(300, atm.getBills()[1]);
@@ -68,7 +68,7 @@ public class AtmListTest {
         System.setIn(new ByteArrayInputStream("-1".getBytes()));
 
         Scanner in = new Scanner(System.in);
-        ((AtmList) atmList).selectAtm(in, atmDataSource);
+        ((AtmList) atmList).selectAtm(in, atmData);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         in.close();
     }
@@ -85,13 +85,13 @@ public class AtmListTest {
         System.setIn(new ByteArrayInputStream("test".getBytes()));
 
         Scanner in = new Scanner(System.in);
-        ((AtmList) atmList).selectAtm(in, atmDataSource);
+        ((AtmList) atmList).selectAtm(in, atmData);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         in.close();
 
         System.setIn(new ByteArrayInputStream("0.4".getBytes()));
         in = new Scanner(System.in);
-        ((AtmList) atmList).selectAtm(in, atmDataSource);
+        ((AtmList) atmList).selectAtm(in, atmData);
         assertTrue(outContent.toString().contains("Invalid input! Please try again."));
         in.close();
     }

@@ -9,7 +9,7 @@ import Data.Data;
 import Model.Atm.Atm;
 
 /**
- * List avaliable ATM screen class
+ * List avaliable ATM view class
  */
 public class AtmList implements ViewState {
     private String prompt;
@@ -19,7 +19,7 @@ public class AtmList implements ViewState {
     }
 
     @Override
-    public void printScreen(ViewStateContext stateContext) {
+    public void print(ViewStateContext stateContext) {
         System.out.println(prompt);
     }
 

@@ -21,30 +21,30 @@ import Model.Account.Card;
 public class CardPromptTest {
     private static final String VISA = "4071666471445613";
     private static final String MASTER_CARD = "5424053513915781";
-    private Data<Card> cardDataSource;
+    private Data<Card> cardData;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        cardDataSource = new CardsData();
+        cardData = new CardsData();
     }
 
     @Test
     public void success() {
         ViewState cardPrompt = new CardPrompt();
         ViewStateContext stateContext = new ViewStateContext();
-        stateContext.setAndPrintScreen(cardPrompt);
+        stateContext.setAndPrint(cardPrompt);
 
         // Set scanner input value VISA
         System.setIn(new ByteArrayInputStream(VISA.getBytes()));
         Scanner in = new Scanner(System.in);
-        Card card = ((CardPrompt) cardPrompt).getCardNumber(in, cardDataSource);
+        Card card = ((CardPrompt) cardPrompt).getCardNumber(in, cardData);
         assertEquals(VISA, card.getCardNumber());
         in.close(); // Clear scanner buffer
 
         // Set scanner input value MASTER_CARD
         System.setIn(new ByteArrayInputStream(MASTER_CARD.getBytes()));
         in = new Scanner(System.in);
-        card = ((CardPrompt) cardPrompt).getCardNumber(in, cardDataSource);
+        card = ((CardPrompt) cardPrompt).getCardNumber(in, cardData);
         assertEquals(MASTER_CARD, card.getCardNumber());
         in.close();
     }
@@ -59,14 +59,14 @@ public class CardPromptTest {
 
         System.setIn(new ByteArrayInputStream("abcdefg".getBytes()));
         Scanner in = new Scanner(System.in);
-        Card card = ((CardPrompt) cardPrompt).getCardNumber(in, cardDataSource);
+        Card card = ((CardPrompt) cardPrompt).getCardNumber(in, cardData);
         assertNull(card);
         assertTrue(outContent.toString().contains("Invalid Account Card Number Format!"));
         in.close();
 
         System.setIn(new ByteArrayInputStream("123456789".getBytes()));
         in = new Scanner(System.in);
-        card = ((CardPrompt) cardPrompt).getCardNumber(in, cardDataSource);
+        card = ((CardPrompt) cardPrompt).getCardNumber(in, cardData);
         assertNull(card);
         assertTrue(outContent.toString().contains("Invalid Account Card Number Format!"));
         in.close();
@@ -83,13 +83,13 @@ public class CardPromptTest {
         // Valid MasterCard that does not exist in the system
         System.setIn(new ByteArrayInputStream("5108212607219814".getBytes()));
         Scanner in = new Scanner(System.in);
-        Card card = ((CardPrompt) cardPrompt).getCardNumber(in, cardDataSource);
+        Card card = ((CardPrompt) cardPrompt).getCardNumber(in, cardData);
         assertNull(card);
         assertTrue(outContent.toString().contains("Card not found on the system!"));
 
         // Valid Visa that does not exist in the system
         System.setIn(new ByteArrayInputStream("4718258769126946".getBytes()));
-        card = ((CardPrompt) cardPrompt).getCardNumber(in, cardDataSource);
+        card = ((CardPrompt) cardPrompt).getCardNumber(in, cardData);
         assertNull(card);
         assertTrue(outContent.toString().contains("Card not found on the system!"));
         in.close();

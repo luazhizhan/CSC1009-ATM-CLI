@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
- * Main options screent
+ * Main options view
  */
 public class MainOption implements ViewState {
     private String printContents;
@@ -24,7 +24,7 @@ public class MainOption implements ViewState {
     }
 
     @Override
-    public void printScreen(ViewStateContext stateContext) {
+    public void print(ViewStateContext stateContext) {
         System.out.println(printContents);
     }
 

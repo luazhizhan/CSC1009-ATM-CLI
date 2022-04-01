@@ -12,7 +12,7 @@ import Model.Transaction.CashTransaction;
 import Model.Transaction.Transaction;
 
 /**
- * Get deposit amount and process it screen class
+ * Get deposit amount and process it view class
  */
 public class Deposit implements ViewState {
 
@@ -23,7 +23,7 @@ public class Deposit implements ViewState {
     }
 
     @Override
-    public void printScreen(ViewStateContext stateContext) {
+    public void print(ViewStateContext stateContext) {
         System.out.println(prompt);
     }
 
@@ -46,11 +46,11 @@ public class Deposit implements ViewState {
                 System.out.println(
                         "\n" + line + "\nPlease enter number of "
                                 + currencyDenominations[i] + " dollars notes." +
-                                "\nEnter < 0 to go back options screen.\n" + line);
+                                "\nEnter < 0 to go back options view.\n" + line);
                 depositAmounts[i] = in.nextInt();
                 counter += depositAmounts[i];
             }
-            if (counter < 0) { // Return to main option screen if below zero
+            if (counter < 0) { // Return to main option view if below zero
                 return new Tuple<BigDecimal, int[]>(BigDecimal.ZERO, new int[0]);
             }
 

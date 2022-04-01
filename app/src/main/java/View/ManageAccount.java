@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
- * Manage account limits screen class
+ * Manage account limits view class
  */
 public class ManageAccount implements ViewState {
     private String prompt;
@@ -18,7 +18,7 @@ public class ManageAccount implements ViewState {
     }
 
     @Override
-    public void printScreen(ViewStateContext stateContext) {
+    public void print(ViewStateContext stateContext) {
         System.out.println(prompt);
     }
 

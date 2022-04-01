@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Generic Abstract DataSource class to DRY code for other DataSource classes
+ * Generic Abstract Data class to DRY code for other Data classes
  */
 public abstract class Data<T> {
     private List<T> data;

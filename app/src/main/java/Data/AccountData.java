@@ -12,15 +12,15 @@ import Model.Account.CurrentAccount;
 import Model.Account.SavingsAccount;
 
 /**
- * Account data source from CSV file
+ * Account data from CSV file
  */
 public class AccountData extends Data<Account> {
     private static final String ACCOUNT_CSV_PATH = "Account/accounts.csv";
 
-    public AccountData(CurrencyData currencyDataSource)
+    public AccountData(CurrencyData currencyData)
             throws FileNotFoundException, IOException {
         super();
-        setData(parseCSVDataList(readDataFromCSV(ACCOUNT_CSV_PATH), currencyDataSource));
+        setData(parseCSVDataList(readDataFromCSV(ACCOUNT_CSV_PATH), currencyData));
     }
 
     @Override
@@ -28,8 +28,8 @@ public class AccountData extends Data<Account> {
         return null;
     }
 
-    protected List<Account> parseCSVDataList(List<String[]> dataList, CurrencyData currencyDataSource) {
-        List<Account> accountDataSource = new ArrayList<Account>();
+    protected List<Account> parseCSVDataList(List<String[]> dataList, CurrencyData currencyData) {
+        List<Account> accountData = new ArrayList<Account>();
         String[] data;
         for (int i = 0; i < dataList.size(); i++) {
             /**
@@ -62,10 +62,10 @@ public class AccountData extends Data<Account> {
 
             Account acc;
             if (data[10].equals("Current")) {
-                acc = new CurrentAccount(data[0], data[1], data[2], status, currencyDataSource.getDataById(data[13]));
+                acc = new CurrentAccount(data[0], data[1], data[2], status, currencyData.getDataById(data[13]));
                 ((CurrentAccount) acc).setOverDraftLimit(new BigDecimal(data[11]));
             } else {
-                acc = new SavingsAccount(data[0], data[1], data[2], status, currencyDataSource.getDataById(data[13]));
+                acc = new SavingsAccount(data[0], data[1], data[2], status, currencyData.getDataById(data[13]));
                 ((SavingsAccount) acc).setInterestRate(new BigDecimal(data[12]));
             }
 
@@ -75,10 +75,10 @@ public class AccountData extends Data<Account> {
             acc.setTransferLimit(new BigDecimal(data[7]));
             acc.setOverseasWithdrawLimit(new BigDecimal(data[8]));
             acc.setOverseasTransferLimit(new BigDecimal(data[9]));
-            accountDataSource.add(acc);
+            accountData.add(acc);
         }
 
-        return accountDataSource;
+        return accountData;
     }
 
     /**
