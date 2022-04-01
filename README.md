@@ -10,7 +10,7 @@ This is an Automated Teller Machine (ATM) CLI application build with Java. The o
 4. Transaction History
 5. Manage Account
 
-Some of the features such transaction history and account account are not commonly found on ATMs. We decided to include it to enhance our ATM.
+Some of the features such as transaction history and account management are not commonly found on ATMs. We decided to include them to enhance our ATM.
 
 ## Built With
 
