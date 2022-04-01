@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CustomerDatasourceTest {
+public class CustomerDataSourceTest {
     @Test
     public void success() throws FileNotFoundException, IOException {
         DataSource<Customer> customerDataSource = new CustomerDataSource();
