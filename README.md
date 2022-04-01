@@ -49,6 +49,13 @@ gradlew.bat run # Windows
 ./gradlew run # linux, mac
 ```
 
+#### Test Data
+
+| Card Number      | PIN    | Account Number |
+|------------------|--------|----------------|
+| 5424053513915781 | 666666 | 6454856238     |
+| 4071666471445613 | 141981 | 6458795246     |
+
 ### Code Coverage Metrics Report
 
 Go to `Gradle` menu in your IDE or Code Editor and execute the task `jacocoTestReport` to generate it.
