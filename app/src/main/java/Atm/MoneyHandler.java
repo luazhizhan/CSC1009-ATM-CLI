@@ -19,8 +19,8 @@ public class MoneyHandler {
     // int[0] - banknote face value
     // int[1] - number of banknotes
     private int[][] dispenserAmounts;
-    private int withdrawMinimum;
-    private int withdrawMaximum;
+    private BigDecimal withdrawMinimum;
+    private BigDecimal withdrawMaximum;
     private String currencyCode;
 
     // Instead of location, give it the currency code imo. Can pass that on ATM
@@ -29,8 +29,8 @@ public class MoneyHandler {
         dispenserAmounts = new int[2][currency.getBanknotes().length];
         dispenserAmounts[0] = currency.getBanknotes();
 
-        withdrawMinimum = currency.getWithdrawMinimum();
-        withdrawMaximum = currency.getWithdrawMaximum();
+        withdrawMinimum = new BigDecimal(currency.getWithdrawMinimum());
+        withdrawMaximum = new BigDecimal(currency.getWithdrawMaximum());
         currencyCode = currency.getCurrencyAcronym();
 
         for (int i = 0; i < dispenserAmounts[0].length; i++) {
@@ -42,8 +42,8 @@ public class MoneyHandler {
         dispenserAmounts = new int[2][currency.getBanknotes().length];
         dispenserAmounts[0] = currency.getBanknotes();
 
-        withdrawMinimum = currency.getWithdrawMinimum();
-        withdrawMaximum = currency.getWithdrawMaximum();
+        withdrawMinimum = new BigDecimal(currency.getWithdrawMinimum());
+        withdrawMaximum = new BigDecimal(currency.getWithdrawMaximum());
         currencyCode = currency.getCurrencyAcronym();
 
         if (dispenserAmounts[0].length != cashAmounts.length) {
@@ -55,16 +55,17 @@ public class MoneyHandler {
     }
 
     // Withdraw this value.
-    public Tuple<BigDecimal, int[]> withdraw(int value) throws InsufficientNotesException, IllegalArgumentException {
+    public Tuple<BigDecimal, int[]> withdraw(BigDecimal value)
+            throws InsufficientNotesException, IllegalArgumentException {
         // Throw errors if outside of range.
-        if (value < withdrawMinimum)
+        if (value.compareTo(withdrawMinimum) == -1)
             throw new IllegalArgumentException(
                     "Amount is too low, minimum withdraw limit is " + withdrawMinimum + " " + currencyCode + ".");
-        else if (value > withdrawMaximum)
+        else if (value.compareTo(withdrawMaximum) == 1)
             throw new IllegalArgumentException(
                     "Amount is too high, maximum withdraw limit is " + withdrawMaximum + " " + currencyCode + ".");
 
-        int[] dispensed = makeChange(dispenserAmounts[0], dispenserAmounts[1], value);
+        int[] dispensed = makeChange(dispenserAmounts[0], dispenserAmounts[1], value.intValue());
         Tuple<BigDecimal, int[]> returnValue = new Tuple<BigDecimal, int[]>(BigDecimal.ZERO, dispensed);
 
         // Remove notes from dispenser
@@ -138,13 +139,16 @@ public class MoneyHandler {
                 int current = limits[i];
 
                 sub = Math.min(current, sub);
+                // sub = current.min(sub);
                 value -= denomination * sub; // updating the value.
                 values[i] = sub; // Set to sub to get the bills used.
             }
         }
 
-        if (value != 0)
+        if (value != 0) {
+            System.out.println("value? " + value);
             throw new InsufficientNotesException("Insufficient notes remaining in ATM to dispense this amount.");
+        }
 
         // Everything works. Return the values.
         return values;
@@ -160,10 +164,6 @@ public class MoneyHandler {
 
     public int[] getBills() {
         return dispenserAmounts[1];
-    }
-
-    public String getCurrencyCode() {
-        return currencyCode;
     }
 
 }

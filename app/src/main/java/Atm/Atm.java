@@ -15,23 +15,27 @@ public class Atm {
     private String id;
     private Address address;
     private Country country;
+    private Currency currency;
     public MoneyHandler moneyHandler;
 
     public Atm(Country country, Currency currency) {
         setId(Id.generateUUID());
         setCountry(country);
+        setCurrency(currency);
         moneyHandler = new MoneyHandler(currency);
     }
 
     public Atm(String id, Country country, Currency currency) {
         setId(id);
         setCountry(country);
+        setCurrency(currency);
         moneyHandler = new MoneyHandler(currency);
     }
 
     public Atm(String id, Country country, Currency currency, Address address) {
         setId(id);
         setCountry(country);
+        setCurrency(currency);
         moneyHandler = new MoneyHandler(currency);
         setAddress(address);
     }
@@ -39,6 +43,7 @@ public class Atm {
     public Atm(Country country, Currency currency, Address address) {
         setId(Id.generateUUID());
         setCountry(country);
+        setCurrency(currency);
         moneyHandler = new MoneyHandler(currency);
         setAddress(address);
     }
@@ -46,18 +51,21 @@ public class Atm {
     public Atm(Country country, Currency currency, int[] amounts) {
         setId(Id.generateUUID());
         setCountry(country);
+        setCurrency(currency);
         moneyHandler = new MoneyHandler(currency, amounts);
     }
 
     public Atm(String id, Country country, Currency currency, int[] amounts) {
         setId(id);
         setCountry(country);
+        setCurrency(currency);
         moneyHandler = new MoneyHandler(currency, amounts);
     }
 
     public Atm(String id, Country country, Currency currency, int[] amounts, Address address) {
         setId(id);
         setCountry(country);
+        setCurrency(currency);
         moneyHandler = new MoneyHandler(currency, amounts);
         setAddress(address);
     }
@@ -65,6 +73,7 @@ public class Atm {
     public Atm(Country country, Currency currency, int[] amounts, Address address) {
         setId(Id.generateUUID());
         setCountry(country);
+        setCurrency(currency);
         moneyHandler = new MoneyHandler(currency, amounts);
         setAddress(address);
     }
@@ -93,6 +102,14 @@ public class Atm {
         this.country = country;
     }
 
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
     public void printRemainingBills() {
         moneyHandler.printRemainingBills();
     }
@@ -108,6 +125,17 @@ public class Atm {
     }
 
     /**
+     * Check amount argument against account's local withdraw limit
+     * 
+     * @param amount
+     */
+    public void checkAgainstATMWithdrawLimit(BigDecimal amount) {
+        if (amount.compareTo(new BigDecimal(currency.getWithdrawMaximum())) > 0) {
+            throw new IllegalArgumentException("Withdraw amount exceeded local ATM withdraw limit!");
+        }
+    }
+
+    /**
      * Validate amount to be withdraw against number of 10 and 50 dollars notes
      * in the ATM.
      * Set new balance of 10 and 50 dollars notes in the ATM
@@ -117,6 +145,6 @@ public class Atm {
      */
     public Tuple<BigDecimal, int[]> withdraw(BigDecimal amount)
             throws IllegalArgumentException, InsufficientNotesException {
-        return moneyHandler.withdraw(amount.intValue());
+        return moneyHandler.withdraw(amount);
     }
 }

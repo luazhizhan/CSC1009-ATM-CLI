@@ -64,8 +64,11 @@ public class CashTransactionReceipt implements ScreenState {
             if (option == 1) { // Print receipt
                 String amtStr = formatter.format(amt);
                 System.out.println("\n" + line + "\n" + header + "\n");
+                int[] denominations = account.getCurrency().getBanknotes();
+                String currencyAcronym = account.getCurrency().getCurrencyAcronym();
                 for (int i = 0; i < notesPair.length; i++) {
-                    System.out.println(String.format("$10 dollars note(s): %d", notesPair[i]));
+                    System.out.println(
+                            String.format("%d %s note(s): %d", denominations[i], currencyAcronym, notesPair[i]));
                 }
 
                 // Print according to cash transaction type

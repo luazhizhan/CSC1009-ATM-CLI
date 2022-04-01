@@ -80,8 +80,8 @@ public class CashTransactionReceiptTest {
         boolean result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notes, amt);
         contentString = outContent.toString();
         assertTrue(result);
-        assertTrue(contentString.contains("$10 dollars note(s):"));
-        assertFalse(contentString.contains("$50 dollars note(s):"));
+        assertTrue(contentString.contains("10 SGD note(s):"));
+        assertTrue(contentString.contains("50 SGD note(s):"));
         assertTrue(contentString.contains("Amount withdrawn:"));
         assertTrue(contentString.contains("Available balance:"));
         assertTrue(contentString.contains("Thank You For Banking With Us!"));
@@ -98,7 +98,7 @@ public class CashTransactionReceiptTest {
         result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notes, amt);
         contentString = outContent.toString();
         assertTrue(result);
-        assertFalse(contentString.contains("$10 dollars note(s):"));
+        assertFalse(contentString.contains("10 SGD note(s):"));
         assertTrue(contentString.contains("Available balance:"));
         assertTrue(contentString.contains("Thank You For Banking With Us!"));
         in.close();
@@ -130,8 +130,8 @@ public class CashTransactionReceiptTest {
         boolean result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notes, amt);
         contentString = outContent.toString();
         assertTrue(result);
-        assertTrue(contentString.contains("$10 dollars note(s):"));
-        assertFalse(contentString.contains("$50 dollars note(s):"));
+        assertTrue(contentString.contains("10 SGD note(s):"));
+        assertTrue(contentString.contains("50 SGD note(s):"));
         assertTrue(contentString.contains("Amount deposited:"));
         assertTrue(contentString.contains("Available balance:"));
         assertTrue(contentString.contains("Thank You For Banking With Us!"));
@@ -148,7 +148,8 @@ public class CashTransactionReceiptTest {
         result = ((CashTransactionReceipt) receipt).getSelectedOption(in, account, notes, amt);
         contentString = outContent.toString();
         assertTrue(result);
-        assertFalse(contentString.contains("$10 dollars note(s):"));
+        assertFalse(contentString.contains("10 SGD note(s):"));
+        assertFalse(contentString.contains("50 SGD note(s):"));
         assertTrue(contentString.contains("Available balance:"));
         assertTrue(contentString.contains("Thank You For Banking With Us!"));
         in.close();

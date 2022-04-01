@@ -40,18 +40,29 @@ public class Withdraw implements ScreenState {
                 return new Tuple<BigDecimal, int[]>(BigDecimal.ZERO, new int[0]);
             }
 
-            BigDecimal amt = new BigDecimal(amtInt);
+            BigDecimal atmInputAmount = new BigDecimal(amtInt);
+            BigDecimal convertedAccountAmount = BigDecimal.ZERO;
+            // Currency mismatch. For withdrawal purposes,
+            // convert from atm currency to account, and respect atm limits.
+            if (atm.getCurrency() != account.getCurrency()) {
+                convertedAccountAmount = atmInputAmount
+                        .multiply(atm.getCurrency().findExchangeRate(account.getCurrency()).getRate());
+            }
 
             // Validate amount against ATM notes, withdraw limit and available balance
-            account.checkAgainstWithdrawLimit(amt);
-            account.checkAgainstAvailableBalance(amt);
+            atm.checkAgainstATMWithdrawLimit(atmInputAmount);
+            // Use converted amount if it's non-zero
+            account.checkAgainstAvailableBalance(
+                    convertedAccountAmount.compareTo(BigDecimal.ZERO) == 0 ? atmInputAmount : convertedAccountAmount);
 
             // Withdraw from ATM and account
-            Tuple<BigDecimal, int[]> withdrawResult = atm.withdraw(amt);
-            account.withdrawAvailableBalance(amt);
+            Tuple<BigDecimal, int[]> withdrawResult = atm.withdraw(atmInputAmount);
+            // Withdraw converted amount if it's non-zero
+            account.withdrawAvailableBalance(
+                    convertedAccountAmount.compareTo(BigDecimal.ZERO) == 0 ? atmInputAmount : convertedAccountAmount);
 
             // Create record of transaction
-            Transaction txn = new CashTransaction(account.getId(), amt, atm.getId(),
+            Transaction txn = new CashTransaction(account.getId(), atmInputAmount, atm.getId(),
                     CashTransaction.TransactionType.WITHDRAW);
             ds.add(txn);
 

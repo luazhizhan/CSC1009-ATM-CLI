@@ -36,17 +36,17 @@ public class WithdrawTest {
     private DataSource<Currency> currencyDataSource = null;
     private Country singapore;
     private Currency sgd;
+    private Country usa;
+    private Currency usd;
 
     @BeforeEach
     public void setUp() throws FileNotFoundException, IOException {
-        try {
-            countryDataSource = new CountryDataSource();
-            currencyDataSource = new CurrencyDataSource();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        countryDataSource = new CountryDataSource();
+        currencyDataSource = new CurrencyDataSource();
         singapore = countryDataSource.getDataById("SGP");
         sgd = currencyDataSource.getDataById("SGD");
+        usa = countryDataSource.getDataById("USA");
+        usd = currencyDataSource.getDataById("USD");
         atm = new Atm(singapore, sgd);
         account = new CurrentAccount("6454856238", "3314572", "Tom", AccountStatus.NORMAL,
                 currencyDataSource.getDataById("SGD"));
@@ -143,7 +143,7 @@ public class WithdrawTest {
         Scanner in = new Scanner(System.in);
         Tuple<BigDecimal, int[]> withdrawResult = ((Withdraw) withdraw).getWithdrawalAmount(in, atm, account,
                 txnDataSource);
-        assertTrue(outContent.toString().contains("Withdraw amount exceeded withdraw limit!"));
+        assertTrue(outContent.toString().contains("Withdraw amount exceeded"));
         assertNull(withdrawResult);
         in.close();
     }

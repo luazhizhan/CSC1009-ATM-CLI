@@ -73,14 +73,6 @@ public class CurrencyDataSource extends DataSource<Currency> {
         String[] items = banknoteString.split(" ");
 
         int[] banknotes = new int[items.length];
-
-        // for (int i = 0; i < items.length; i++) {
-        // try {
-        // banknotes[i] = Integer.parseInt(items[i]);
-        // } catch (NumberFormatException nfe) {
-        // System.out.println("CSV data may be incorrect. Please check the CSV file!");
-        // }
-        // }
         for (int i = 0; i < items.length; i++)
             banknotes[i] = Integer.parseInt(items[i]);
         return banknotes;

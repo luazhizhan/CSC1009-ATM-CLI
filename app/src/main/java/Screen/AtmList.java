@@ -37,7 +37,7 @@ public class AtmList implements ScreenState {
             int index = 1;
             for (Atm atm : atms) {
                 System.out.println("No " + index++ + ".");
-                System.out.println(atm.getCountry().toString());
+                System.out.println(atm.getCountry().getCountryName());
                 System.out.println(atm.getAddress().getShortAddress());
                 atm.printRemainingBills();
             }

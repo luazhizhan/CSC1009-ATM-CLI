@@ -1,6 +1,7 @@
 package Screen;
 
 import Account.Account;
+import Currency.Currency;
 import Customer.Customer;
 
 import java.text.NumberFormat;
@@ -37,17 +38,21 @@ public class ManageAccount implements ScreenState {
             prompt = String.format("\nName: %s\nContact Number: %s\nEmail: %s\nResidential Address: %s\n",
                     customer.getName(),
                     customer.getPhone(), customer.getEmail(), customer.getAddress().getAddress());
+            String acctCurrencyAcro = account.getCurrency().getCurrencyAcronym();
 
             prompt += String.format(line + "\nAccount Number: %s \n" + line
-                    + "\nAvaliable Balance: $%.2f \nHold Balance: $%.2f \n---------------\nAccount Limits:\n---------------\n"
+                    + "\nAvaliable Balance: %.2f %s \nHold Balance: %.2f %s \n---------------\nAccount Limits:\n---------------\n"
                     +
-                    "Local Withdrawal Limit: $%.2f\nLocal Transfer Limit: $%.2f\nOverseas Withdrawal Limit: $%.2f\nOverseas Transfer Limit: $%.2f\n"
+                    "Local Withdrawal Limit: $%.2f\nLocal Transfer Limit: $%.2f\nOverseas Withdrawal Limit: %.2f %s\nOverseas Transfer Limit: %.2f %s\n"
                     + line + "\nEdit Account Limits?\n" +
                     "\n1. Yes\n2. No",
-                    account.getId(), account.getAvailableBalance(), account.getHoldBalance(),
-                    account.getWithdrawLimit(),
-                    account.getTransferLimit(),
-                    account.getOverseasWithdrawLimit(), account.getOverseasTransferLimit());
+                    account.getId(),
+                    account.getAvailableBalance(), acctCurrencyAcro,
+                    account.getHoldBalance(), acctCurrencyAcro,
+                    account.getWithdrawLimit(), // Get ATM currency
+                    account.getTransferLimit(), // Get ATM currency
+                    account.getOverseasWithdrawLimit(), acctCurrencyAcro,
+                    account.getOverseasTransferLimit(), acctCurrencyAcro);
             System.out.println(prompt);
 
             // Enter choice
@@ -67,7 +72,7 @@ public class ManageAccount implements ScreenState {
                 NumberFormat formatter = NumberFormat.getCurrencyInstance();
                 switch (in.nextInt()) {
                     case 1: // Change local withdrawal limit
-                        limit = String.format("Local Withdrawal Limit:  %s",
+                        limit = String.format("Local Withdrawal Limit: %s",
                                 formatter.format(account.getWithdrawLimit()));
                         System.out.println("Current " + limit + "\nPlease enter the new limit: ");
                         account.setWithdrawLimit(in.nextBigDecimal());
@@ -75,27 +80,27 @@ public class ManageAccount implements ScreenState {
                                 formatter.format(account.getWithdrawLimit()));
                         break;
                     case 2: // Change local transfer limit
-                        limit = String.format("Local Transfer Limit:  %s",
+                        limit = String.format("Local Transfer Limit: %s",
                                 formatter.format(account.getTransferLimit()));
                         System.out.println("Current " + limit + "\nPlease enter the new limit: ");
                         account.setTransferLimit(in.nextBigDecimal());
-                        limit = String.format("Local Transfer Limit:  %s",
+                        limit = String.format("Local Transfer Limit: %s",
                                 formatter.format(account.getTransferLimit()));
                         break;
                     case 3: // Change overseas withdrawal limit
-                        limit = String.format("Overseas Withdrawal Limit:  %s",
+                        limit = String.format("Overseas Withdrawal Limit: %s",
                                 formatter.format(account.getOverseasWithdrawLimit()));
                         System.out.println("Current " + limit + "\nPlease enter the new limit: ");
                         account.setOverseasWithdrawLimit(in.nextBigDecimal());
-                        limit = String.format("Overseas Withdrawal Limit:  %s",
+                        limit = String.format("Overseas Withdrawal Limit: %s",
                                 formatter.format(account.getOverseasWithdrawLimit()));
                         break;
                     case 4: // Change overseas transfer limit
-                        limit = String.format("Overseas Transfer Limit:  %s",
+                        limit = String.format("Overseas Transfer Limit: %s",
                                 formatter.format(account.getOverseasTransferLimit()));
                         System.out.println("Current " + limit + "\nPlease enter the new limit: ");
                         account.setOverseasTransferLimit(in.nextBigDecimal());
-                        limit = String.format("Overseas Transfer Limit:  %s",
+                        limit = String.format("Overseas Transfer Limit: %s",
                                 formatter.format(account.getOverseasTransferLimit()));
                         break;
                     case 5: // Back to main
