@@ -7,49 +7,28 @@ package Model.Country;
 public class Country {
 
     // Identifier for the country.
-    private String countryAcronym;
+    private final String countryAcronym;
     // Identifier for a countries currency
-    private String currencyAcronym;
+    private final String currencyAcronym;
     // Country name
-    private String countryName;
+    private final String countryName;
 
-    // CONSTRUCTORS
-    public Country(String countryAcronym) {
-        this.setCurrencyAcronym(countryAcronym);
-    }
-
-    public Country(String countryAcronym, String currencyAcronym) {
-        this.setCountryAcronym(countryAcronym);
-        this.setCurrencyAcronym(currencyAcronym);
-    }
-
+    // CONSTRUCTOR
     public Country(String countryAcronym, String currencyAcronym, String countryName) {
-        this.setCountryAcronym(countryAcronym);
-        this.setCurrencyAcronym(currencyAcronym);
-        this.setCountryName(countryName);
+        this.countryAcronym = countryAcronym;
+        this.currencyAcronym = currencyAcronym;
+        this.countryName = countryName;
     }
 
     public String getCountryAcronym() {
         return countryAcronym;
     }
 
-    public void setCountryAcronym(String countryAcronym) {
-        this.countryAcronym = countryAcronym;
-    }
-
     public String getCurrencyAcronym() {
         return currencyAcronym;
     }
 
-    public void setCurrencyAcronym(String currencyAcronym) {
-        this.currencyAcronym = currencyAcronym;
-    }
-
     public String getCountryName() {
         return countryName;
-    }
-
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
     }
 }

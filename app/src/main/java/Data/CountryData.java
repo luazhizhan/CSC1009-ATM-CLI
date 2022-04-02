@@ -29,7 +29,6 @@ public class CountryData extends Data<Country> {
             Country country = new Country(data[0], data[1], data[2]);
             countryData.add(country);
         }
-
         return countryData;
     }
 

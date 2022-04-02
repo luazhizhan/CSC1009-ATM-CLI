@@ -12,26 +12,22 @@ public class Currency {
     // Identifier for the banknote series.
     private String currencyAcronym;
 
+    // Suggested minimum withdraw amount for this currency.
+    private final int withdrawMinimum;
+    // Suggested maximum withdraw amount for this currency.
+    private final int withdrawMaximum;
+
     // Notes used in an ATM for this currency.
     private int[] banknotes;
-
     // Cache exchange rates
     private Set<ExchangeRate> rates = new HashSet<>();
 
-    // Suggested minimum withdraw amount for this currency.
-    private int withdrawMinimum;
-
-    // Suggested maximum withdraw amount for this currency.
-    private int withdrawMaximum;
-
-    // CONSTRUCTORS
-    public Currency(String currencyAcronym) {
-        this.setCurrencyAcronym(currencyAcronym);
-    }
-
-    public Currency(String currencyAcronym, int[] banknotes) {
+    // CONSTRUCTOR
+    public Currency(String currencyAcronym, int[] banknotes, int withdrawMinimum, int withdrawMaximum) {
         this.setCurrencyAcronym(currencyAcronym);
         this.setBanknotes(banknotes);
+        this.withdrawMinimum = withdrawMinimum;
+        this.withdrawMaximum = withdrawMaximum;
     }
 
     public String getCurrencyAcronym() {
@@ -52,7 +48,8 @@ public class Currency {
                 return rate;
             }
         }
-        throw new IllegalArgumentException("Currency not found: " + currency);
+        throw new IllegalArgumentException("ExchangeRate not found! Rate is from " +
+                getCurrencyAcronym() + " to " + currency.getCurrencyAcronym());
     }
 
     public void setExchangeRate(ExchangeRate rate) {
@@ -77,16 +74,8 @@ public class Currency {
         return withdrawMinimum;
     }
 
-    public void setWithdrawMinimum(int withdrawMinimum) {
-        this.withdrawMinimum = withdrawMinimum;
-    }
-
     public int getWithdrawMaximum() {
         return withdrawMaximum;
-    }
-
-    public void setWithdrawMaximum(int withdrawMaximum) {
-        this.withdrawMaximum = withdrawMaximum;
     }
 
 }
