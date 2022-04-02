@@ -2,7 +2,7 @@
 
 ## About The Project
 
-This is an Automated Teller Machine (ATM) CLI application build with Java. The objective of this project is to apply concepts from Object Oriented Programming (OOP) taught in this module. Based on our research and personal experience with ATM, we have implemented serveral key features on this ATM CLI application. They are
+This is an Automated Teller Machine (ATM) CLI application built with Java. The objective of this assignment was to apply Object Oriented Programming (OOP) concepts that were taught in this module. Based on our research and personal experience with ATMs, we have implemented the following key ATM features of our application. There are
 
 1. Cash Withdrawal
 2. Cash Deposit
@@ -10,7 +10,7 @@ This is an Automated Teller Machine (ATM) CLI application build with Java. The o
 4. Transaction History
 5. Manage Account
 
-Some of the features such as transaction history and account management are not commonly found on ATMs. We decided to include them to enhance our ATM.
+Some of these features such as transaction history and account management are not as commonly found on ATMs. We decided to include them to enhance our application.
 
 ## Built With
 
@@ -35,13 +35,13 @@ Have an IDE or Code Editor installed on your PC. We recommend
 
 #### VSCode
 
-Additional installation required if you are you using VScode. Refer to this [link](https://code.visualstudio.com/docs/languages/java)
+Additional installation required if you are using VScode. Refer to this [link](https://code.visualstudio.com/docs/languages/java)
 
 ### Run the application
 
 Simplest way to execute the application will be going to `app/src/main/java/App.java` file and clicking on the `run` link button above `main` method.
 
-Another way is via a CLI command.
+Another way is via CLI command.
 
 ```bash
 gradlew.bat run # Windows
@@ -60,7 +60,7 @@ gradlew.bat run # Windows
 
 Go to `Gradle` menu in your IDE or Code Editor and execute the task `jacocoTestReport` to generate it.
 
-Another way to generate the report is via a CLI command.
+Another way to generate the report is via CLI command.
 
 ```bash
 gradlew.bat jacocoTestReport # Windows
