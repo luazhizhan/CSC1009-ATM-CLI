@@ -1,4 +1,4 @@
-# CSC1009 P3T09
+# CSC1009 ATM CLI
 
 ## About The Project
 
